@@ -1,0 +1,127 @@
+{# templates/books/detail.html #}
+{% extends "base.html" %}
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'books/css/detail.css' %}">
+
+<div class="row">
+  <!-- Левая колонка -->
+  <div class="col-md-4">
+    {% if book.cover %}
+      <img src="{{ book.cover.url }}" class="img-fluid mb-3" alt="{{ book.title }}">
+    {% endif %}
+
+    <p><strong>Скачиваний:</strong> {{ book.downloads_count }}</p>
+    <p><strong>Просмотров:</strong> {{ book.views_count }}</p>
+
+    <p>
+      <strong>Форматы:</strong>
+      {% if book.file_pdf %} PDF {% endif %}
+      {% if book.file_epub %} EPUB {% endif %}
+      {% if book.file_fb2 %} FB2 {% endif %}
+    </p>
+  </div>
+
+  <!-- Правая колонка -->
+  <div class="col-md-8">
+    <h1>{{ book.title }}</h1>
+
+    <!-- ===== БЛОК АВТОРОВ ===== -->
+    <div class="book-authors-box">
+      <div class="book-authors-title">Авторы</div>
+
+      {% if book.authors.exists %}
+        <div class="book-authors-list">
+          {% for author in book.authors.all %}
+            <div class="book-author-item">
+
+              {% if author.photo %}
+                <img src="{{ author.photo.url }}" alt="{{ author.name }}" class="book-author-photo">
+              {% else %}
+                <div class="book-author-photo placeholder">—</div>
+              {% endif %}
+
+              <a href="{% url 'books:author_detail' author.slug %}" class="book-author-name">
+                {{ author.name }}
+              </a>
+
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted">Авторы не указаны</p>
+      {% endif %}
+    </div>
+
+    <!-- ===== БЛОК ЖАНРОВ ===== -->
+<div class="book-authors-box">
+  <div class="book-authors-title">Жанры</div>
+
+  {% if book.genres.exists %}
+    <div class="book-authors-list">
+      {% for genre in book.genres.all %}
+        <div class="book-author-item">
+          <a href="{% url 'books:genre_detail' genre.slug %}" class="book-author-name">
+            {{ genre.name }}
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">Жанры не указаны</p>
+  {% endif %}
+
+</div>
+    <p>{{ book.description }}</p>
+
+    <hr>
+
+    <!-- ===== СКАЧИВАНИЕ ===== -->
+    <div class="mb-3">
+      <h5>Скачать</h5>
+      {% if user.is_authenticated %}
+        {% if book.file_pdf %}
+          <a href="{% url 'books:download' book.pk 'pdf' %}" class="btn btn-outline-primary">PDF</a>
+        {% endif %}
+        {% if book.file_epub %}
+          <a href="{% url 'books:download' book.pk 'epub' %}" class="btn btn-outline-primary">EPUB</a>
+        {% endif %}
+        {% if book.file_fb2 %}
+          <a href="{% url 'books:download' book.pk 'fb2' %}" class="btn btn-outline-primary">FB2</a>
+        {% endif %}
+      {% else %}
+        <p>
+          <a href="{% url 'users:login' %}?next={{ request.get_full_path|urlencode }}">
+            Войдите
+          </a>, чтобы скачать книгу.
+        </p>
+      {% endif %}
+    </div>
+
+    <!-- ===== ИЗБРАННОЕ ===== -->
+    <div class="mb-3">
+      <h5>Избранное</h5>
+      {% if user.is_authenticated %}
+        <form method="post" action="{% url 'books:favorite_toggle' book.pk %}">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+          {% if is_favorited %}
+            <button class="btn btn-warning">Убрать из избранного</button>
+          {% else %}
+            <button class="btn btn-outline-warning">Добавить в избранное</button>
+          {% endif %}
+        </form>
+      {% else %}
+        <p>
+          <a href="{% url 'users:login' %}?next={{ request.get_full_path|urlencode }}">
+            Войдите
+          </a>, чтобы добавить в избранное.
+        </p>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+/* ===== КАРТОЧКИ АВТОРОВ ===== */
+
+.author-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fafafa;
+  padding: 16px;
+  height: 100%;
+}
+
+/* Внутренний layout */
+.author-card-inner {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Контейнер фото */
+.author-photo-wrapper {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e0e0e0;
+  flex-shrink: 0;
+}
+
+/* Само фото */
+.author-photo-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Информация */
+.author-info h5 {
+  margin: 0 0 6px 0;
+}
+
+.author-life-dates {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.author-books-count {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+/* ===== СТРАНИЦА АВТОРА ===== */
+
+.author-page {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+/* Левая колонка */
+.author-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+/* Фото автора (большое) */
+.author-sidebar .author-photo-wrapper {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 12px;
+}
+
+/* Правая колонка */
+.author-content {
+  flex: 1;
+}
+
+/* Заголовок */
+.author-content h1 {
+  margin-top: 0;
+}

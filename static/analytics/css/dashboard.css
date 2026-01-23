@@ -1,0 +1,43 @@
+.analytics-table th,
+.analytics-table td {
+    vertical-align: middle;
+}
+
+.analytics-table a {
+    text-decoration: none;
+}
+
+.analytics-table a:hover {
+    text-decoration: underline;
+}
+
+.book-week-author a {
+    font-weight: 500;
+    color: #0d6efd;
+}
+
+.book-week-author a:hover {
+    text-decoration: underline;
+}
+
+.analytics-chart {
+    max-height: 140px;
+    margin-top: 20px;
+}
+
+.chart-wrapper {
+    width: 100%;
+    height: 260px;
+    margin-top: 20px;
+}
+
+.books-chart-wrapper {
+    width: 100%;
+    height: 200px;
+}
+
+.books-chart-wrapper canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}

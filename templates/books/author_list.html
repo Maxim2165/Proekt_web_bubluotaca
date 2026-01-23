@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Авторы{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'books/css/authors.css' %}">
+
+<h1>Авторы</h1>
+
+<div class="row">
+  {% for author in authors %}
+    <div class="col-md-4 mb-4">
+      <div class="author-card">
+        <div class="author-card-inner">
+
+          <!-- ФОТО -->
+          <div class="author-photo-wrapper">
+            {% if author.photo %}
+              <img src="{{ author.photo.url }}" alt="{{ author.name }}">
+            {% endif %}
+          </div>
+
+          <!-- ИНФО -->
+          <div class="author-info">
+            <h5>
+              <a href="{% url 'books:author_detail' author.slug %}">
+                {{ author.name }}
+              </a>
+            </h5>
+
+            <div class="author-life-dates">
+              <strong>Годы жизни:</strong>
+              {% if author.birth_date %}
+                {{ author.birth_date|date:"d.m.Y" }}
+              {% else %} ? {% endif %}
+              —
+              {% if author.death_date %}
+                {{ author.death_date|date:"d.m.Y" }}
+              {% else %} … {% endif %}
+            </div>
+
+            <div class="author-books-count">
+              Книг: {{ author.books.count }}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

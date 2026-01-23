@@ -1,0 +1,32 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.egg-info/
+
+# Django
+*.log
+*.pot
+*.pyc
+media/
+staticfiles/
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+
+# Secrets
+.env
+secrets.json
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+
+# Other junk
+.DS_Store  # Для Mac
+Thumbs.db  # Для Windows

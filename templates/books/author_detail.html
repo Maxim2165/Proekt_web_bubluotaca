@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ author.name }}{% endblock %}
+
+{% block content %}
+
+<div class="author-page">
+
+  <!-- ===== ЛЕВАЯ КОЛОНКА ===== -->
+  <aside class="author-sidebar">
+
+    <div class="author-photo-wrapper">
+      {% if author.photo %}
+        <img src="{{ author.photo.url }}" alt="{{ author.name }}">
+      {% endif %}
+    </div>
+
+    <div class="author-life-dates">
+      <strong>Годы жизни:</strong><br>
+      {% if author.birth_date %}
+        {{ author.birth_date|date:"d.m.Y" }}
+      {% else %} ? {% endif %}
+      —
+      {% if author.death_date %}
+        {{ author.death_date|date:"d.m.Y" }}
+      {% else %} … {% endif %}
+    </div>
+
+  </aside>
+
+  <!-- ===== ПРАВАЯ КОЛОНКА ===== -->
+  <section class="author-content">
+
+    <h1>{{ author.name }}</h1>
+
+    <h4 class="mt-3">Краткая биография автора</h4>
+
+    {% if author.bio %}
+      <p>{{ author.bio|linebreaks }}</p>
+    {% else %}
+      <p class="text-muted"><em>Биография отсутствует</em></p>
+    {% endif %}
+
+    <hr>
+
+    <h4>Книги автора</h4>
+
+    {% if books %}
+      <div class="row">
+        {% for book in books %}
+          {% include 'books/includes/book_card.html' with book=book show_author=False show_stats=True show_views=False %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">Книг пока нет</p>
+    {% endif %}
+
+  </section>
+
+</div>
+
+{% endblock %}

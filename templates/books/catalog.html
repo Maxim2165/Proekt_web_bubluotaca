@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Каталог{% endblock %}
+
+{% block content %}
+
+<h1>Каталог</h1>
+
+<div class="row">
+
+  <!-- ===== ЛЕВАЯ КОЛОНКА: ФИЛЬТРЫ ===== -->
+  <div class="col-md-3">
+{% if selected_genres or selected_authors %}
+  <div class="mb-3 text-muted">
+    📚 Найдено книг: <strong>{{ page_obj.paginator.count }}</strong>
+  </div>
+{% endif %}
+    <form method="get">
+      <input type="hidden" name="sort" value="{{ sort }}">
+
+      <!-- ЖАНРЫ -->
+      <div class="mb-3">
+  <strong>Жанры</strong>
+        <input
+  type="text"
+  class="form-control form-control-sm mb-2"
+  placeholder="Поиск жанра..."
+  onkeyup="filterCheckboxes(this, 'genres-list')"
+>
+
+  <div id="genres-list" class="filter-list">
+    {% for genre in genres %}
+      <div class="form-check filter-item">
+        <input
+  class="form-check-input"
+  type="checkbox"
+  name="genres"
+  value="{{ genre.slug }}"
+  onchange="this.form.submit()"
+  {% if genre.slug in selected_genres %}checked{% endif %}
+  {% if genre not in available_genres and genre.slug not in selected_genres %}
+    disabled
+  {% endif %}
+>
+        <label class="form-check-label
+  {% if genre not in available_genres and genre.slug not in selected_genres %}
+    text-muted
+  {% endif %}
+">
+  {{ genre.name }}
+</label>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if genres|length > 8 %}
+    <button type="button"
+            class="btn btn-link p-0 mt-1"
+            onclick="toggleFilter('genres-list', this)">
+      Показать все
+    </button>
+  {% endif %}
+</div>
+
+
+      <!-- АВТОРЫ -->
+      <div class="mb-3">
+  <strong>Авторы</strong>
+        <input
+  type="text"
+  class="form-control form-control-sm mb-2"
+  placeholder="Поиск автора..."
+  onkeyup="filterCheckboxes(this, 'authors-list')"
+>
+
+  <div id="authors-list" class="filter-list">
+    {% for author in authors %}
+      <div class="form-check filter-item">
+        <input
+  class="form-check-input"
+  type="checkbox"
+  name="authors"
+  value="{{ author.slug }}"
+  onchange="this.form.submit()"
+  {% if author.slug in selected_authors %}checked{% endif %}
+  {% if author not in available_authors and author.slug not in selected_authors %}
+    disabled
+  {% endif %}
+>
+        <label class="form-check-label
+  {% if author not in available_authors and author.slug not in selected_authors %}
+    text-muted
+  {% endif %}
+">
+  {{ author.name }}
+</label>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if authors|length > 8 %}
+    <button type="button"
+            class="btn btn-link p-0 mt-1"
+            onclick="toggleFilter('authors-list', this)">
+      Показать все
+    </button>
+  {% endif %}
+</div>
+
+      <button type="submit" class="btn btn-primary w-100">
+        Применить
+      </button>
+
+    </form>
+  </div>
+
+  <!-- ===== ПРАВАЯ КОЛОНКА: КНИГИ ===== -->
+  <div class="col-md-9">
+    <!-- ===== СОРТИРОВКА ===== -->
+<form method="get" class="mb-3 d-flex align-items-center">
+
+  {# сохраняем выбранные фильтры #}
+  {% for g in selected_genres %}
+    <input type="hidden" name="genres" value="{{ g }}">
+  {% endfor %}
+
+  {% for a in selected_authors %}
+    <input type="hidden" name="authors" value="{{ a }}">
+  {% endfor %}
+
+  <label class="mr-2 mb-0"><strong>Сортировка:</strong></label>
+
+  <select name="sort" class="form-control form-control-sm w-auto" onchange="this.form.submit()">
+    <option value="title" {% if sort == 'title' %}selected{% endif %}>
+      По алфавиту
+    </option>
+    <option value="new" {% if sort == 'new' %}selected{% endif %}>
+      Новинки
+    </option>
+  </select>
+
+</form>
+
+{# ===== UX: ПРИМЕНЕНЫ ФИЛЬТРЫ ===== #}
+{% if search or selected_genres or selected_authors %}
+  <div class="alert alert-secondary mb-3">
+
+    <strong>Применены фильтры:</strong>
+
+    <ul class="mb-2">
+      {% if search %}
+        <li>
+          <strong>Поиск:</strong> «{{ search }}»
+        </li>
+      {% endif %}
+
+      {% if selected_genres %}
+        <li>
+          <strong>Жанры:</strong>
+          {% for genre in selected_genre_objects %}
+            {{ genre.name }}{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </li>
+      {% endif %}
+
+      {% if selected_authors %}
+        <li>
+          <strong>Авторы:</strong>
+          {% for author in selected_author_objects %}
+            {{ author.name }}{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </li>
+      {% endif %}
+    </ul>
+
+    <a href="{% url 'books:catalog' %}" class="btn btn-sm btn-outline-secondary">
+      Сбросить все фильтры
+    </a>
+
+  </div>
+{% endif %}
+
+    {% if page_obj.object_list %}
+      <div class="row">
+        {% for book in page_obj.object_list %}
+          {% include 'books/includes/book_card.html' with book=book show_author=True show_stats=True show_views=False %}
+        {% endfor %}
+      </div>
+
+      <!-- ===== ПАГИНАЦИЯ С СОХРАНЕНИЕМ ФИЛЬТРОВ ===== -->
+      <nav>
+        <ul class="pagination">
+
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link"
+                 href="?page={{ page_obj.previous_page_number }}
+                 {% for g in selected_genres %}&genres={{ g }}{% endfor %}
+                 {% for a in selected_authors %}&authors={{ a }}{% endfor %}
+                 {% if search %}&search={{ search }}{% endif %} &sort={{ sort }}">
+                Назад
+              </a>
+            </li>
+          {% endif %}
+
+          <li class="page-item disabled">
+            <span class="page-link">
+              Стр. {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            </span>
+          </li>
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link"
+                 href="?page={{ page_obj.next_page_number }}
+                 {% for g in selected_genres %}&genres={{ g }}{% endfor %}
+                 {% for a in selected_authors %}&authors={{ a }}{% endfor %}
+                 {% if search %}&search={{ search }}{% endif %} &sort={{ sort }}">
+                Вперед
+              </a>
+            </li>
+          {% endif %}
+
+        </ul>
+      </nav>
+
+    {% else %}
+      <p>Книги не найдены.</p>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+function toggleFilter(id, btn) {
+    const block = document.getElementById(id);
+
+    block.classList.toggle('expanded');
+
+    if (block.classList.contains('expanded')) {
+        btn.textContent = 'Свернуть';
+    } else {
+        btn.textContent = 'Показать все';
+    }
+}
+</script>
+
+<script>
+function filterCheckboxes(input, listId) {
+  const filter = input.value.toLowerCase();
+  const list = document.getElementById(listId);
+  const items = list.getElementsByClassName('filter-item');
+
+  let visibleCount = 0;
+
+  for (let item of items) {
+    const label = item.innerText.toLowerCase();
+    const isVisible = label.includes(filter);
+    item.style.display = isVisible ? '' : 'none';
+    if (isVisible) visibleCount++;
+  }
+
+  // логика кнопки "Показать все"
+  const btn = list.parentElement.querySelector('button');
+  if (btn) {
+    btn.style.display = visibleCount > 8 ? '' : 'none';
+  }
+}
+</script>
+
+{% endblock %}

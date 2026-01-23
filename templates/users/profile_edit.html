@@ -1,0 +1,33 @@
+{# templates/users/profile_edit.html #}
+{% extends "base.html" %}
+{% block title %}Редактировать профиль{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h2>Редактировать профиль</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="form-group">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {% for e in form.username.errors %}<div class="text-danger">{{ e }}</div>{% endfor %}
+      </div>
+      <div class="form-group">
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+        {% for e in form.first_name.errors %}<div class="text-danger">{{ e }}</div>{% endfor %}
+      </div>
+      <div class="form-group">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {% for e in form.email.errors %}<div class="text-danger">{{ e }}</div>{% endfor %}
+      </div>
+
+      <button type="submit" class="btn btn-primary">Сохранить</button>
+      <a href="{% url 'users:profile' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

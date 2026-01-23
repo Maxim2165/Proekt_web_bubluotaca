@@ -1,0 +1,51 @@
+.kpi-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.kpi-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+.kpi-label {
+  margin-top: 8px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.chart-box {
+  position: relative;
+  height: 260px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.favorite-author-box {
+  padding: 20px;
+  border-radius: 12px;
+  background: #f8f9fa;
+  text-align: center;
+}
+
+.favorite-author-label {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 6px;
+}
+
+.favorite-author-name {
+  font-size: 26px;
+  font-weight: 600;
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.favorite-author-name:hover {
+  text-decoration: underline;
+}
+

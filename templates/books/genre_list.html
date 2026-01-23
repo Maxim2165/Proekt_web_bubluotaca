@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Жанры{% endblock %}
+
+{% block content %}
+<h1>Жанры</h1>
+
+{% if genres %}
+  <ul class="list-group">
+    {% for genre in genres %}
+      <li class="list-group-item">
+        <a href="{% url 'books:genre_detail' genre.slug %}">
+          {{ genre.name }}
+        </a>
+
+        {% if genre.description %}
+          <div class="text-muted small">
+            {{ genre.description }}
+          </div>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Жанры не найдены.</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Поиск{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Поиск</h1>
+{% if query %}
+  <div class="mb-3 text-muted">
+    🔎 Найдено:
+    {% if authors %} ✍️ Авторов: {{ authors|length }}{% endif %}
+    {% if genres %}{% if authors %} · {% endif %}🏷 Жанров: {{ genres|length }}{% endif %}
+    {% if books %}{% if authors or genres %} · {% endif %}📚 Книг: {{ books|length }}{% endif %}
+  </div>
+{% endif %}
+<form method="get" action="{% url 'search:search' %}" class="mb-4">
+  <div class="input-group input-group-lg">
+    <input
+      type="search"
+      name="q"
+      class="form-control"
+      placeholder="Введите название книги, автора или жанра"
+      value="{{ query }}"
+      autofocus
+    >
+    <div class="input-group-append">
+      <button class="btn btn-primary" type="submit">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </div>
+</form>
+
+{% if query %}
+
+  {% if authors %}
+    <h3 class="mt-4">✍️ Авторы</h3>
+    <ul>
+      {% for author in authors %}
+        <li>
+          <a href="{% url 'books:author_detail' author.slug %}">
+            {{ author.name }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+{% if genres %}
+  <h3 class="mt-4">🏷 Жанры</h3>
+  <ul>
+    {% for genre in genres %}
+      <li>
+        <a href="{% url 'books:genre_detail' genre.slug %}">
+          {{ genre.name }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+  {% if books %}
+    <h3 class="mt-4">📚 Книги</h3>
+    <div class="row">
+      {% for book in books %}
+        {% include "books/includes/book_card.html" with book=book %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if not books and not authors and not genres %}
+    <p class="text-muted mt-4">Ничего не найдено.</p>
+  {% endif %}
+
+{% endif %}
+{% endblock %}
