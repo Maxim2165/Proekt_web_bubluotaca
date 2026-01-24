@@ -1,0 +1,51 @@
+<nav class="top-bar">
+
+  <!-- ЛЕВАЯ ЧАСТЬ -->
+  <div class="top-bar-left">
+
+    <!-- ЛОГО / ГЛАВНАЯ -->
+    <a href="{% url 'pages:home' %}" class="top-bar-logo">
+      <img class="buttons-child" alt="">
+    </a>
+
+    <!-- НАВИГАЦИЯ -->
+    <a href="{% url 'books:catalog' %}" class="top-bar-link">
+      Библиотека
+    </a>
+
+    <a href="{% url 'books:genre_list' %}" class="top-bar-link">
+      Жанры
+    </a>
+
+    <a href="{% url 'books:author_list' %}" class="top-bar-link">
+      Авторы
+    </a>
+
+    <a href="{% url 'analytics:dashboard' %}" class="top-bar-link">
+      Обзор
+    </a>
+
+  </div>
+
+  <!-- ПРАВАЯ ЧАСТЬ -->
+  <div class="top-bar-right">
+
+    <!-- ПОИСК -->
+    <a href="{% url 'search:search' %}" class="top-bar-icon">
+      <img class="search-icon" alt="">
+    </a>
+
+    <!-- ПРОФИЛЬ -->
+    {% if user.is_authenticated %}
+      <a href="{% url 'users:profile' %}" class="top-bar-link">
+        Читательская карточка
+      </a>
+    {% else %}
+      <a href="{% url 'users:login' %}" class="top-bar-link">
+        Войти
+      </a>
+    {% endif %}
+
+  </div>
+
+</nav>

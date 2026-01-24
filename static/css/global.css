@@ -1,10 +1,11 @@
-/* Ограничиваем максимальную ширину контента */
-.container-fluid,
-.container-fluid .row,
-.container-fluid .col {
+/* Основной контейнер сайта */
+.site-wrapper {
     max-width: 1440px;
     margin-left: auto;
     margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    box-sizing: border-box;
 }
 
 /* Дополнительно для каталога, если добавишь класс book-row */
