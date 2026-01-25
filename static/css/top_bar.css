@@ -1,39 +1,63 @@
 .top-bar {
+  height: 44px;
+  background-color: #fff;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.25);
+
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
+}
 
-  height: 64px;
-  padding: 0 8px;
-
+.top-bar a {
+  color: #252525;
+  text-decoration: none;
   font-family: "New York", serif;
 }
 
-.top-bar-left,
-.top-bar-right {
+/* ВНУТРЕННИЙ КОНТЕЙНЕР ИЗ ДИЗАЙНА */
+.buttons {
+  width: 100%;
+  max-width: 1440px;
+  padding: 0 160px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ГРУППЫ КНОПОК */
+.buttons-left,
+.buttons-right {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-.top-bar-logo img {
-  width: 32px;
-  height: 32px;
+/* ЛОГО */
+.buttons-child {
+  height: 34px;
+  width: 34px;
 }
 
-.top-bar-link {
+/* ПОИСК */
+.search-icon {
+  height: 21px;
+  width: 21px;
+}
+
+/* ОБЩИЙ СТИЛЬ КНОПОК */
+.library,
+.genres {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  color: #252525;
   text-decoration: none;
-  color: #222;
-  font-size: 16px;
-  white-space: nowrap;
+  opacity: 0.8;
 }
 
-.top-bar-link:hover {
-  text-decoration: underline;
+.library:hover,
+.genres:hover {
+  opacity: 1;
 }
 
-.top-bar-icon img {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-}

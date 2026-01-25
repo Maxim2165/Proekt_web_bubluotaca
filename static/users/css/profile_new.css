@@ -1,0 +1,140 @@
+/* ===== СТРАНИЦА ПРОФИЛЯ ===== */
+
+.profile-page {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+
+  padding: 0 160px 60px;
+  box-sizing: border-box;
+
+  font-family: "New York", serif;
+  color: #252525;
+}
+
+/* Заголовок */
+.profile-title {
+  font-size: 80px;
+  margin-bottom: 44px;
+  text-align: left;
+}
+
+/* ===== СЕКЦИИ ===== */
+
+.profile-section {
+  display: flex;
+  gap: 44px;
+  margin-bottom: 44px;
+  flex-wrap: wrap;
+}
+
+/* ===== КАРТОЧКИ ===== */
+
+.profile-card {
+  flex: 1;
+  min-width: 320px;
+
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+
+  padding: 20px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Заголовок карточки */
+.profile-card-title {
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+/* ===== СТРОКИ ДАННЫХ ===== */
+
+.profile-row {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.profile-label {
+  font-weight: 500;
+}
+
+.profile-value {
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.profile-muted {
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+/* ===== КНОПКИ ===== */
+
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: flex-end;
+}
+
+/* Общий стиль кнопок */
+.profile-btn {
+  width: 230px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+  font-size: 18px;
+  text-decoration: none;
+  cursor: pointer;
+
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* hover без движения */
+.profile-btn-dark:hover {
+  background-color: #000;
+}
+
+.profile-btn-outline:hover {
+  background-color: #252525;
+  color: #fff;
+}
+
+/* Тёмная кнопка */
+.profile-btn-dark {
+  background-color: #252525;
+  color: #fff;
+}
+
+/* Светлая кнопка */
+.profile-btn-outline {
+  background-color: #fff;
+  color: #252525;
+  border: 1px solid #252525;
+}
+
+/* строка с выравниванием по краям */
+.profile-row-between {
+  justify-content: space-between;
+}
+
+/* кликабельные книги в избранном */
+.profile-row a.profile-label {
+  color: #0d6efd;
+  text-decoration: underline;
+}
+
+.profile-row a.profile-label:hover {
+  color: #084298;
+}

@@ -1,51 +1,43 @@
-<nav class="top-bar">
+{% load static %}
 
-  <!-- ЛЕВАЯ ЧАСТЬ -->
-  <div class="top-bar-left">
+<div class="top-bar">
 
-    <!-- ЛОГО / ГЛАВНАЯ -->
-    <a href="{% url 'pages:home' %}" class="top-bar-logo">
-      <img class="buttons-child" alt="">
-    </a>
+  <div class="buttons">
 
-    <!-- НАВИГАЦИЯ -->
-    <a href="{% url 'books:catalog' %}" class="top-bar-link">
-      Библиотека
-    </a>
+    <div class="buttons-left">
+      <!-- логотип -->
+      <a href="{% url 'pages:home' %}">
+        <img src="{% static 'images/Component 2.svg' %}"
+             alt="Логотип"
+             class="buttons-child">
+      </a>
 
-    <a href="{% url 'books:genre_list' %}" class="top-bar-link">
-      Жанры
-    </a>
+      <a href="{% url 'books:catalog' %}" class="library">Библиотека</a>
+      <a href="{% url 'books:genre_list' %}" class="genres">Жанры</a>
+      <a href="{% url 'books:author_list' %}" class="genres">Авторы</a>
+      <a href="{% url 'analytics:dashboard' %}" class="genres">Обзор</a>
+      <a href="{% url 'pages:about' %}" class="genres">О проекте</a>
+    </div>
 
-    <a href="{% url 'books:author_list' %}" class="top-bar-link">
-      Авторы
-    </a>
+    <div class="buttons-right">
+      {% if user.is_authenticated %}
+        <a href="{% url 'users:profile' %}" class="genres">
+          Читательская карточка
+        </a>
+      {% else %}
+        <a href="{% url 'users:login' %}" class="genres">
+          Войти
+        </a>
+      {% endif %}
+      <a href="{% url 'search:search' %}">
+        <img src="{% static 'images/Search Icon.svg' %}"
+             alt="Поиск"
+             class="search-icon">
+      </a>
 
-    <a href="{% url 'analytics:dashboard' %}" class="top-bar-link">
-      Обзор
-    </a>
+    </div>
 
   </div>
 
-  <!-- ПРАВАЯ ЧАСТЬ -->
-  <div class="top-bar-right">
+</div>
 
-    <!-- ПОИСК -->
-    <a href="{% url 'search:search' %}" class="top-bar-icon">
-      <img class="search-icon" alt="">
-    </a>
-
-    <!-- ПРОФИЛЬ -->
-    {% if user.is_authenticated %}
-      <a href="{% url 'users:profile' %}" class="top-bar-link">
-        Читательская карточка
-      </a>
-    {% else %}
-      <a href="{% url 'users:login' %}" class="top-bar-link">
-        Войти
-      </a>
-    {% endif %}
-
-  </div>
-
-</nav>
