@@ -1,20 +1,8 @@
-{% comment %}
-  Единый компонент карточки книги для использования по всему сайту
-  
-  Параметры:
-  - book: объект Book (обязательно)
-  - show_author: показывать ли автора (по умолчанию True, передать False чтобы скрыть)
-  - show_stats: показывать ли статистику (по умолчанию True, передать False чтобы скрыть)
-  - show_views: показывать ли просмотры в статистике (по умолчанию False, передать True чтобы показать)
-  - button_text: текст кнопки (по умолчанию "Открыть")
-  - button_class: CSS класс кнопки (по умолчанию "btn-primary")
-{% endcomment %}
-
 {% load static %}
 
-<div class="col-md-4 mb-3">
-  <div class="card h-100">
-    
+<div class="book-col mb-3">
+  <div class="book-card-new h-100">
+
     <div class="book-cover-wrapper">
       {% if book.cover %}
         <img src="{{ book.cover.url }}" alt="{{ book.title }}">
@@ -23,12 +11,12 @@
       {% endif %}
     </div>
 
-    <div class="card-body d-flex flex-column">
-      
-      <h5 class="card-title">{{ book.title }}</h5>
+    <div class="book-card-body d-flex flex-column">
+
+      <h5 class="book-card-title">{{ book.title }}</h5>
 
       {% if show_author != False %}
-        <p class="card-text text-muted small mb-2">
+        <p class="book-card-author text-muted small mb-2">
           {% for author in book.authors.all %}
             <a href="{% url 'books:author_detail' author.slug %}" class="text-muted">
               {{ author.name }}
@@ -40,17 +28,17 @@
       {% endif %}
 
       {% if show_stats != False %}
-        <p class="card-text small text-muted mb-2">
+        <p class="book-card-stats small text-muted mb-2">
           {% if show_views == True %}
-            👁 {{ book.views_count }} · 
+            Просмотры: {{ book.views_count }} ·
           {% endif %}
-          ⬇ {{ book.downloads_count }}
+          Загрузки: {{ book.downloads_count }}
         </p>
       {% endif %}
 
       <a href="{% url 'books:detail' book.pk %}"
-         class="mt-auto btn {{ button_class|default:'btn-primary' }}">
-        {{ button_text|default:"Открыть" }}
+         class="mt-auto btn-new btn-new-dark">
+        {{ button_text|default:"Узнать о книге" }}
       </a>
       
     </div>

@@ -1,15 +1,256 @@
-/* ===== ФИЛЬТРЫ КАТАЛОГА ===== */
+/* Сетка для каталога (вместо Bootstrap) */
+.catalog-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: nowrap; /* не переносить колонки */
+  align-items: flex-start; /* выравнивание по верху */
+}
+
+.catalog-col-left {
+  flex: 1 1 25%;
+  min-width: 280px;
+}
+
+.catalog-col-right {
+  flex: 1 1 75%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 600px; /* минимальная высота, чтобы правая колонка не сжималась */
+}
+
+/* На мобильке — в столбец */
+@media (max-width: 768px) {
+  .catalog-row {
+    flex-direction: column;
+  }
+
+  .catalog-col-left, .catalog-col-right {
+  flex: 1 1 75%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* расстояние между элементами */
+  min-height: 600px; /* минимальная высота, чтобы не сжималась при мало книгах — регулируй 500–700px */
+}
+}
+
+/* Сетка для карточек книг */
+.books-row {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* всегда слева */
+  align-items: flex-start;
+}
+
+.book-col {
+    flex: 0 1 30%; /* 3 в ряд, не растягивать */
+  min-width: 280px;
+  margin-bottom: 0; /* убираем лишний отступ снизу */
+}
+
+/* На мобильке — 1 в ряд */
+@media (max-width: 768px) {
+  .book-col {
+    flex: 1 1 100%;
+  }
+}
+
+/* Поиск */
+.search-input {
+  border: 1px solid #252525;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 16px;
+  width: 90%;
+  max-width: 300px; /* не растягивается */
+  box-sizing: border-box;
+  margin-bottom: 12px;
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37, 37, 37, 0.3);
+  border-color: #252525;
+}
+
+/* Чекбоксы */
+.form-check-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  width: 18px;
+  height: 18px;
+  border: 1px solid #252525;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 6px; /* чуть больше пространства, но аккуратно */
+  vertical-align: middle;
+  position: relative;
+  top: 1px; /* лёгкая корректировка по высоте */
+}
+
+.form-check-input:checked {
+  background: #252525;
+  border-color: #252525;
+}
+
+.form-check-input:checked::after {
+  content: "✓";
+  position: absolute;
+  color: #fff;
+  font-size: 14px;
+  left: 3px;
+  top: -1px;
+  font-weight: bold;
+}
+
+.form-check-label {
+  line-height: 1.2; /* уменьшаем, чтобы текст был ближе к галочке по высоте */
+  vertical-align: middle;
+  margin-left: 2px; /* минимальный отступ */
+}
+
+/* Заголовки фильтров */
+.mb-3 strong {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Кнопки "Показать все / Свернуть" */
+.show-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 8px;
+  font-size: 16px;
+  color: #252525;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.show-toggle:hover {
+  text-decoration: underline;
+  color: #0d6efd;
+}
+
+/* Применённые фильтры */
+.applied-filters {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.applied-filters ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 15px 0;
+}
+
+.applied-filters li {
+  margin-bottom: 8px;
+}
+
+/* Пагинация */
+.pagination-new {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start; /* слева */
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+}
+
+.pagination-new .page-item .page-link {
+  color: #252525;
+  border: 1px solid #252525;
+  border-radius: 10px;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination-new .page-item.active .page-link {
+  background-color: #252525;
+  color: #fff;
+  border-color: #252525;
+}
+
+.pagination-new .page-item.disabled .page-link {
+  color: rgba(37, 37, 37, 0.6);
+  border-color: rgba(37, 37, 37, 0.3);
+  pointer-events: none;
+}
+
+/* Кнопка "Сбросить" */
+.applied-filters .btn-new.btn-new-dark.btn-sm {
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: 180px;
+  padding: 0 20px;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.sort-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.sort-label {
+  white-space: nowrap;
+  font-size: 18px;
+  color: #252525;
+}
+
+.sort-select {
+  border: 1px solid #252525;
+  border-radius: 10px;
+  padding: 10px 40px 10px 16px;
+  font-size: 16px;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23252525' d='M6 9l-4-4h8z'/%3E%3C/svg%3E") no-repeat right 16px center;
+  background-size: 12px;
+  color: #252525;
+  cursor: pointer;
+  height: 44px;
+  min-width: 240px;
+  appearance: none;
+}
+
+.sort-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37, 37, 37, 0.3);
+}
+
 
 .filter-list {
-    max-height: 260px;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+  max-height: 260px;
+  overflow-y: hidden; /* скрывать вертикально */
+  transition: max-height 0.3s ease;
+  clip-path: inset(0); /* обрезать содержимое */
 }
 
 .filter-list.expanded {
-    max-height: 1000px;
+  max-height: 1000px;
+  overflow-y: visible; /* показывать всё */
 }
 
-.filter-item {
-    margin-bottom: 4px;
+/* Disabled фильтры — серый цвет */
+.text-muted {
+  color: rgba(37, 37, 37, 0.6) !important;
+  opacity: 0.9;
+}
+
+/* Disabled чекбокс — серый */
+.form-check-input:disabled {
+  background: rgba(37, 37, 37, 0.3) !important;
+  border-color: rgba(37, 37, 37, 0.3) !important;
+  cursor: not-allowed;
 }

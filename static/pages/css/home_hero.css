@@ -104,10 +104,20 @@
     margin-top: 8px;
 }
 
-.btn-primary {
-    margin-top: 20px;
-    padding: 0.6rem 1.8rem;
-    font-size: 1.1rem;
+/* Кнопка "Перейти в каталог" на герое */
+.hero-text .btn-new {
+  width: 230px;              /* фиксированная ширина, как в профиле */
+  min-width: 230px;
+  height: 35px;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+/* На мобильке — на всю ширину */
+@media (max-width: 768px) {
+  .hero-text .btn-new {
+    width: 100%;
+  }
 }
 
 /* ============================================= */
@@ -204,13 +214,13 @@
         font-size: 20px;
     }
 
-    .btn-primary {
-        width: 100%;
-        margin-top: 15px;
-    }
+
 
     .blur-overlay {
         height: 100%;
         top: 0;
     }
 }
+
+
+/* === Отключаем браузерные дефолты форм и делаем всё чёрно-белым === */

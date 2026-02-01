@@ -95,19 +95,15 @@
     <!-- КНОПКИ -->
     <div class="profile-actions">
 
-      <a href="{% url 'users:profile_analytics' %}" class="profile-btn profile-btn-dark">
+      <a href="{% url 'users:profile_analytics' %}" class="btn-new btn-new-dark">
         Мой обзор
       </a>
 
-      <a href="{% url 'users:profile_edit' %}" class="profile-btn profile-btn-outline">
+      <a href="{% url 'users:profile_edit' %}" class="btn-new btn-new-outline">
         Редактировать профиль
       </a>
 
-      <form method="post"
-            action="{% url 'users:logout' %}"
-            class="profile-logout-form">
-      {% csrf_token %}
-      <button type="submit" class="profile-btn profile-btn-dark">
+      <button type="submit" class="btn-new btn-new-dark">
        Выйти
       </button>
     </form>

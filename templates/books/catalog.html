@@ -5,14 +5,13 @@
 
 {% block content %}
 
-<h1>Каталог</h1>
 
-<div class="row">
+<div class="catalog-row">
 
   <!-- ===== ЛЕВАЯ КОЛОНКА: ФИЛЬТРЫ ===== -->
-  <div class="col-md-3">
-{% if selected_genres or selected_authors %}
-  <div class="mb-3 text-muted">
+  <div class="catalog-col-left">
+{% if selected_genres or selected_authors or search %}
+  <div class="found-books mb-4">
     📚 Найдено книг: <strong>{{ page_obj.paginator.count }}</strong>
   </div>
 {% endif %}
@@ -21,15 +20,15 @@
 
       <!-- ЖАНРЫ -->
       <div class="mb-3">
-  <strong>Жанры</strong>
+  <strong>Что хотите прочесть?</strong>
         <input
   type="text"
-  class="form-control form-control-sm mb-2"
+  class="search-input mb-2"
   placeholder="Поиск жанра..."
   onkeyup="filterCheckboxes(this, 'genres-list')"
 >
 
-  <div id="genres-list" class="filter-list">
+  <div id="genres-list" class="filter-list" style="overflow-y: hidden;">
     {% for genre in genres %}
       <div class="form-check filter-item">
         <input
@@ -55,26 +54,26 @@
   </div>
 
   {% if genres|length > 8 %}
-    <button type="button"
-            class="btn btn-link p-0 mt-1"
-            onclick="toggleFilter('genres-list', this)">
-      Показать все
-    </button>
+  <button type="button"
+          class="show-toggle"
+          onclick="toggleFilter('genres-list', this)">
+    Показать все
+  </button>
   {% endif %}
 </div>
 
 
       <!-- АВТОРЫ -->
       <div class="mb-3">
-  <strong>Авторы</strong>
+  <strong>Какого автора выберем?</strong>
         <input
   type="text"
-  class="form-control form-control-sm mb-2"
+  class="search-input mb-2"
   placeholder="Поиск автора..."
   onkeyup="filterCheckboxes(this, 'authors-list')"
 >
 
-  <div id="authors-list" class="filter-list">
+  <div id="authors-list" class="filter-list" style="overflow-y: hidden;">
     {% for author in authors %}
       <div class="form-check filter-item">
         <input
@@ -100,15 +99,15 @@
   </div>
 
   {% if authors|length > 8 %}
-    <button type="button"
-            class="btn btn-link p-0 mt-1"
-            onclick="toggleFilter('authors-list', this)">
-      Показать все
-    </button>
-  {% endif %}
+  <button type="button"
+          class="show-toggle"
+          onclick="toggleFilter('authors-list', this)">
+    Показать все
+  </button>
+{% endif %}
 </div>
 
-      <button type="submit" class="btn btn-primary w-100">
+      <button type="submit" class="btn-new btn-new-dark w-100">
         Применить
       </button>
 
@@ -116,9 +115,9 @@
   </div>
 
   <!-- ===== ПРАВАЯ КОЛОНКА: КНИГИ ===== -->
-  <div class="col-md-9">
+  <div class="catalog-col-right">
     <!-- ===== СОРТИРОВКА ===== -->
-<form method="get" class="mb-3 d-flex align-items-center">
+<form method="get" class="sort-form">
 
   {# сохраняем выбранные фильтры #}
   {% for g in selected_genres %}
@@ -129,9 +128,9 @@
     <input type="hidden" name="authors" value="{{ a }}">
   {% endfor %}
 
-  <label class="mr-2 mb-0"><strong>Сортировка:</strong></label>
+  <label class="sort-label"><strong>Сортировка:</strong></label>
 
-  <select name="sort" class="form-control form-control-sm w-auto" onchange="this.form.submit()">
+  <select name="sort" class="sort-select" onchange="this.form.submit()">
     <option value="title" {% if sort == 'title' %}selected{% endif %}>
       По алфавиту
     </option>
@@ -144,45 +143,29 @@
 
 {# ===== UX: ПРИМЕНЕНЫ ФИЛЬТРЫ ===== #}
 {% if search or selected_genres or selected_authors %}
-  <div class="alert alert-secondary mb-3">
-
+  <div class="applied-filters mb-4">
     <strong>Применены фильтры:</strong>
 
-    <ul class="mb-2">
+    <ul>
       {% if search %}
-        <li>
-          <strong>Поиск:</strong> «{{ search }}»
-        </li>
+        <li><strong>Поиск:</strong> «{{ search }}»</li>
       {% endif %}
-
       {% if selected_genres %}
-        <li>
-          <strong>Жанры:</strong>
-          {% for genre in selected_genre_objects %}
-            {{ genre.name }}{% if not forloop.last %}, {% endif %}
-          {% endfor %}
-        </li>
+        <li><strong>Жанры:</strong> {% for g in selected_genre_objects %}{{ g.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</li>
       {% endif %}
-
       {% if selected_authors %}
-        <li>
-          <strong>Авторы:</strong>
-          {% for author in selected_author_objects %}
-            {{ author.name }}{% if not forloop.last %}, {% endif %}
-          {% endfor %}
-        </li>
+        <li><strong>Авторы:</strong> {% for a in selected_author_objects %}{{ a.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</li>
       {% endif %}
     </ul>
 
-    <a href="{% url 'books:catalog' %}" class="btn btn-sm btn-outline-secondary">
+    <a href="{% url 'books:catalog' %}" class="btn-new btn-new-dark btn-sm w-auto">
       Сбросить все фильтры
     </a>
-
   </div>
 {% endif %}
 
     {% if page_obj.object_list %}
-      <div class="row">
+      <div class="books-row">
         {% for book in page_obj.object_list %}
           {% include 'books/includes/book_card.html' with book=book show_author=True show_stats=True show_views=False %}
         {% endfor %}
@@ -190,7 +173,7 @@
 
       <!-- ===== ПАГИНАЦИЯ С СОХРАНЕНИЕМ ФИЛЬТРОВ ===== -->
       <nav>
-        <ul class="pagination">
+        <ul class="pagination pagination-new">
 
           {% if page_obj.has_previous %}
             <li class="page-item">
@@ -224,7 +207,6 @@
 
         </ul>
       </nav>
-
     {% else %}
       <p>Книги не найдены.</p>
     {% endif %}

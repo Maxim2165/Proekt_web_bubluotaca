@@ -1,49 +1,198 @@
-.book-authors-box {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 16px;
-  background: #fafafa;
+/* Контейнер страницы книги */
+.book-page {
+  margin: 0 auto 60px;
+  box-sizing: border-box;
 }
 
-.book-authors-title {
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.book-authors-list {
+/* Основной блок */
+.book-main {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.book-author-item {
+/* Название и описание */
+.book-title {
+  font-size: 50px;
+  font-weight: 500;
+  margin: 0 0 5px;
+  line-height: 1.1;
+  color: #252525;
+}
+
+.book-description {
+  font-size: 22px;
+  line-height: 1.4;
+  color: #252525;
+  margin: 0;
+}
+
+/* Обложка и информация */
+.book-review {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.book-image {
+  width: 229px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+}
+
+.book-image.placeholder {
+  height: 340px;
+  background: #f8f8f8;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  font-size: 18px;
+  color: rgba(37, 37, 37, 0.6);
+  border-radius: 10px;
+  border: 1px solid #252525;
 }
 
-.book-author-photo {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+/* Блок информации справа */
+.book-information {
+  flex: 1;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  background: #fff;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Автор */
+.author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;                             /* такое же скругление */
+  background: #fff;                                /* белый фон */
+  padding: 20px;                                   /* такой же внутренний отступ */
+}
+
+
+.author-photo {
+  width: 90px;          /* 140 × 0.57 ≈ 80px — примерно 43% от оригинала */
+  height: auto;
+  border-radius: 10px;
   object-fit: cover;
-  background: #eee;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
 }
 
-.book-author-name {
-  text-decoration: none;
+.author-name {
+  font-size: 25px;
   font-weight: 500;
+  color: #252525;
+  text-decoration: none;
 }
 
-.book-author-name:hover {
+.author-name:hover {
+  color: #0d6efd;
   text-decoration: underline;
 }
 
+/* Статистика */
+.bottom-information {
+  display: flex;
+  gap: 10px;
+}
+
+.genre {
+  flex: 1;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  background: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 18px;
+  font-weight: 500;
+  color: #252525;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 24px;
+  color: #252525;           /* обычный цвет — чёрный, как весь текст */
+  text-decoration: none;
+}
+
+.stat-value a {
+  color: #252525;           /* чёрный по умолчанию */
+  text-decoration: none;    /* без подчёркивания в обычном состоянии */
+}
+
+.stat-value a:hover {
+  color: #0d6efd;           /* синий при наведении */
+  text-decoration: underline; /* подчёркивание при наведении */
+}
+
+/* Кнопки скачивания и избранное */
+
+.download-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.login-text {
+  font-size: 18px;
+  color: #252525;
+}
 
 
-.nav-link.active {
-  font-weight: 600;
-  color: #0d6efd !important;
-  border-bottom: 2px solid #0d6efd;
+/* Адаптив */
+@media (max-width: 992px) {
+  .book-review {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .book-image {
+    width: 100%;
+    max-height: 400px;
+  }
+
+  .bottom-information {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .download-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+.download-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.login-text {
+  font-size: 18px;
+  color: #252525;
+}
+
+.login-text a {
+  color: #0d6efd;
+  text-decoration: underline;
+}
+
+.login-text a:hover {
+  color: #000;
+}
+
+.book-favorite-section {
+  margin-top: 20px;          /* отступ сверху от кнопок скачивания — регулируй 20–40px */
 }

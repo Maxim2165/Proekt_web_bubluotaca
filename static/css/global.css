@@ -1,4 +1,17 @@
-/* Основной контейнер сайта */
+/* global.css — базовые стили для всего сайта */
+
+/* 1. Импорт шрифта 'New York' из Google Fonts (веса 400 и 500, как в новом дизайне) */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600;700&display=swap');body {
+    margin: 0;                  /* Убираем внешние отступы по умолчанию */
+    padding: 0;
+    background-color: #fff;     /* Белый фон, как в новом дизайне */
+    color: #252525;             /* Основной тёмный цвет текста */
+    font-family: 'Source Serif 4', serif; /* Новый шрифт глобально + fallback на serif */
+    font-size: 16px;            /* Базовый размер текста (как в .docx) */
+    line-height: 1.5;           /* Нормальный межстрочный интервал */
+}
+
+/* 3. Твои старые стили остаются без изменений */
 .site-wrapper {
     max-width: 1440px;
     margin-left: auto;
@@ -8,7 +21,6 @@
     box-sizing: border-box;
 }
 
-/* Дополнительно для каталога, если добавишь класс book-row */
 .row.book-row {
     max-width: 1440px;
     margin: 0 auto;
