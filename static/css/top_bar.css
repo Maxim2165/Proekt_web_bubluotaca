@@ -1,0 +1,116 @@
+/* Внешний контейнер */
+.top-bar {
+  height: 44px;
+  background-color: #fff;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  margin-bottom: 20px;
+
+  display: flex;
+  justify-content: center;
+}
+
+/* Контейнер кнопок */
+.buttons {
+  width: 100%;
+  max-width: 1440px;
+  padding: 0 160px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Группы кнопок */
+.buttons-left,
+.buttons-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Логотип */
+.buttons-child {
+  height: 34px;
+  width: 34px;
+}
+
+/* Поиск */
+.search-icon {
+  height: 21px;
+  width: 21px;
+}
+
+/* Пункты меню — общий стиль */
+.menu-item {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  color: #252525;
+  opacity: 0.8;
+  text-decoration: none;
+  position: relative;              /* обязательно для ::after */
+  transition: opacity 0.2s ease, font-weight 0.2s ease;
+}
+
+/* Hover — подчёркивание появляется с анимацией */
+.menu-item:hover {
+  opacity: 1;
+  /* font-weight: 500; */         /* можно включить, если хочешь жирность уже на hover */
+}
+
+.menu-item:hover::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;                     /* чуть выше нижнего края, чтобы не сливалось */
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background-color: #252525;
+  transform: translateX(-50%);
+  transition: width 0.25s ease;
+}
+
+/* Анимация при hover — линия растягивается от центра */
+.menu-item:hover::after {
+  width: 100%;
+}
+
+/* Active — подчёркивание всегда, текст жирный и без прозрачности */
+.menu-item.active {
+  opacity: 1;
+  font-weight: 500;                /* жирнее, как у тебя сейчас */
+  color: #252525;
+}
+
+.menu-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  width: 100%;
+  height: 3px;
+  background-color: #252525;
+  transform: translateX(-50%);
+}
+
+/* Иконки — отключаем любое подчёркивание и жирность */
+.buttons-child,
+.search-icon {
+  transition: none;                /* убираем любые анимации */
+}
+
+a:has(.buttons-child):hover,
+a:has(.search-icon):hover {
+  opacity: 1;                      /* можно оставить лёгкий hover-эффект */
+  /* но без подчёркивания и жирности */
+}
+
+a:has(.buttons-child):hover::after,
+a:has(.search-icon):hover::after,
+a:has(.buttons-child).active::after,
+a:has(.search-icon).active::after {
+  display: none;                   /* гарантированно убираем линию */
+}

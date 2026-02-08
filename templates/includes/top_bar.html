@@ -1,0 +1,58 @@
+{% load static %}
+
+<div class="top-bar">
+
+  <div class="buttons">
+
+    <div class="buttons-left">
+      <!-- логотип -->
+      <a href="{% url 'pages:home' %}">
+        <img src="{% static 'images/Component 2.svg' %}"
+             alt="Логотип"
+             class="buttons-child">
+      </a>
+
+      <!-- Добавляем класс active, если текущий URL совпадает -->
+    <a href="{% url 'books:catalog' %}"
+       class="menu-item {% if request.resolver_match.url_name == 'catalog' %}active{% endif %}">
+      Библиотека
+    </a>
+
+    <a href="{% url 'books:genre_list' %}"
+       class="menu-item {% if request.resolver_match.url_name == 'genre_list' %}active{% endif %}">
+      Жанры
+    </a>
+
+    <a href="{% url 'books:author_list' %}"
+       class="menu-item {% if request.resolver_match.url_name == 'author_list' %}active{% endif %}">
+      Авторы
+    </a>
+
+    <a href="{% url 'analytics:dashboard' %}"
+       class="menu-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+      Обзор
+    </a>
+
+    <a href="{% url 'pages:about' %}"
+       class="menu-item {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+      О проекте
+    </a>
+  </div>
+
+<div class="buttons-right">
+  <a href="{% if user.is_authenticated %}{% url 'users:profile' %}{% else %}{% url 'users:login' %}{% endif %}"
+     class="menu-item {% if request.resolver_match.url_name in 'profile,login' %}active{% endif %}">
+    Читательская карточка
+  </a>
+
+  <a href="{% url 'search:search' %}">
+    <img src="{% static 'images/Search Icon.svg' %}"
+         alt="Поиск"
+         class="search-icon">
+  </a>
+</div>
+
+  </div>
+
+</div>
+
