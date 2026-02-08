@@ -1,70 +1,92 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block title %}Регистрация{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <h2>Регистрация</h2>
 
-    <form method="post" novalidate>
-      {% csrf_token %}
-      {{ form.non_field_errors }}
+  <div class="register-container">
 
-      <div class="form-group">
-        {{ form.username.label_tag }}
-        {{ form.username }}
-        {% for e in form.username.errors %}
-          <div class="text-danger">{{ e }}</div>
-        {% endfor %}
+    <!-- Подзаголовок -->
+    <p class="register-subtitle">
+      Зарегистрировав читательскую карточку, вы получите полный доступ к библиотечным услугам. Заполните необходимые данные, чтобы оформить читательскую карточку.
+    </p>
+
+<!-- Форма регистрации -->
+<div class="register-form-card">
+  <form method="post" novalidate id="register-form">
+    {% csrf_token %}
+
+    <!-- Общие ошибки -->
+    {% if form.non_field_errors %}
+      <div class="register-errors">
+        {{ form.non_field_errors }}
       </div>
+    {% endif %}
 
-      <div class="form-group">
-        {{ form.first_name.label_tag }}
-        {{ form.first_name }}
-        {% for e in form.first_name.errors %}
-          <div class="text-danger">{{ e }}</div>
-        {% endfor %}
-      </div>
+    <!-- Поля -->
+    <div class="register-field">
+      <label for="id_username">Имя читателя:</label>
+      {{ form.username }}
+      {% if form.username.errors %}
+        <div class="register-errors">{{ form.username.errors }}</div>
+      {% endif %}
+    </div>
 
-      <div class="form-group">
-        {{ form.email.label_tag }}
-        {{ form.email }}
-        {% for e in form.email.errors %}
-          <div class="text-danger">{{ e }}</div>
-        {% endfor %}
-      </div>
+    <div class="register-field">
+      <label for="id_username">Персональный аутентификатор:</label>
+      {{ form.username }}
+      {% if form.username.errors %}
+        <div class="register-errors">{{ form.username.errors }}</div>
+      {% endif %}
+    </div>
 
-      <div class="form-group">
-        {{ form.password1.label_tag }}
-        {{ form.password1 }}
-        {% for e in form.password1.errors %}
-          <div class="text-danger">{{ e }}</div>
-        {% endfor %}
-      </div>
+    <div class="register-field">
+      <label for="id_email">Электронная почта:</label>
+      {{ form.email }}
+      {% if form.email.errors %}
+        <div class="register-errors">{{ form.email.errors }}</div>
+      {% endif %}
+    </div>
 
-      <div class="form-group">
-        {{ form.password2.label_tag }}
-        {{ form.password2 }}
-        {% for e in form.password2.errors %}
-          <div class="text-danger">{{ e }}</div>
-        {% endfor %}
-      </div>
+    <div class="register-field">
+      <label for="id_password1">Персональный ключ:</label>
+      {{ form.password1 }}
+      {% if form.password1.errors %}
+        <div class="register-errors">{{ form.password1.errors }}</div>
+      {% endif %}
+    </div>
 
-      <!-- ✅ СОГЛАШЕНИЕ -->
-      <div class="form-group form-check">
-        {{ form.accept_terms }}
-        <label class="form-check-label">
-          {{ form.accept_terms.label|safe }}
-        </label>
-        {% for e in form.accept_terms.errors %}
-          <div class="text-danger">{{ e }}</div>
-        {% endfor %}
-      </div>
+    <div class="register-field">
+      <label for="id_password2">Подтверждение персонального ключа:</label>
+      {{ form.password2 }}
+      {% if form.password2.errors %}
+        <div class="register-errors">{{ form.password2.errors }}</div>
+      {% endif %}
+    </div>
 
-      <button type="submit" class="btn btn-success">
-        Зарегистрироваться
-      </button>
-    </form>
-  </div>
+    <!-- Чекбокс — ВНУТРИ формы, но внизу -->
+    <div class="register-checkbox">
+      {{ form.accept_terms }}
+      <label for="{{ form.accept_terms.id_for_label }}" class="register-checkbox-label">
+        Я принимаю
+        <a href="{% url 'pages:terms' %}" class="register-link">Пользовательское соглашение</a> и
+        <a href="{% url 'pages:privacy' %}" class="register-link">Политику конфиденциальности</a>
+      </label>
+      {% if form.accept_terms.errors %}
+        <div class="register-errors">{{ form.accept_terms.errors }}</div>
+      {% endif %}
+    </div>
+  </form>
 </div>
+
+<!-- Кнопка "Зарегистрироваться" — ВНЕ формы, слева -->
+<div class="register-actions">
+  <button type="submit" form="register-form" class="btn-new btn-new-dark register-submit-btn">
+    Зарегистрироваться
+  </button>
+</div>
+
+  </div>
+
 {% endblock %}

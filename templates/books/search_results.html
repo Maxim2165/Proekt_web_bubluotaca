@@ -1,74 +1,96 @@
 {% extends "base.html" %}
 {% block title %}Поиск{% endblock %}
-
+{% load static %}
 {% block content %}
-<h1 class="mb-4">Поиск</h1>
-{% if query %}
-  <div class="mb-3 text-muted">
-    🔎 Найдено:
-    {% if authors %} ✍️ Авторов: {{ authors|length }}{% endif %}
-    {% if genres %}{% if authors %} · {% endif %}🏷 Жанров: {{ genres|length }}{% endif %}
-    {% if books %}{% if authors or genres %} · {% endif %}📚 Книг: {{ books|length }}{% endif %}
-  </div>
-{% endif %}
-<form method="get" action="{% url 'search:search' %}" class="mb-4">
-  <div class="input-group input-group-lg">
-    <input
-      type="search"
-      name="q"
-      class="form-control"
-      placeholder="Введите название книги, автора или жанра"
-      value="{{ query }}"
-      autofocus
-    >
-    <div class="input-group-append">
-      <button class="btn btn-primary" type="submit">
-        <i class="bi bi-search"></i>
+
+  <div class="search-container">
+
+    <!-- Заголовок + подзаголовок -->
+    <p class="search-subtitle">
+      Поиск это способ найти нужную книгу, жанр или автора среди множества текстов. Введите ключевое слово, и перед вами откроются страницы, имена и произведения, которые помогут продолжить чтение или сделать новое литературное открытие.
+    </p>
+
+    <!-- Строка "Найдено" — только если что-то найдено -->
+        {% if authors or genres or books %}
+          <div class="search-summary">
+            🔎 Найдено:
+            {% if authors %} ✍️ Авторов: {{ authors|length }}{% endif %}
+            {% if genres %}{% if authors %} · {% endif %}🏷️ Жанров: {{ genres|length }}{% endif %}
+            {% if books %}{% if authors or genres %} · {% endif %}📚 Книг: {{ books|length }}{% endif %}
+          </div>
+        {% endif %}
+
+    <!-- Форма поиска (белая карточка) -->
+<div class="search-form-card">
+  <form method="get" action="{% url 'search:search' %}" class="search-form">
+    <div class="search-input-wrapper">
+      <input
+        type="search"
+        name="q"
+        class="search-input"
+        placeholder="Начните искать сейчас"
+        value="{{ query }}"
+        autofocus
+      >
+      <button type="submit" class="search-icon-btn">
+        <img src="{% static 'images/Search Icon.svg' %}" alt="Поиск" class="search-icon">
       </button>
     </div>
+  </form>
+</div>
+
+    <!-- Результаты поиска -->
+    {% if query %}
+      <div class="search-results">
+
+        {% if authors %}
+          <div class="search-section">
+            <h2 class="search-section-title">Авторы</h2>
+            <ul class="search-list">
+              {% for author in authors %}
+                <li>
+                  <a href="{% url 'books:author_detail' author.slug %}">
+                    {{ author.name }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if genres %}
+          <div class="search-section">
+            <h2 class="search-section-title">Жанры</h2>
+            <ul class="search-list">
+              {% for genre in genres %}
+                <li>
+                  <a href="{% url 'books:genre_detail' genre.slug %}">
+                    {{ genre.name }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if books %}
+          <div class="search-section">
+            <h2 class="search-section-title">Книги</h2>
+            <div class="books-grid">
+              {% for book in books %}
+                {% include "books/includes/book_card.html" with book=book show_author=True show_stats=True show_views=False %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if not authors and not genres and not books %}
+          <p class="search-no-results">Ничего не найдено по запросу «{{ query }}».</p>
+        {% endif %}
+
+      </div>
+    {% endif %}
+
   </div>
-</form>
 
-{% if query %}
-
-  {% if authors %}
-    <h3 class="mt-4">✍️ Авторы</h3>
-    <ul>
-      {% for author in authors %}
-        <li>
-          <a href="{% url 'books:author_detail' author.slug %}">
-            {{ author.name }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-
-{% if genres %}
-  <h3 class="mt-4">🏷 Жанры</h3>
-  <ul>
-    {% for genre in genres %}
-      <li>
-        <a href="{% url 'books:genre_detail' genre.slug %}">
-          {{ genre.name }}
-        </a>
-      </li>
-    {% endfor %}
-  </ul>
-{% endif %}
-
-  {% if books %}
-    <h3 class="mt-4">📚 Книги</h3>
-    <div class="row">
-      {% for book in books %}
-        {% include "books/includes/book_card.html" with book=book %}
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  {% if not books and not authors and not genres %}
-    <p class="text-muted mt-4">Ничего не найдено.</p>
-  {% endif %}
-
-{% endif %}
 {% endblock %}

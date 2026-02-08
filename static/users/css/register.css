@@ -1,0 +1,160 @@
+/* register.css — стили для страницы регистрации */
+
+/* Общий контейнер */
+.register-container {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Подзаголовок */
+.register-subtitle {
+    font-size: 25px;
+    line-height: 1.5;
+    opacity: 0.9;
+    text-align: justify;
+    margin: 20px 0 20px 0;
+    align-self: stretch;
+}
+
+/* Форма регистрации (контейнер) */
+.register-form-card {
+    align-self: stretch;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Каждое поле (Имя, Ключ, Почта и т.д.) */
+.register-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.register-field label {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 4px 0 0 0;
+    color: #252525;
+}
+
+.register-field input,
+.register-field select {
+    height: 44px;
+    padding: 0 16px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.25);
+    outline: none;
+}
+
+.register-field input:focus,
+.register-field select:focus {
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.25), 0px 0px 15px rgba(13, 110, 253, 0.25);
+}
+
+/* Блок действий под формой (кнопка слева + чекбокс справа) */
+.register-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;     /* кнопка слева, чекбокс справа */
+    align-items: center;                /* вертикально по центру */
+    gap: 24px;
+}
+
+/* Чекбокс внутри формы (внизу) */
+.register-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    color: #252525;
+    margin-top: 20px;
+}
+
+.register-checkbox input {
+    width: 16px;
+    height: 16px;
+    accent-color: #252525;
+}
+
+
+.register-checkbox-label {
+    font-size: 18px;
+    color: #252525;
+    align-self: flex-start;
+    cursor: pointer;
+}
+
+/* Чекбокс + текст соглашения (справа) */
+.register-checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    color: #252525;
+}
+
+/* Сам чекбокс */
+.register-checkbox-wrapper input {
+    width: 16px;
+    height: 16px;
+    accent-color: #252525;
+}
+
+/* Ссылки "Пользовательское соглашение" и "Политика конфиденциальности" */
+.register-link {
+    color: #252525;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.register-link:hover {
+    color: #0d6efd;
+}
+
+/* Кнопка "Зарегистрироваться" (слева) */
+.register-submit-btn {
+    height: 44px;
+    min-width: 230px;
+    padding: 0 24px;
+    border-radius: 10px;
+    background-color: #252525;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;       /* плавный hover */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Ошибки формы */
+.register-errors {
+    color: #dc3545;
+    font-size: 16px;
+    margin: 0;
+    text-align: left;
+}
+
+/* Адаптив */
+@media (max-width: 992px) {
+    .register-container {
+        padding: 0 24px;
+    }
+
+    .register-subtitle {
+        font-size: clamp(18px, 4vw, 22px);
+    }
+}

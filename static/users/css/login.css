@@ -1,0 +1,120 @@
+/* login.css — стили для страницы входа (Читательская карточка) */
+
+/* Общий контейнер */
+.login-container {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Заголовок + подзаголовок*/
+.login-subtitle {
+    font-size: 25px;
+    line-height: 1.5;
+    opacity: 0.9;
+    text-align: justify;
+    margin: 20px 0 20px 0;
+    align-self: stretch;
+}
+
+
+/* Форма (контейнер с полями) */
+.login-form-card {
+    align-self: stretch;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Блок действий (кнопка + ссылка) */
+.login-actions {
+    width: 100%;
+    display: flex;
+    margin: 10px 0 0 0;
+    justify-content: space-between;    /* кнопка слева, ссылка справа */
+    align-items: center;
+    gap: 20px;
+}
+
+/* Блок "Имя читателя" / "Персональный ключ" */
+.login-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.login-field label {
+    font-size: 18px;
+    font-weight: 500;
+    color: #252525;
+}
+
+.login-field input {
+    height: 44px;
+    padding: 0 16px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.25);
+    outline: none;
+}
+
+.login-field input:focus {
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.25), 0px 0px 15px rgba(13, 110, 253, 0.25);
+}
+
+/* Кнопка "Войти в библиотеку" */
+.login-submit-btn {
+    height: 44px;
+    min-width: 230px;
+    padding: 0 24px;
+    border-radius: 10px;
+    background-color: #252525;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;       /* плавный hover */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Текст "Нет читательской карточки?" */
+.login-register-link {
+    font-size: 18px;
+    color: #252525;
+    text-decoration: underline;
+    align-self: flex-start;
+    cursor: pointer;
+}
+
+.login-register-link:hover {
+    color: #0d6efd;
+}
+
+/* Ошибки формы */
+.login-errors {
+    color: #dc3545;
+    font-size: 16px;
+    margin: 0;
+    text-align: left;
+}
+
+/* Адаптив */
+@media (max-width: 992px) {
+    .login-container {
+        padding: 0 24px;
+    }
+
+    .login-title {
+        font-size: clamp(40px, 10vw, 60px);
+    }
+}

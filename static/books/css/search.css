@@ -1,0 +1,157 @@
+/* search.css — стили для страницы поиска */
+
+/* Общий контейнер */
+.search-container {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-subtitle {
+    font-size: clamp(20px, 4vw, 25px);
+    line-height: 1.45;
+    color: #252525;
+    opacity: 0.9;
+    text-align: justify;
+    margin: 10px 0 10px 0;
+}
+/* Форма поиска */
+.search-form {
+    width: 100%;
+}
+/* Карточка формы поиска (как .search2 в дизайне) */
+.search-form-card {
+    align-self: stretch;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Поле ввода с inset-теню (как .library-name-child) */
+.search-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 60px 0 20px;           /* место справа для иконки */
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.25);
+    outline: none;
+}
+
+
+.search-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.search-input::-webkit-search-decoration,
+.search-input::-webkit-search-results-button,
+.search-input::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    display: none;
+}
+
+.search-input:focus {
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.25), 0px 0px 15px rgba(13, 110, 253, 0.25);
+}
+
+/* Убираем крестик очистки поля поиска во всех браузерах */
+.search-input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none !important;        /* ← главное */
+}
+
+
+/* Кнопка-иконка поиска (справа внутри поля) */
+.search-icon-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+}
+
+
+/* Результаты поиска */
+.search-results,
+.search-summary {
+    align-self: flex-start !important;   /* ← прижимает весь блок к левому краю */
+    text-align: left !important;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Информационная строка "Найдено" */
+.search-summary {
+    font-size: 18px;
+    color: rgba(37, 37, 37, 0.8);
+}
+
+/* Секции результатов */
+.search-section-title {
+    font-size: 28px;
+    font-weight: 500;
+    margin: 0 0 8px 0;
+}
+
+/* Список авторов/жанров */
+.search-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.search-list li {
+    margin-bottom: 6px;
+}
+
+.search-list a {
+    font-size: 18px;
+    color: #252525;
+    text-decoration: none;
+}
+
+.search-list a:hover {
+    color: #0d6efd;
+    text-decoration: underline;
+}
+
+/* Нет результатов */
+.search-no-results {
+    font-size: 20px;
+    color: #777;
+    text-align: center;
+    margin: 40px 0;
+}
+
+/* Адаптив */
+@media (max-width: 992px) {
+    .search-container {
+        padding: 0 24px;
+    }
+}

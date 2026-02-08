@@ -1,19 +1,28 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block title %}{{ genre.name }}{% endblock %}
 
 {% block content %}
 
-<h1>Жанр: {{ genre.name }}</h1>
+  <div class="genres-container">
 
-{% if books %}
-  <div class="row">
-    {% for book in books %}
-      {% include 'books/includes/book_card.html' with book=book show_author=True show_stats=True show_views=False %}
-    {% endfor %}
+    <!-- Только название жанра, слева, без описания -->
+    <div class="genre-header">
+      <h1 class="genre-title">{{ genre.name }}</h1>
+    </div>
+
+    <!-- Книги -->
+    {% if books %}
+      <div class="books-grid">
+        {% for book in books %}
+          {% include 'books/includes/book_card.html' with book=book show_author=True show_stats=True show_views=False %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="no-books">В этом жанре пока нет книг.</p>
+    {% endif %}
+
   </div>
-{% else %}
-  <p>Книги в этом жанре не найдены.</p>
-{% endif %}
 
 {% endblock %}

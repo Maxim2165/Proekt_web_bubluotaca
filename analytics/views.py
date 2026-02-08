@@ -99,6 +99,16 @@ def dashboard(request):
         reverse=True
     )[:5]
 
+    # Книга признанная читателями (топ-1 за всё время)
+    best_book_overall = top_books[0] if top_books else None
+    best_overall_stats = {}
+    if best_book_overall:
+        best_overall_stats = {
+            'views': best_book_overall.views_count,
+            'total_downloads': best_book_overall.downloads_count,
+            'weekly_downloads': best_book_overall.weekly_downloads_count,
+        }
+
     # =========================
     # БЛОК 4. ТОП-5 ЖАНРОВ
     # =========================
@@ -145,6 +155,9 @@ def dashboard(request):
 
         'top_books': top_books,
         'top_genres': top_genres,
+
+        'best_book_overall': best_book_overall,
+        'best_overall_stats': best_overall_stats,
     }
 
     return render(request, 'analytics/dashboard.html', context)

@@ -1,6 +1,6 @@
 /* global.css — базовые стили для всего сайта */
 
-/* 1. Импорт шрифта 'New York' из Google Fonts (веса 400 и 500, как в новом дизайне) */
+/* 1. */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600;700&display=swap');body {
     margin: 0;                  /* Убираем внешние отступы по умолчанию */
     padding: 0;
@@ -30,4 +30,22 @@
    font-weight: 600;
    color: #0d6efd !important;
    border-bottom: 2px solid #0d6efd;
+}
+
+/* Утилитарный класс для карточек с тенью и скруглением (повторяется почти во всём новом дизайне) */
+.card-shadow {
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+/* Основной контейнер контента страницы после топ-бара (отступы слева/справа 160px + вертикальный gap) */
+.page-content {
+    align-self: stretch;
+    padding: 0 160px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 44px;
 }

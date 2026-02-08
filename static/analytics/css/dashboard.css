@@ -1,43 +1,193 @@
-.analytics-table th,
-.analytics-table td {
-    vertical-align: middle;
+/* dashboard.css — стили для страницы Обзор */
+
+/* Общий контейнер */
+.dashboard-container {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Заголовок + подзаголовок (один текст) */
+.page-subtitle {
+    align-self: stretch;
+    font-size: 25px;
+    line-height: 1.5;
+    text-align: justify;
+    margin: 20px 0 40px 0;
+}
+
+/* KPI — 4 блока, текст слева, цифра ниже справа */
+.kpi-grid {
+    width: 100%;
+    max-width: 1600px;              /* ← ограничили ширину ряда */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 280px));
+    gap: 30px;
+    justify-content: center;        /* ← центрируем весь ряд */
+    margin: 0 auto;
+}
+
+.kpi-card {
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.kpi-label {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.kpi-value {
+    font-size: 60px;
+    font-weight: 500;
+    text-align: right;
+    align-self: flex-end;
+}
+
+/* Книга недели и Книга читателей — два блока */
+.special-books {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;          /* центрируем карточки */
+}
+
+/* Каждая карточка — фиксированная ширина */
+.book-special-card {
+    flex: 0 1 540px;                 /* максимум 540px, не растягивается */
+    max-width: 540px;                /* ← вот ключевой лимит ширины */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.book-special-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.book-special-content {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.book-special-photo {
+    height: auto;
+    max-height: 237px;
+    object-fit: contain;
+}
+
+
+.book-special-info {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.book-special-book-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.book-special-author a{
+    font-size: 16px;
+    color: rgba(37, 37, 37, 0.6);
+    opacity: 0.9;
+}
+
+
+.book-special-stats {
+    font-size: 16px;
+    color: rgba(37, 37, 37, 0.6);
+}
+
+.book-special-button {
+    margin-top: auto;
+    align-self: flex-start;
+}
+
+/* ТОП-5 блоки */
+.top-section {
+    width: 100%;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+}
+
+.top-title {
+    font-size: 25px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+/* Таблица */
+.analytics-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.analytics-table th, .analytics-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.analytics-table th {
+    background: #f8f8f8;
+    font-weight: 500;
 }
 
 .analytics-table a {
+    color: #252525;
     text-decoration: none;
 }
 
 .analytics-table a:hover {
-    text-decoration: underline;
-}
-
-.book-week-author a {
-    font-weight: 500;
     color: #0d6efd;
-}
-
-.book-week-author a:hover {
     text-decoration: underline;
 }
 
-.analytics-chart {
-    max-height: 140px;
-    margin-top: 20px;
-}
-
+/* График */
 .chart-wrapper {
-    width: 100%;
-    height: 260px;
     margin-top: 20px;
 }
 
-.books-chart-wrapper {
-    width: 100%;
-    height: 200px;
+/* Адаптив */
+@media (max-width: 1200px) {
+    .dashboard-container {
+        padding: 0 24px;
+    }
+
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .special-books {
+        flex-direction: column;
+    }
 }
 
-.books-chart-wrapper canvas {
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
+@media (max-width: 600px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
 }
+

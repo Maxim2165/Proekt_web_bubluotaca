@@ -1,51 +1,53 @@
-.kpi-card {
+/* KPI карточки */
+.profile-kpi-card {
   background: #ffffff;
   border-radius: 12px;
   padding: 24px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
 }
 
-.kpi-value {
+.profile-kpi-value {
   font-size: 32px;
   font-weight: 700;
-  color: #0d6efd;
+  color: #252525;
 }
 
-.kpi-label {
-  margin-top: 8px;
-  color: #6c757d;
-  font-size: 14px;
+.profile-kpi-label {
+  margin-top: 18px;
+  color: #252525;
+  font-size: 18px;
 }
 
-.chart-box {
+/* График */
+.profile-chart-box {
   position: relative;
   height: 260px;
   max-width: 400px;
   margin: 0 auto;
 }
 
-.favorite-author-box {
+/* Любимый автор */
+.profile-favorite-author-box {
   padding: 20px;
   border-radius: 12px;
   background: #f8f9fa;
   text-align: center;
 }
 
-.favorite-author-label {
+.profile-favorite-author-label {
   font-size: 14px;
   color: #6c757d;
   margin-bottom: 6px;
 }
 
-.favorite-author-name {
+.profile-favorite-author-name {
   font-size: 26px;
   font-weight: 600;
   color: #0d6efd;
   text-decoration: none;
 }
 
-.favorite-author-name:hover {
+.profile-favorite-author-name:hover {
   text-decoration: underline;
 }
-

@@ -12,33 +12,33 @@
 
 <div class="row mb-5">
   <div class="col-md-4">
-    <div class="kpi-card">
-      <div class="kpi-value">{{ total_downloads }}</div>
-      <div class="kpi-label">Скачано книг</div>
+    <div class="profile-kpi-card">
+      <div class="profile-kpi-value">{{ total_downloads }}</div>
+      <div class="profile-kpi-label">Скачано книг</div>
     </div>
   </div>
 
   <div class="col-md-4">
-    <div class="kpi-card">
-      <div class="kpi-value">{{ favorites_count }}</div>
-      <div class="kpi-label">В избранном</div>
+    <div class="profile-kpi-card">
+      <div class="profile-kpi-value">{{ favorites_count }}</div>
+      <div class="profile-kpi-label">В избранном</div>
     </div>
   </div>
 
   <div class="col-md-4">
-    <div class="kpi-card">
-      <div class="kpi-value">{{ active_days }}</div>
-      <div class="kpi-label">Дней активности</div>
+    <div class="profile-kpi-card">
+      <div class="profile-kpi-value">{{ active_days }}</div>
+      <div class="profile-kpi-label">Дней активности</div>
     </div>
   </div>
 </div>
 
 <!-- ===== Любимый автор ===== -->
 {% if favorite_author %}
-<div class="favorite-author-box mb-5">
-  <div class="favorite-author-label">Ваш любимый автор</div>
+<div class="profile-favorite-author-box mb-5">
+  <div class="profile-favorite-author-label">Ваш любимый автор</div>
   <a href="{% url 'books:author_detail' favorite_author.book__authors__slug %}"
-     class="favorite-author-name">
+     class="profile-favorite-author-name">
     {{ favorite_author.book__authors__name }}
   </a>
 </div>
@@ -49,23 +49,23 @@
 
 <div class="row mb-5">
   <div class="col-md-4">
-    <div class="kpi-card">
-      <div class="kpi-value">{{ formats_map.pdf }}</div>
-      <div class="kpi-label">PDF</div>
+    <div class="profile-kpi-card">
+      <div class="profile-kpi-value">{{ formats_map.pdf }}</div>
+      <div class="profile-kpi-label">PDF</div>
     </div>
   </div>
 
   <div class="col-md-4">
-    <div class="kpi-card">
-      <div class="kpi-value">{{ formats_map.epub }}</div>
-      <div class="kpi-label">EPUB</div>
+    <div class="profile-kpi-card">
+      <div class="profile-kpi-value">{{ formats_map.epub }}</div>
+      <div class="profile-kpi-label">EPUB</div>
     </div>
   </div>
 
   <div class="col-md-4">
-    <div class="kpi-card">
-      <div class="kpi-value">{{ formats_map.fb2 }}</div>
-      <div class="kpi-label">FB2</div>
+    <div class="profile-kpi-card">
+      <div class="profile-kpi-value">{{ formats_map.fb2 }}</div>
+      <div class="profile-kpi-label">FB2</div>
     </div>
   </div>
 </div>
@@ -76,7 +76,6 @@
 <div class="card mb-5 shadow-sm">
   <div class="card-body">
     <canvas id="readingChart" height="120"></canvas>
-
   </div>
 </div>
 
@@ -90,7 +89,6 @@
     <p class="text-muted">Пока нет рекомендаций.</p>
   {% endfor %}
 </div>
-
 
 <!-- ===== БЛОК 4. МОИ ЛЮБИМЫЕ ЖАНРЫ ===== -->
 <h3 class="mt-5">Мои любимые жанры</h3>
@@ -119,7 +117,7 @@
 </table>
 
 <!-- ГРАФИК ЖАНРОВ -->
-<div class="chart-box">
+<div class="profile-chart-box">
   <canvas id="genresChart"></canvas>
 </div>
 

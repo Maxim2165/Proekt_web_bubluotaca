@@ -9,6 +9,7 @@
 .catalog-col-left {
   flex: 1 1 25%;
   min-width: 280px;
+  margin-top: 10px
 }
 
 .catalog-col-right {
@@ -17,6 +18,7 @@
   flex-direction: column;
   gap: 20px;
   min-height: 600px; /* минимальная высота, чтобы правая колонка не сжималась */
+  margin-top: 10px
 }
 
 /* На мобильке — в столбец */
@@ -57,7 +59,7 @@
 }
 
 /* Поиск */
-.search-input {
+.catalog-search-input {
   border: 1px solid #252525;
   border-radius: 10px;
   padding: 10px 16px;

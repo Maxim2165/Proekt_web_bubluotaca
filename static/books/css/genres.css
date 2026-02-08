@@ -1,0 +1,131 @@
+/* genres.css — стили для списка жанров и страницы жанра */
+
+.genres-container {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    color: #252525;
+}
+
+/* Подзаголовок (единственный крупный текст на странице) */
+.page-subtitle {
+    align-self: stretch;
+    font-size: 25px;
+    line-height: 1.4;
+    margin: 10px 0 10px 0;      /* небольшой отступ сверху и снизу */
+    text-align: justify;
+}
+
+/* Карточка жанра — визуально как блок на странице книги/автора */
+.genre-card {
+    width: 97%;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 24px 32px;          /* комфортные внутренние отступы */
+    transition: box-shadow 0.25s ease;
+}
+
+/* Hover-эффект на карточке (лёгкое усиление тени) */
+.genre-card:hover {
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.35);
+}
+
+/* Название жанра — кликабельное, чёрное, при наведении синее + подчёркивание */
+.genre-name {
+    font-size: 26px;             /* чуть крупнее, чем описание */
+    font-weight: 500;
+    margin: 0 0 8px 0;
+    color: #252525;
+}
+
+.genre-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.genre-link:hover .genre-name {
+    color: #0d6efd;
+    text-decoration: underline;
+}
+
+/* Описание — обычный текст, не кликабельный */
+.genre-description {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #252525;
+    opacity: 0.85;
+    margin: 0;
+    hyphens: auto;               /* ← автоматический перенос слов (очень полезно для русского) */
+    word-wrap: break-word;
+}
+
+
+/* ===== ДЛЯ СТРАНИЦЫ КОНКРЕТНОГО ЖАНРА ===== */
+
+/* Заголовок жанра (только название, слева) */
+.genre-header {
+    align-self: stretch;
+    text-align: left;               /* ← строго по левому краю */
+    margin-bottom: 10px;
+}
+
+.genre-header .genre-title {
+    font-size: clamp(50px, 10vw, 80px);
+    font-weight: 500;
+    line-height: 1.1;
+    margin: 0;
+    color: #252525;
+}
+
+/* Сетка книг — фиксированная ширина карточек, не растягиваются */
+.books-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 320px)); /* базовая ширина карточки 280–320px */
+    gap: 24px 30px;                  /* вертикальный и горизонтальный gap */
+    justify-content: start;          /* карточки слева, не растягиваются */
+    margin-top: 10px;
+}
+
+/* Десктоп — 4 в ряд, если помещается */
+@media (min-width: 1400px) {
+    .books-grid {
+        grid-template-columns: repeat(4, minmax(280px, 320px));
+        justify-content: start;      /* всё равно слева, не центрируем */
+    }
+}
+
+/* Планшет — 3 в ряд */
+@media (min-width: 992px) and (max-width: 1399px) {
+    .books-grid {
+        grid-template-columns: repeat(3, minmax(280px, 320px));
+    }
+}
+
+/* Мобильный/узкий планшет — 2 в ряд */
+@media (min-width: 600px) and (max-width: 991px) {
+    .books-grid {
+        grid-template-columns: repeat(2, minmax(280px, 1fr));
+    }
+}
+
+/* Очень узкий экран — 1 карточка, но без растяжки */
+@media (max-width: 599px) {
+    .books-grid {
+        grid-template-columns: minmax(280px, 360px);  /* фиксированная ширина, не 1fr */
+        justify-content: center;                      /* центрируем одну карточку */
+    }
+}
+
+/* Если книг нет */
+.no-books {
+    font-size: 20px;
+    color: #777;
+    text-align: center;
+    margin: 60px 0;
+    opacity: 0.8;
+}

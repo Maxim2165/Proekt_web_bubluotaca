@@ -1,0 +1,122 @@
+/* about.css — страница О проекте */
+
+/* Общий контейнер */
+.about-container {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+}
+
+/* Первый подзаголовок (большой) */
+.about-subtitle {
+    font-size: clamp(20px, 4vw, 25px);
+    line-height: 1.5;
+    opacity: 0.9;
+    text-align: justify;
+    margin: 0;
+    align-self: stretch;
+}
+
+/* Второй подзаголовок (левый край) */
+.about-second-title {
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0;
+    align-self: flex-start;
+}
+
+/* Карточки возможностей */
+.about-features {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 28px;
+}
+
+.feature-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    padding: 28px 20px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+    font-size: 40px;
+}
+
+.feature-card p {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Секция цитат */
+.quotes-section {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px;
+}
+
+.quote-card {
+    position: relative;
+    padding: 32px 24px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.12);
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.quote-label {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    font-size: 14px;
+    color: #777;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.quote-text {
+    font-size: 18px;
+    line-height: 1.5;
+    margin: 8px 0 0 0;
+    font-style: italic;
+}
+
+.quote-author {
+    font-size: 16px;
+    color: #555;
+    text-align: right;
+    font-weight: 500;
+    margin-top: auto;
+}
+
+/* Адаптив */
+@media (max-width: 992px) {
+    .about-container {
+        padding: 0 24px;
+    }
+
+    .about-subtitle {
+        font-size: clamp(18px, 4vw, 22px);
+    }
+
+    .about-second-title {
+        font-size: 18px;
+    }
+}

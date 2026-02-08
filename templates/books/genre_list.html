@@ -1,27 +1,35 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block title %}Жанры{% endblock %}
 
 {% block content %}
-<h1>Жанры</h1>
 
-{% if genres %}
-  <ul class="list-group">
-    {% for genre in genres %}
-      <li class="list-group-item">
-        <a href="{% url 'books:genre_detail' genre.slug %}">
-          {{ genre.name }}
-        </a>
+  <div class="genres-container">
 
-        {% if genre.description %}
-          <div class="text-muted small">
-            {{ genre.description }}
-          </div>
-        {% endif %}
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Жанры не найдены.</p>
-{% endif %}
+    <!-- Только подзаголовок, без "Жанры." -->
+    <p class="page-subtitle">
+      Жанры - это разные способы рассказать о жизни. Каждый из них открывает свой особый мир, где один говорит шёпотом чувств, другой — языком страстей и конфликтов, а третий разворачивает перед читателем целую эпоху.
+    </p>
 
+    {% if genres %}
+      {% for genre in genres %}
+        <div class="genre-card">
+          <a href="{% url 'books:genre_detail' genre.slug %}" class="genre-link">
+            <div class="genre-name">{{ genre.name }}</div>
+          </a>
+          {% if genre.description %}
+            <div class="genre-description">
+              {{ genre.description|linebreaks }}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="font-size: 20px; color: #777; text-align: center; margin-top: 40px;">
+        Жанры пока не добавлены.
+      </p>
+    {% endif %}
+
+  </div>
 {% endblock %}

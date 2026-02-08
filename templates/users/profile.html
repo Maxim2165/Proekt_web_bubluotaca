@@ -103,11 +103,13 @@
         Редактировать профиль
       </a>
 
-      <button type="submit" class="btn-new btn-new-dark">
-       Выйти
-      </button>
-    </form>
-
+      <!-- Форма выхода -->
+  <form method="post" action="{% url 'users:logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn-new btn-new-dark">
+      Выйти
+    </button>
+  </form>
     </div>
 
   </div>

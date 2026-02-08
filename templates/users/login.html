@@ -1,34 +1,63 @@
-{# templates/users/login.html #}
 {% extends "base.html" %}
-{% block title %}Вход{% endblock %}
+{% load static %}
+
+{% block title %}Читательская карточка{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <h2>Вход</h2>
 
-    <form method="post" novalidate>
-      {% csrf_token %}
+  <div class="login-container">
 
-      {# Если в контексте есть переменная 'next' (LoginView обычно её добавляет) — положим её в hidden. #}
-      {% if next %}
-        <input type="hidden" name="next" value="{{ next }}">
-      {% endif %}
+    <!-- Заголовок + подзаголовок -->
+    <p class="login-subtitle">
+      Читательская карточка - это ваш личный пропуск в мир книг и текстов. Здесь начинается путь читателя, где можно увидеть сохранённые произведения, историю чтения и пространство для собственных открытий.
+    </p>
 
-      {{ form.non_field_errors }}
-      <div class="form-group">
-        {{ form.username.label_tag }}
-        {{ form.username }}
-        {{ form.username.errors }}
-      </div>
-      <div class="form-group">
-        {{ form.password.label_tag }}
-        {{ form.password }}
-        {{ form.password.errors }}
-      </div>
+    <!-- Форма входа -->
+    <div class="login-form-card">
+      <form method="post" novalidate id="login-form">
+        {% csrf_token %}
 
-      <button type="submit" class="btn btn-primary">Войти</button>
-    </form>
+        {% if next %}
+          <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+
+        <!-- Ошибки формы (если есть) -->
+        {% if form.non_field_errors %}
+          <div class="login-errors">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        <!-- Поле "Имя читателя" -->
+        <div class="login-field">
+          <label for="id_username">Имя читателя:</label>
+          {{ form.username }}
+          {% if form.username.errors %}
+            <div class="login-errors">{{ form.username.errors }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Поле "Персональный ключ" -->
+        <div class="login-field">
+          <label for="id_password">Персональный ключ:</label>
+          {{ form.password }}
+          {% if form.password.errors %}
+            <div class="login-errors">{{ form.password.errors }}</div>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+        <!-- Кнопка "Войти в библиотеку" -->
+    <div class="login-actions">
+      <button type="submit" form="login-form" class="btn-new btn-new-dark login-submit-btn">
+        Войти в библиотеку
+      </button>
+
+      <a href="{% url 'users:register' %}" class="login-register-link">
+        Нет читательской карточки?
+      </a>
+    </div>
+
   </div>
-</div>
+
 {% endblock %}

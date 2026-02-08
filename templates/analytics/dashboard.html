@@ -4,256 +4,229 @@
 {% block title %}Обзор сайта{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'analytics/css/dashboard.css' %}">
 
-<h1 class="mb-4">📊 Обзор сайта</h1>
+  <div class="dashboard-container">
 
-<!-- ================= KPI ================= -->
-<div class="row mb-4">
-  {% for icon, value, label in "" %}
-  {% endfor %}
-  <div class="col-md-3 mb-3">
-    <div class="card text-center shadow-sm h-100">
-      <div class="card-body">
-        <h2>📚</h2>
-        <h3>{{ total_books }}</h3>
-        <p class="text-muted small">Всего книг</p>
+    <!-- Заголовок + подзаголовок -->
+    <p class="page-subtitle">
+      Здесь собраны книги и авторы разных эпох и направлений. Представленные цифры отражают живое пространство литературы - количество голосов, историй и произведений, которые формируют библиотеку и продолжают находить своих читателей.
+    </p>
+
+    <!-- KPI -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Всего книг</div>
+        <div class="kpi-value">{{ total_books }}</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">Всего авторов</div>
+        <div class="kpi-value">{{ total_authors }}</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">Посмотрели</div>
+        <div class="kpi-value">{{ total_views|floatformat:0 }}</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">Скачано трудов</div>
+        <div class="kpi-value">{{ total_downloads }}</div>
       </div>
     </div>
+
+    <!-- Книга недели и Книга читателей -->
+    <div class="special-books">
+      <div class="book-special-card">
+        <div class="book-special-title">Книга недели</div>
+        {% if book_of_week %}
+          <div class="book-special-content">
+            <img class="book-special-photo" src="{{ book_of_week.cover.url }}" alt="{{ book_of_week.title }}">
+            <div class="book-special-info">
+  <div class="book-special-book-title">{{ book_of_week.title }}</div>  <!-- ← без ссылки -->
+
+  <div class="book-special-author">
+    {% for a in book_of_week.authors.all %}
+      <a href="{% url 'books:author_detail' a.slug %}" class="author-link">
+        {{ a.name }}
+      </a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
   </div>
-
-  <div class="col-md-3 mb-3">
-    <div class="card text-center shadow-sm h-100">
-      <div class="card-body">
-        <h2>👥</h2>
-        <h3>{{ total_authors }}</h3>
-        <p class="text-muted small">Авторов</p>
-      </div>
-    </div>
+  <div class="book-special-stats">
+    Посмотрели: {{ book_of_week_stats.views }} | Скачали: {{ book_of_week_stats.total_downloads }} | За 7 дней: {{ book_of_week_stats.weekly_downloads }}
   </div>
-
-  <div class="col-md-3 mb-3">
-    <div class="card text-center shadow-sm h-100">
-      <div class="card-body">
-        <h2>👁</h2>
-        <h3>{{ total_views|floatformat:0 }}</h3>
-        <p class="text-muted small">Просмотров</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-3 mb-3">
-    <div class="card text-center shadow-sm h-100">
-      <div class="card-body">
-        <h2>⬇</h2>
-        <h3>{{ total_downloads }}</h3>
-        <p class="text-muted small">Скачиваний</p>
-      </div>
-    </div>
+  <div class="book-special-button">
+    <a href="{% url 'books:detail' book_of_week.pk %}" class="btn-new btn-new-dark">
+      Узнать о книге
+    </a>
   </div>
 </div>
-
-<!-- ================= КНИГА НЕДЕЛИ ================= -->
-{% if book_of_week %}
-<div class="card mb-4 shadow-sm">
-  <div class="card-body">
-    <h4 class="mb-3">📘 Книга недели</h4>
-
-    <div class="row align-items-center">
-      <div class="col-md-2">
-        {% if book_of_week.cover %}
-          <img src="{{ book_of_week.cover.url }}" class="img-fluid rounded">
+          </div>
+        {% else %}
+          <p>На этой неделе нет книги недели.</p>
         {% endif %}
       </div>
 
-      <div class="col-md-10">
-        <h5>
-          <a href="{% url 'books:detail' book_of_week.pk %}">
-            {{ book_of_week.title }}
-          </a>
-        </h5>
+      <div class="book-special-card">
+        <div class="book-special-title">Книга признанная читателями</div>
+        {% if best_book_overall %}
+          <div class="book-special-content">
+            <img class="book-special-photo" src="{{ best_book_overall.cover.url }}" alt="{{ best_book_overall.title }}">
+            <div class="book-special-info">
+  <div class="book-special-book-title">{{ best_book_overall.title }}</div>  <!-- ← без ссылки -->
 
-        <p class="book-week-author">
-          {% for a in book_of_week.authors.all %}
-            <a href="{% url 'books:author_detail' a.slug %}">
-              {{ a.name }}
-            </a>{% if not forloop.last %}, {% endif %}
-          {% endfor %}
-        </p>
+  <div class="book-special-author">
+    {% for a in best_book_overall.authors.all %}
+      <a href="{% url 'books:author_detail' a.slug %}" class="author-link">
+        {{ a.name }}
+      </a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  </div>
 
-        <p class="text-muted mb-2">
-          👁 {{ book_of_week_stats.views }} |
-          ⬇ {{ book_of_week_stats.total_downloads }} |
-          ⬇ за 7 дней: {{ book_of_week_stats.weekly_downloads }}
-        </p>
+  <div class="book-special-stats">
+    Посмотрели: {{ best_overall_stats.views }} | Скачали: {{ best_overall_stats.total_downloads }} | За 7 дней: {{ best_overall_stats.weekly_downloads }}
+  </div>
 
-        <a href="{% url 'books:detail' book_of_week.pk %}" class="btn btn-sm btn-primary">
-          Открыть книгу →
-        </a>
-      </div>
-    </div>
+  <div class="book-special-button">
+    <a href="{% url 'books:detail' best_book_overall.pk %}" class="btn-new btn-new-dark">
+      Узнать о книге
+    </a>
   </div>
 </div>
-{% endif %}
+          </div>
+        {% else %}
+          <p>Пока нет книги, признанной читателями.</p>
+        {% endif %}
+      </div>
+    </div>
 
-<!-- ================= ТОП КНИГ ================= -->
-<div class="card mb-4">
-  <div class="card-body">
-    <h4 class="mb-3">📚 Популярные книги (ТОП-5)</h4>
+    <!-- ТОП-5 книг -->
+    <div class="top-section">
+      <div class="top-title">Популярные книги (ТОП-5)</div>
 
-    <div class="table-responsive">
-      <table class="table table-hover align-middle analytics-table">
-        <thead class="table-light">
+      <table class="analytics-table">
+        <thead>
           <tr>
             <th>#</th>
             <th>Книга</th>
-            <th>👁 Просмотры</th>
-            <th>⬇ Скачивания</th>
-            <th>⬇ за 7 дней</th>
-            <th>⭐ Рейтинг</th>
+            <th>Просмотры</th>
+            <th>Скачивания</th>
+            <th>За 7 дней</th>
+            <th>Рейтинг</th>
           </tr>
         </thead>
         <tbody>
           {% for book in top_books %}
-          <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>
-              <a href="{% url 'books:detail' book.pk %}">
-                {{ book.title }}
-              </a>
-            </td>
-            <td>{{ book.views_count }}</td>
-            <td>{{ book.downloads_count }}</td>
-            <td>
-              <span class="badge bg-info">
-                {{ book.weekly_downloads_count }}
-              </span>
-            </td>
-            <td>
-              <span class="badge bg-warning text-dark">
-                {{ book.complex_score|floatformat:1 }}
-              </span>
-            </td>
-          </tr>
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td><a href="{% url 'books:detail' book.pk %}">{{ book.title }}</a></td>
+              <td>{{ book.views_count }}</td>
+              <td>{{ book.downloads_count }}</td>
+              <td>{{ book.weekly_downloads_count }}</td>
+              <td>{{ book.complex_score|floatformat:1 }}</td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>
-    </div>
-    <div class="chart-wrapper books-chart-wrapper w-100">
-  <canvas id="booksChart"></canvas>
-    </div>
-  </div>
-</div>
 
-<!-- ================= ТОП ЖАНРОВ ================= -->
-<div class="card mb-4">
-  <div class="card-body">
-    <h4>🎭 Популярные жанры (ТОП-5)</h4>
+      <div class="chart-wrapper">
+        <canvas id="booksChart"></canvas>
+      </div>
+    </div>
 
-    <div class="table-responsive mb-3">
-      <table class="table table-hover align-middle analytics-table">
-        <thead class="table-light">
+    <!-- ТОП-5 жанров -->
+    <div class="top-section">
+      <div class="top-title">Популярные жанры (ТОП-5)</div>
+
+      <table class="analytics-table">
+        <thead>
           <tr>
             <th>#</th>
             <th>Жанр</th>
-            <th>📚 Книг</th>
-            <th>👁 Просмотры</th>
-            <th>⬇ Скачивания</th>
-            <th>⭐ Рейтинг</th>
+            <th>Книг</th>
+            <th>Просмотры</th>
+            <th>Скачивания</th>
+            <th>Рейтинг</th>
           </tr>
         </thead>
         <tbody>
           {% for genre in top_genres %}
-          <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>
-              <a href="{% url 'books:genre_detail' genre.slug %}">
-                {{ genre.name }}
-              </a>
-            </td>
-            <td>{{ genre.books_count }}</td>
-            <td>{{ genre.total_views|floatformat:0 }}</td>
-            <td>{{ genre.total_downloads }}</td>
-            <td>
-              <span class="badge bg-warning text-dark">
-                {{ genre.genre_score|floatformat:1 }}
-              </span>
-            </td>
-          </tr>
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td><a href="{% url 'books:genre_detail' genre.slug %}">{{ genre.name }}</a></td>
+              <td>{{ genre.books_count }}</td>
+              <td>{{ genre.total_views|floatformat:0 }}</td>
+              <td>{{ genre.total_downloads }}</td>
+              <td>{{ genre.genre_score|floatformat:1 }}</td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>
+
+      <div class="chart-wrapper">
+        <canvas id="genresChart"></canvas>
+      </div>
     </div>
 
-    <div class="chart-wrapper">
-      <canvas id="genresChart"></canvas>
-    </div>
   </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-const genresCanvas = document.getElementById('genresChart');
-if (genresCanvas) {
-  new Chart(genresCanvas, {
-    type: 'doughnut',
-    data: {
-      labels: [{% for g in top_genres %}"{{ g.name }}",{% endfor %}],
-      datasets: [{
-        data: [{% for g in top_genres %}{{ g.total_downloads }},{% endfor %}]
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false
-    }
-  });
-}
-
-const booksCanvas = document.getElementById('booksChart');
-if (booksCanvas) {
-  new Chart(booksCanvas, {
-    type: 'bar',
-    data: {
-      labels: [{% for b in top_books %}"{{ b.title|truncatewords:3 }}",{% endfor %}],
-      datasets: [
-        {
-          label: 'Всего скачиваний',
-          data: [{% for b in top_books %}{{ b.downloads_count }},{% endfor %}],
-          barPercentage: 0.9,
-          categoryPercentage: 0.9
-        },
-        {
-          label: 'За 7 дней',
-          data: [{% for b in top_books %}{{ b.weekly_downloads_count }},{% endfor %}],
-          barPercentage: 0.9,
-          categoryPercentage: 0.9
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: {
-          grid: { display: false },
-          ticks: {
-            autoSkip: false,
-            maxRotation: 0,
-            minRotation: 0
-          }
-        },
-        y: {
-          beginAtZero: true
-        }
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+  // График жанров
+  const genresCanvas = document.getElementById('genresChart');
+  if (genresCanvas) {
+    new Chart(genresCanvas, {
+      type: 'doughnut',
+      data: {
+        labels: [{% for g in top_genres %}"{{ g.name }}",{% endfor %}],
+        datasets: [{
+          data: [{% for g in top_genres %}{{ g.total_downloads }},{% endfor %}],
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+        }]
       },
-      plugins: {
-        legend: { position: 'bottom' }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' }
+        }
       }
-    }
-  });
-}
-</script>
+    });
+  }
+
+  // График книг
+  const booksCanvas = document.getElementById('booksChart');
+  if (booksCanvas) {
+    new Chart(booksCanvas, {
+      type: 'bar',
+      data: {
+        labels: [{% for b in top_books %}"{{ b.title|truncatewords:3 }}",{% endfor %}],
+        datasets: [
+          {
+            label: 'Всего скачиваний',
+            data: [{% for b in top_books %}{{ b.downloads_count }},{% endfor %}],
+            backgroundColor: '#36A2EB'
+          },
+          {
+            label: 'За 7 дней',
+            data: [{% for b in top_books %}{{ b.weekly_downloads_count }},{% endfor %}],
+            backgroundColor: '#FF6384'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { grid: { display: false } },
+          y: { beginAtZero: true }
+        },
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+  }
+  </script>
 
 {% endblock %}

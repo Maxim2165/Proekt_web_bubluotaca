@@ -5,7 +5,6 @@
 
 {% block content %}
 
-
 <div class="catalog-row">
 
   <!-- ===== ЛЕВАЯ КОЛОНКА: ФИЛЬТРЫ ===== -->
@@ -23,7 +22,7 @@
   <strong>Что хотите прочесть?</strong>
         <input
   type="text"
-  class="search-input mb-2"
+  class="catalog-search-input mb-2"
   placeholder="Поиск жанра..."
   onkeyup="filterCheckboxes(this, 'genres-list')"
 >
@@ -68,7 +67,7 @@
   <strong>Какого автора выберем?</strong>
         <input
   type="text"
-  class="search-input mb-2"
+  class="catalog-search-input mb-2"
   placeholder="Поиск автора..."
   onkeyup="filterCheckboxes(this, 'authors-list')"
 >
