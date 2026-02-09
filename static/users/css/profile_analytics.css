@@ -1,53 +1,207 @@
-/* KPI карточки */
-.profile-kpi-card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 24px;
-  text-align: center;
+/* static/users/css/profile_analytics.css */
+
+.profile-analytics-page {
+  margin: 20px 0 20px 0;
+}
+
+/* Подзаголовок страницы */
+.profile-analytics-subtitle {
+  font-size: 25px;
+  line-height: 1.5;
+  opacity: 0.9;
+  text-align: justify;
+  margin: 10px 0 20px 0;
+}
+
+/* Общий контейнер для KPI разделов */
+.profile-analytics-kpi-container {
+  background: #fff;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 40px;
 }
 
-.profile-kpi-value {
-  font-size: 32px;
-  font-weight: 700;
-  color: #252525;
+/* Заголовок внутри контейнера (для активности, форматов, динамики) */
+.profile-analytics-section-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 20px 0;
 }
 
-.profile-kpi-label {
-  margin-top: 18px;
-  color: #252525;
+/* KPI сетка */
+.profile-analytics-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* KPI карточка (переименована) */
+.profile-analytics-kpi-card {
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.profile-analytics-kpi-label {
   font-size: 18px;
+  font-weight: 500;
+  color: #333;
 }
 
-/* График */
-.profile-chart-box {
-  position: relative;
-  height: 260px;
-  max-width: 400px;
-  margin: 0 auto;
+.profile-analytics-kpi-value {
+  font-size: 60px;
+  font-weight: 500;
+  text-align: right;
+  align-self: flex-end;
+  color: #252525;
 }
 
 /* Любимый автор */
-.profile-favorite-author-box {
+.profile-analytics-fav-author {
+  background: #fff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
   padding: 20px;
-  border-radius: 12px;
-  background: #f8f9fa;
   text-align: center;
+  margin-bottom: 40px;
 }
 
-.profile-favorite-author-label {
-  font-size: 14px;
-  color: #6c757d;
-  margin-bottom: 6px;
+.profile-analytics-fav-author .label {
+  font-size: 1.1rem;
+  color: #777;
+  margin-bottom: 12px;
 }
 
-.profile-favorite-author-name {
-  font-size: 26px;
+.profile-analytics-fav-author .value a {
+  font-size: 2rem;
   font-weight: 600;
-  color: #0d6efd;
+  color: #252525;
   text-decoration: none;
 }
 
-.profile-favorite-author-name:hover {
+.profile-analytics-fav-author .value a:hover {
+  color: #0d6efd;
   text-decoration: underline;
+}
+
+/* Рекомендованные книги */
+.profile-analytics-recommendations {
+  margin-bottom: 60px;
+}
+
+.profile-analytics-recommendations h2 {
+  font-size: 1.8rem;
+  text-align: center;
+  margin: 0 0 30px 0;
+}
+
+.profile-analytics-recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px 30px;               /* увеличенный горизонтальный отступ */
+  justify-content: center;       /* центрирование карточек в ряду */
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Любимые жанры */
+.top-section {
+  width: 100%;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 28px;
+  margin-bottom: 50px;
+}
+
+.top-title {
+  font-size: 25px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Таблица жанров */
+.analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.analytics-table th,
+.analytics-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.analytics-table th {
+  background: #f8f8f8;
+  font-weight: 500;
+  color: #333;
+}
+
+.analytics-table td a {
+  color: #252525;
+  text-decoration: none;
+}
+
+.analytics-table td a:hover {
+  color: #0d6efd;
+  text-decoration: underline;
+}
+
+.analytics-table .number {
+  width: 60px;
+  text-align: center;
+}
+
+.analytics-table .count {
+  text-align: right;
+  font-weight: 600;
+}
+
+/* График жанров */
+.chart-wrapper {
+  margin-top: 20px;
+  height: 320px;
+}
+
+/* График динамики чтения */
+.profile-analytics-chart-container {
+  background: #fff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 50px;
+  height: 380px;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+  .profile-analytics-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-analytics-kpi-value {
+    font-size: 48px;
+  }
+
+  .profile-analytics-subtitle {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .profile-analytics-recommendations-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 0 10px;
+  }
 }

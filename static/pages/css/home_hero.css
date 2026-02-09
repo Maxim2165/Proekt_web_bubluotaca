@@ -1,15 +1,16 @@
 /* Основной контейнер — full-screen */
-.hero-wrapper {
+.home-hero-wrapper {
     width: 100%;
     height: 100vh;
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(3.5px);
     -webkit-backdrop-filter: blur(3.5px);
+    margin-top: -20px;
 }
 
 /* Контейнер с колонками — адаптивный */
-.books-container {
+.home-books-container {
     width: min(1120px, 90vw);
     max-width: 1120px;
     left: min(160px, 10vw);
@@ -23,7 +24,7 @@
 }
 
 /* Каждая колонка */
-.books-column {
+.home-books-column {
     display: flex;
     flex-direction: column;
     gap: 45px;
@@ -32,7 +33,7 @@
     animation-iteration-count: infinite;
 }
 
-.books-column img {
+.home-book-img {
     width: 200px;                     /* строго фиксированный размер */
     height: 325px;
     object-fit: cover;
@@ -41,8 +42,8 @@
 
 /* Анимация колонок */
 .column-1 { animation: columnDownUp 60s infinite; }
-.column-2 { animation: columnDownUp 65s infinite; animation-delay: 8s; }
-.column-3 { animation: columnDownUp 70s infinite; animation-delay: 15s; }
+.column-2 { animation: columnDownUp 65s infinite; animation-delay: 6s; }
+.column-3 { animation: columnDownUp 70s infinite; animation-delay: 12s; }
 
 @keyframes columnDownUp {
     0%   { transform: translateY(0); }
@@ -53,7 +54,7 @@
 }
 
 /* Blur-оверлей — full, но с твоим top:44px на больших экранах */
-.blur-overlay {
+.home-blur-overlay {
     width: 100%;
     height: 100%;
     left: 0;
@@ -65,7 +66,7 @@
 }
 
 /* Белый блок — без закругления слева, текст слева */
-.text-block {
+.home-text-block {
     width: min(1185px, 90vw);
     height: auto;
     min-height: 240px;                /* чуть увеличил, чтобы кнопка влезла */
@@ -82,14 +83,14 @@
     box-sizing: border-box;
 }
 
-.hero-text {
+.home-hero-text {
     text-align: left;
     color: #252525;
     font-family: ui-serif, Georgia, serif;
     width: 100%;
 }
 
-.h1-text {
+.home-hero-title {
     font-size: 80px;
     font-weight: 400;
     line-height: 1.05;
@@ -97,7 +98,7 @@
     margin: 0;
 }
 
-.p-text {
+.home-hero-subtitle {
     font-size: 25px;
     font-weight: 400;
     display: block;
@@ -105,7 +106,7 @@
 }
 
 /* Кнопка "Перейти в каталог" на герое */
-.hero-text .btn-new {
+.home-hero-text .btn-new {
   width: 230px;              /* фиксированная ширина, как в профиле */
   min-width: 230px;
   height: 35px;
@@ -113,9 +114,10 @@
   font-size: 18px;
 }
 
+
 /* На мобильке — на всю ширину */
 @media (max-width: 768px) {
-  .hero-text .btn-new {
+  .home-hero-text .btn-new {
     width: 100%;
   }
 }
@@ -126,7 +128,7 @@
 
 /* 3 столбца (очень большой экран, >1600 px) */
 @media (min-width: 1601px) {
-    .books-container {
+    .home-books-container {
         gap: 260px;
         left: 160px;
         width: 1120px;
@@ -135,7 +137,7 @@
 
 /* 2 столбца (средний экран, 1100–1600 px) — расширенный диапазон */
 @media (max-width: 1600px) and (min-width: 1101px) {
-    .books-container {
+    .home-books-container {
         flex-wrap: wrap;
         justify-content: space-around;
         gap: 120px;
@@ -144,14 +146,14 @@
         top: -10px;
     }
 
-    .books-column {
+    .home-books-column {
         flex: 1 1 45%;
         max-width: 45%;
         min-width: 300px;
         align-items: center;
     }
 
-    .text-block {
+    .home-text-block {
         width: 85%;
         left: 7.5%;
         height: auto;
@@ -160,23 +162,23 @@
         top: 35%;
     }
 
-    .hero-text {
+    .home-hero-text {
         padding-left: 30px;
         padding-right: 30px;
     }
 
-    .h1-text {
+    .home-hero-title {
         font-size: 70px;
     }
 
-    .p-text {
+    .home-hero-subtitle {
         font-size: 23px;
     }
 }
 
 /* 1 столбец (узкий экран и мобильный, <1100 px) */
 @media (max-width: 1100px) {
-    .books-container {
+    .home-books-container {
         flex-direction: column;
         gap: 80px;
         left: 0;
@@ -186,13 +188,13 @@
         top: 10px;
     }
 
-    .books-column {
+    .home-books-column {
         width: 90%;
         max-width: 300px;
         align-items: center;
     }
 
-    .text-block {
+    .home-text-block {
         width: 90%;
         left: 5%;
         top: 25%;
@@ -200,27 +202,24 @@
         padding: 2rem 1rem;
     }
 
-    .hero-text {
+    .home-hero-text {
         text-align: center;
         padding-left: 10px;
         padding-right: 10px;
     }
 
-    .h1-text {
+    .home-hero-title{
         font-size: 50px;
     }
 
-    .p-text {
+    .home-hero-subtitle {
         font-size: 20px;
     }
 
 
 
-    .blur-overlay {
+    .home-blur-overlay {
         height: 100%;
         top: 0;
     }
 }
-
-
-/* === Отключаем браузерные дефолты форм и делаем всё чёрно-белым === */

@@ -6,34 +6,34 @@
 
 <link rel="stylesheet" href="{% static 'pages/css/home_hero.css' %}">
 
-<div class="hero-wrapper">
+<div class="home-hero-wrapper">
     <!-- Книги: 3 колонки по 5 книг -->
-    <div class="books-container">
-        <div class="books-column column-1">
+    <div class="home-books-container">
+        <div class="home-books-column column-1">
             {% for book in background_books|slice:":5" %}
-                <img class="book-img" src="{{ book.cover.url }}" alt="{{ book.title|default:'Обложка книги' }}">
+                <img class="home-book-img" src="{{ book.cover.url }}" alt="{{ book.title|default:'Обложка книги' }}">
             {% endfor %}
         </div>
-        <div class="books-column column-2">
+        <div class="home-books-column column-2">
             {% for book in background_books|slice:"5:10" %}
-                <img class="book-img" src="{{ book.cover.url }}" alt="{{ book.title|default:'Обложка книги' }}">
+                <img class="home-book-img" src="{{ book.cover.url }}" alt="{{ book.title|default:'Обложка книги' }}">
             {% endfor %}
         </div>
-        <div class="books-column column-3">
+        <div class="home-books-column column-3">
             {% for book in background_books|slice:"10:15" %}
-                <img class="book-img" src="{{ book.cover.url }}" alt="{{ book.title|default:'Обложка книги' }}">
+                <img class="home-book-img" src="{{ book.cover.url }}" alt="{{ book.title|default:'Обложка книги' }}">
             {% endfor %}
         </div>
     </div>
 
     <!-- Дополнительный blur-слой -->
-    <div class="blur-overlay"></div>
+    <div class="home-blur-overlay"></div>
 
     <!-- Белый блок с текстом и кнопкой -->
-    <div class="text-block">
-        <div class="hero-text">
-            <span class="h1-text">Место, где живут истории.</span>
-            <span class="p-text">связь поколений в одном пространстве</span>
+    <div class="home-text-block">
+        <div class="home-hero-text">
+            <span class="home-hero-title">Место, где живут истории.</span>
+            <span class="home-hero-subtitle">связь поколений в одном пространстве</span>
             <a href="{% url 'books:catalog' %}" class="btn-new btn-new-dark mt-3">
     Перейти в каталог
 </a>

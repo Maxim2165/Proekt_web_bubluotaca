@@ -1,33 +1,65 @@
-{# templates/users/profile_edit.html #}
 {% extends "base.html" %}
+{% load static %}
+
 {% block title %}Редактировать профиль{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <h2>Редактировать профиль</h2>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.non_field_errors }}
-      <div class="form-group">
+
+<div class="profile-edit-page">
+
+  <form method="post" class="profile-form">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <!-- Карточка внутри формы -->
+    <div class="profile-edit-card">
+      <h2>Редактировать профиль</h2>
+
+      <div class="form-field">
         {{ form.username.label_tag }}
         {{ form.username }}
-        {% for e in form.username.errors %}<div class="text-danger">{{ e }}</div>{% endfor %}
-      </div>
-      <div class="form-group">
-        {{ form.first_name.label_tag }}
-        {{ form.first_name }}
-        {% for e in form.first_name.errors %}<div class="text-danger">{{ e }}</div>{% endfor %}
-      </div>
-      <div class="form-group">
-        {{ form.email.label_tag }}
-        {{ form.email }}
-        {% for e in form.email.errors %}<div class="text-danger">{{ e }}</div>{% endfor %}
+        {% if form.username.errors %}
+          <ul class="errorlist">
+            {% for error in form.username.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
       </div>
 
-      <button type="submit" class="btn btn-primary">Сохранить</button>
-      <a href="{% url 'users:profile' %}" class="btn btn-secondary">Отмена</a>
-    </form>
-  </div>
+      <div class="form-field">
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+        {% if form.first_name.errors %}
+          <ul class="errorlist">
+            {% for error in form.first_name.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <div class="form-field">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {% if form.email.errors %}
+          <ul class="errorlist">
+            {% for error in form.email.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div> <!-- конец карточки -->
+
+    <!-- Кнопки внутри формы, но под карточкой -->
+    <div class="form-buttons">
+      <button type="submit" class="btn-new btn-new-dark">Сохранить</button>
+      <a href="{% url 'users:profile' %}" class="btn-new btn-new-dark">Отмена</a>
+    </div>
+
+  </form>
+
 </div>
+
 {% endblock %}

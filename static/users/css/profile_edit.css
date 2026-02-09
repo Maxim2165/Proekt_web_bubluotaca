@@ -1,0 +1,99 @@
+/* static/users/css/profile_edit.css */
+
+/* Контейнер всей страницы — центрирует и даёт воздух */
+.profile-edit-page {
+  padding: 20px 20px 40px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+/* Белая карточка — единый стиль как kpi-card */
+.profile-edit-card {
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Заголовок страницы */
+.profile-edit-card h2 {
+  margin: 0 0 0px 0;
+  text-align: center;
+  font-size: 2rem;
+}
+
+/* Каждое поле формы */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field label {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* Стили полей ввода — одинаковые с login/register */
+.form-field input {
+  height: 44px;
+  padding: 0 16px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.25);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-field input:focus {
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.25),
+              0px 0px 15px rgba(13, 110, 253, 0.25);
+}
+
+/* Ошибки — единый стиль как на login и register */
+.form-field .errorlist {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin: 4px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.form-field .errorlist li {
+  margin: 0;
+}
+
+/* Блок кнопок — под карточкой, центрировано */
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin: 20px auto 0;   /* было 32px → делаем 40px для большего воздуха */
+  max-width: 820px;
+  padding: 0 20px;
+  flex-wrap: wrap;
+}
+
+/* На мобильных — кнопки друг под другом */
+@media (max-width: 576px) {
+  .form-buttons {
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .btn-new,
+  .btn-new-dark {
+    width: 100%;
+  }
+
+  .profile-edit-card {
+    padding: 24px 20px;
+  }
+}

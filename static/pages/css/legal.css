@@ -1,0 +1,126 @@
+/* static/pages/css/legal.css */
+
+.legal-page {
+  padding: 10px 20px 10px;
+  margin: 0 auto;
+}
+
+.legal-card {
+  background: #fff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 20px 36px;
+}
+
+.legal-title {
+  font-size: 2.4rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 8px 0;
+}
+
+/* Вводный абзац после даты обновления */
+.legal-section-intro {
+  font-size: 1.18rem;
+  line-height: 1.75;
+  color: #444;
+  margin: 0 0 10px 0;
+}
+
+.legal-updated {
+  text-align: center;
+  font-size: 1.05rem;
+  color: #777;
+  margin: 0 0 20px 0;
+}
+
+.legal-subtitle {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
+.legal-section {
+  margin-bottom: 20px;
+}
+
+.legal-section h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  color: #222;
+}
+
+.legal-section h5 {
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin: 10px 0 10px 0;
+  color: #333;
+}
+
+.legal-section p {
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: #444;
+  margin: 0 0 10px 0;
+}
+
+.legal-section ul {
+  list-style: disc;
+  padding-left: 24px;
+  margin: 12px 0 20px 0;
+}
+
+.legal-section ul li {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.legal-section strong {
+  color: #222;
+}
+
+.legal-note {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-top: 20px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.legal-note strong {
+  color: #333;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+  .legal-page {
+    padding: 40px 16px 80px;
+  }
+
+  .legal-card {
+    padding: 28px 20px;
+  }
+
+  .legal-title {
+    font-size: 2rem;
+  }
+
+  .legal-section h3 {
+    font-size: 1.6rem;
+  }
+
+  .legal-section h5 {
+    font-size: 1.25rem;
+  }
+
+  .legal-section p,
+  .legal-section ul li {
+    font-size: 1.05rem;
+  }
+}
