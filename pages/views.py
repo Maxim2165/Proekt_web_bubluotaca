@@ -1,4 +1,4 @@
-# pages/views.py
+# pages/site_analytics.py
 from django.shortcuts import render
 from books.models import Book
 

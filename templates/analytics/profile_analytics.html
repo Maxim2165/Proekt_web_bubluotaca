@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Мой обзор{% endblock %}
+
+{% block content %}
+
+<div class="profile-analytics-page">
+
+  <!-- Подзаголовок (без контейнера) -->
+  <div class="profile-analytics-subtitle">
+    Здесь собрана вся твоя читательская статистика, любимые авторы, жанры и рекомендации специально для тебя.
+  </div>
+
+  <!-- 1. Моя активность (с общим контейнером) -->
+  <div class="profile-analytics-kpi-container">
+    <h2 class="profile-analytics-section-title">Моя активность</h2>
+    <div class="profile-analytics-kpi-grid">
+      <div class="profile-analytics-kpi-card">
+        <div class="profile-analytics-kpi-label">Скачано книг</div>
+        <div class="profile-analytics-kpi-value">{{ total_downloads|default:"0" }}</div>
+      </div>
+      <div class="profile-analytics-kpi-card">
+        <div class="profile-analytics-kpi-label">В избранном</div>
+        <div class="profile-analytics-kpi-value">{{ favorites_count|default:"0" }}</div>
+      </div>
+      <div class="profile-analytics-kpi-card">
+        <div class="profile-analytics-kpi-label">Дней активности</div>
+        <div class="profile-analytics-kpi-value">{{ active_days|default:"0" }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Любимый автор -->
+  {% if favorite_author %}
+  <div class="profile-analytics-fav-author">
+    <div class="label">Ваш любимый автор</div>
+    <div class="value">
+      <a href="{% url 'books:author_detail' favorite_author.book__authors__slug %}">
+        {{ favorite_author.book__authors__name }}
+      </a>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- 3. Любимые форматы (с общим контейнером) -->
+  <div class="profile-analytics-kpi-container">
+    <h2 class="profile-analytics-section-title">Любимые форматы книг</h2>
+    <div class="profile-analytics-kpi-grid">
+      <div class="profile-analytics-kpi-card">
+        <div class="profile-analytics-kpi-label">PDF</div>
+        <div class="profile-analytics-kpi-value">{{ formats_map.pdf|default:"0" }}</div>
+      </div>
+      <div class="profile-analytics-kpi-card">
+        <div class="profile-analytics-kpi-label">EPUB</div>
+        <div class="profile-analytics-kpi-value">{{ formats_map.epub|default:"0" }}</div>
+      </div>
+      <div class="profile-analytics-kpi-card">
+        <div class="profile-analytics-kpi-label">FB2</div>
+        <div class="profile-analytics-kpi-value">{{ formats_map.fb2|default:"0" }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Динамика чтения -->
+  <div class="profile-analytics-chart-container">
+    <h2 class="profile-analytics-section-title">Моя динамика чтения</h2>
+    <canvas id="readingChart"></canvas>
+  </div>
+
+  <!-- 5. Рекомендованные книги -->
+  <div class="profile-analytics-recommendations">
+    <h2>Книги на основе ваших предпочтений</h2>
+    <div class="profile-analytics-recommendations-grid">
+      {% for book in recommended_books %}
+        {% include 'books/includes/book_card.html' with book=book show_author=True show_stats=True show_views=True %}
+      {% empty %}
+        <p style="grid-column: 1 / -1; text-align: center; color: #777; font-size: 1.2rem; padding: 40px 0;">
+          Пока нет рекомендаций. Скачивайте больше книг — они появятся!
+        </p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- 6. Любимые жанры -->
+  {% if favorite_genres %}
+  <div class="top-section">
+    <div class="top-title">Популярные жанры (ТОП-5)</div>
+
+    <table class="analytics-table">
+      <thead>
+        <tr>
+          <th class="number">#</th>
+          <th>Жанр</th>
+          <th class="count">Скачиваний</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for g in favorite_genres %}
+        <tr>
+          <td class="number">{{ forloop.counter }}</td>
+          <td>
+            <a href="{% url 'books:genre_detail' g.book__genres__slug %}">
+              {{ g.book__genres__name }}
+            </a>
+          </td>
+          <td class="count">{{ g.cnt }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="chart-wrapper">
+      <canvas id="genresChart"></canvas>
+    </div>
+  </div>
+  {% else %}
+  <p style="text-align: center; color: #777; font-size: 1.1rem;">
+    Пока нет данных по любимым жанрам.
+  </p>
+  {% endif %}
+
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- График динамики чтения -->
+<script>
+const readingCtx = document.getElementById('readingChart');
+if (readingCtx) {
+  const labels = {{ reading_months|safe }};
+  const data = {{ reading_counts|safe }};
+
+  if (labels && labels.length > 0) {
+    new Chart(readingCtx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          borderColor: '#0d6efd',
+          backgroundColor: 'rgba(13, 110, 253, 0.18)',
+          fill: true,
+          tension: 0.35,
+          pointRadius: 5,
+          pointHoverRadius: 8,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
+}
+</script>
+
+<!-- График жанров -->
+<script>
+{% if favorite_genres %}
+const genresCtx = document.getElementById('genresChart');
+if (genresCtx) {
+  new Chart(genresCtx, {
+    type: 'doughnut',
+    data: {
+      labels: [{% for g in favorite_genres %}"{{ g.book__genres__name }}",{% endfor %}],
+      datasets: [{
+        data: [{% for g in favorite_genres %}{{ g.cnt }},{% endfor %}],
+        backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1', '#fd7e14'],
+        borderWidth: 2,
+        hoverOffset: 10
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+}
+{% endif %}
+</script>
+
+{% endblock %}

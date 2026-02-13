@@ -18,5 +18,4 @@ urlpatterns = [
     # Профиль и редактирование профиля
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.profile_edit, name='profile_edit'),
-    path('profile/analytics/', views.profile_analytics, name='profile_analytics'),
 ]
