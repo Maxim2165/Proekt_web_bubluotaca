@@ -58,7 +58,7 @@
         {{ book.title }}
       </a>
       <div class="profile-muted">
-        Скачано: {{ book.downloads_count }}
+        Скачано: {{ book.download_logs.count }}
       </div>
     </div>
   {% endfor %}

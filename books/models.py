@@ -60,10 +60,13 @@ class Author(models.Model):
 
 # -----------------------------------------
 # Book — основная модель книги
+# ИЗМЕНЕНО
 # -----------------------------------------
 class Book(models.Model):
     title = models.CharField(max_length=255, db_index=True)
     title_search = models.CharField(max_length=255, db_index=True)
+
+    slug = models.SlugField(max_length=255, unique=True)
 
     description = models.TextField(blank=True)
 
@@ -85,13 +88,6 @@ class Book(models.Model):
     file_epub = models.FileField(upload_to='books/epub/', null=True, blank=True)
     file_fb2 = models.FileField(upload_to='books/fb2/', null=True, blank=True)
 
-    pages = models.PositiveIntegerField(null=True, blank=True)
-    published_date = models.DateField(null=True, blank=True)
-    isbn = models.CharField(max_length=32, blank=True)
-
-    views_count = models.PositiveIntegerField(default=0)
-    downloads_count = models.PositiveIntegerField(default=0)
-
     is_active = models.BooleanField(default=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -101,7 +97,6 @@ class Book(models.Model):
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['title_search']),
-            models.Index(fields=['-downloads_count']),
         ]
 
     def save(self, *args, **kwargs):
@@ -114,14 +109,24 @@ class Book(models.Model):
 
 # -----------------------------------------
 # Favorite — избранное: какая книга у какого пользователя
+# ИЗМЕНЕНО
 # -----------------------------------------
 class Favorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='favorited_by')
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='favorites'
+    )
+
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        related_name='favorited_by'
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        # не позволять дубли — у одного пользователя не может быть одна и та же книга дважды
         unique_together = ('user', 'book')
         ordering = ['-created_at']
         indexes = [models.Index(fields=['user', 'book'])]
@@ -185,3 +190,38 @@ class DownloadLog(models.Model):
 
     def __str__(self):
         return f'{self.user} → {self.book} ({self.file_format})'
+
+# -----------------------------------------
+# BookView — НОВАЯ таблица
+# Журнал просмотров книги
+# -----------------------------------------
+class BookView(models.Model):
+    user = models.ForeignKey(
+        User,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='book_views'
+    )
+
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        related_name='view_logs'
+    )
+    session_key = models.CharField(max_length=40, null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['book', 'created_at']),
+            models.Index(fields=['user', 'created_at']),
+            models.Index(fields=['session_key', 'created_at'])
+        ]
+
+    def __str__(self):
+        if self.user:
+            return f'View: {self.user} → {self.book}'
+        return f'View: Anonymous({self.session_key}) → {self.book}'

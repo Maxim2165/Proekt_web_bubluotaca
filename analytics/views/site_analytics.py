@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from django.db.models import Sum, Count, Q, Avg
+from django.db.models import Count, Q, F, Max, FloatField, ExpressionWrapper
 from django.utils import timezone
 from datetime import timedelta
 
-from books.models import Book, Author, Genre, DownloadLog
+from books.models import Book, Author, Genre, DownloadLog, BookView
 
 
 def dashboard(request):
@@ -21,143 +21,118 @@ def dashboard(request):
     total_books = Book.objects.filter(is_active=True).count()
     total_authors = Author.objects.count()
 
-    total_views = (
-        Book.objects
-        .filter(is_active=True)
-        .aggregate(total=Sum('views_count'))
-    )['total'] or 0
-
-    total_downloads = DownloadLog.objects.count()
+    total_views = BookView.objects.count()
+    total_downloads = DownloadLog.objects.filter(status='success').count()
 
     # =========================
     # БЛОК 2. КНИГА НЕДЕЛИ (ТОЛЬКО ЗА 7 ДНЕЙ)
     # =========================
 
-    books = Book.objects.filter(is_active=True).prefetch_related('authors')
-
-    best_book = None
-    best_score = -1
-    best_book_stats = {}
-
-    for book in books:
-        weekly_downloads = DownloadLog.objects.filter(
-            book=book,
-            created_at__gte=week_ago
-        ).count()
-
-        if weekly_downloads == 0:
-            continue
-
-        views = book.views_count
-        total_dl = book.downloads_count
-
-        score = (
-            weekly_downloads * 1.5 +
-            views * 0.2 +
-            total_dl * 0.1
-        )
-
-        if score > best_score:
-            best_score = score
-            best_book = book
-            best_book_stats = {
-                'weekly_downloads': weekly_downloads,
-                'views': views,
-                'total_downloads': total_dl,
-                'score': round(score, 2),
-            }
-
-    # =========================
-    # БЛОК 3. ТОП-5 КНИГ
-    # =========================
-
-    books_qs = (
+    weekly_books = (
         Book.objects
-        .filter(is_active=True)
-        .annotate(
-            weekly_downloads_count=Count(
+            .filter(is_active=True)
+            .annotate(
+            weekly_downloads=Count(
                 'download_logs',
                 filter=Q(download_logs__created_at__gte=week_ago),
                 distinct=True
+            ),
+            weekly_views=Count(
+                'view_logs',
+                filter=Q(view_logs__created_at__gte=week_ago),
+                distinct=True
+            ),
+        )
+            .annotate(
+            score=F('weekly_views') * 1 +
+                  F('weekly_downloads') * 4
+        )
+            .order_by('-score')
+    )
+
+    best_book = weekly_books.first()
+
+    # =========================
+    # БЛОК 3. ОБЩИЙ ТОП-5 КНИГ (С НОРМАЛИЗАЦИЕЙ)
+    # =========================
+
+    books_with_counts = (
+        Book.objects
+            .filter(is_active=True)
+            .annotate(
+            total_downloads=Count('download_logs', distinct=True),
+            total_views=Count('view_logs', distinct=True),
+        )
+    )
+
+    # Минимальный порог
+    books_with_counts = books_with_counts.filter(total_downloads__gte=3)
+
+    # Получаем максимумы для нормализации
+    max_views = books_with_counts.aggregate(
+        max_v=Max('total_views')
+    )['max_v'] or 1
+
+    max_downloads = books_with_counts.aggregate(
+        max_d=Max('total_downloads')
+    )['max_d'] or 1
+
+    # Нормализованный score
+    top_books = (
+        books_with_counts
+            .annotate(
+            views_norm=ExpressionWrapper(
+                F('total_views') / max_views,
+                output_field=FloatField()
+            ),
+            downloads_norm=ExpressionWrapper(
+                F('total_downloads') / max_downloads,
+                output_field=FloatField()
+            ),
+        )
+            .annotate(
+            score=ExpressionWrapper(
+                F('views_norm') * 1 +
+                F('downloads_norm') * 4,
+                output_field=FloatField()
             )
         )
+            .order_by('-score')[:5]
     )
 
-    books_with_scores = []
-    for book in books_qs:
-        score = (
-            book.weekly_downloads_count * 1.0 +
-            book.downloads_count * 0.3 +
-            book.views_count * 0.2
-        )
-        book.complex_score = score
-        books_with_scores.append(book)
-
-    top_books = sorted(
-        books_with_scores,
-        key=lambda x: x.complex_score,
-        reverse=True
-    )[:5]
-
-    # Книга признанная читателями (топ-1 за всё время)
     best_book_overall = top_books[0] if top_books else None
-    best_overall_stats = {}
-    if best_book_overall:
-        best_overall_stats = {
-            'views': best_book_overall.views_count,
-            'total_downloads': best_book_overall.downloads_count,
-            'weekly_downloads': best_book_overall.weekly_downloads_count,
-        }
 
     # =========================
-    # БЛОК 4. ТОП-5 ЖАНРОВ
+    # БЛОК 4. ТОП-5 ЖАНРОВ (СРЕДНИЙ SCORE КНИГ)
     # =========================
 
-    genres_qs = (
+    top_genres = (
         Genre.objects
         .annotate(
-            total_downloads=Sum('books__downloads_count', filter=Q(books__is_active=True)),
-            total_views=Sum('books__views_count', filter=Q(books__is_active=True)),
-            books_count=Count('books', filter=Q(books__is_active=True), distinct=True),
-            avg_downloads_per_book=Avg('books__downloads_count', filter=Q(books__is_active=True))
+            total_downloads=Count('books__download_logs', distinct=True),
+            total_views=Count('books__view_logs', distinct=True),
+            books_count=Count('books', distinct=True)
         )
-        .filter(books_count__gt=0)
+        .annotate(
+            genre_score=ExpressionWrapper(
+                (F('total_views') * 1 +
+                 F('total_downloads') * 4) /
+                (F('books_count') + 1),
+                output_field=FloatField()
+            )
+        )
+        .order_by('-genre_score')[:5]
     )
-
-    genres_with_scores = []
-    for genre in genres_qs:
-        td = genre.total_downloads or 0
-        tv = genre.total_views or 0
-        avg = genre.avg_downloads_per_book or 0
-
-        genre.genre_score = (
-            td * 0.5 +
-            tv * 0.3 +
-            avg * 0.2
-        )
-
-        genres_with_scores.append(genre)
-
-    top_genres = sorted(
-        genres_with_scores,
-        key=lambda x: x.genre_score,
-        reverse=True
-    )[:5]
 
     context = {
         'total_books': total_books,
         'total_authors': total_authors,
         'total_views': total_views,
         'total_downloads': total_downloads,
-
         'book_of_week': best_book,
-        'book_of_week_stats': best_book_stats,
-
         'top_books': top_books,
-        'top_genres': top_genres,
-
         'best_book_overall': best_book_overall,
-        'best_overall_stats': best_overall_stats,
+        'top_genres': top_genres,
     }
 
     return render(request, 'analytics/dashboard.html', context)

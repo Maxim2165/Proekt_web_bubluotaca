@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.db.models import Q, F
 from django.db.models.functions import Lower
-from ..models import Book, Author, Genre, Favorite
+from ..models import Book, Author, Genre, Favorite, BookView
 from django.utils import timezone
 from datetime import timedelta
 
@@ -100,28 +100,53 @@ def genre_list(request):
 def book_detail(request, pk):
     """
     Отображение карточки книги.
-    Увеличиваем views_count атомарно (F()).
-    Добавляем флаг is_favorited для текущего пользователя.
+    Создаём запись в BookView.
+    Добавляем флаг is_favorited.
     """
+
     book = get_object_or_404(
         Book.objects.prefetch_related('authors', 'genres'),
         pk=pk,
         is_active=True
     )
 
-    session_key = f'book_view_{book.pk}'
-    last_view_time = request.session.get(session_key)
-
+    # --- ЛОГИКА ПРОСМОТРА ---
+    VIEW_TIMEOUT = timedelta(minutes=6)
     now = timezone.now()
-    VIEW_TIMEOUT = timedelta(minutes=10)
+    threshold = now - VIEW_TIMEOUT
 
-    if not last_view_time or now - timezone.datetime.fromisoformat(last_view_time) > VIEW_TIMEOUT:
-        Book.objects.filter(pk=book.pk).update(
-            views_count=F('views_count') + 1
-        )
-        request.session[session_key] = now.isoformat()
-        book.refresh_from_db(fields=['views_count'])
+    if request.user.is_authenticated:
+        recent_view = BookView.objects.filter(
+            user=request.user,
+            book=book,
+            created_at__gte=threshold
+        ).exists()
 
+        if not recent_view:
+            BookView.objects.create(
+                user=request.user,
+                book=book
+            )
+
+    else:
+        if not request.session.session_key:
+            request.session.create()
+
+        session_key = request.session.session_key
+
+        recent_view = BookView.objects.filter(
+            session_key=session_key,
+            book=book,
+            created_at__gte=threshold
+        ).exists()
+
+        if not recent_view:
+            BookView.objects.create(
+                session_key=session_key,
+                book=book
+            )
+
+    # --- ФЛАГ ИЗБРАННОГО ---
     is_favorited = False
     if request.user.is_authenticated:
         is_favorited = Favorite.objects.filter(
@@ -129,9 +154,15 @@ def book_detail(request, pk):
             book=book
         ).exists()
 
+    # --- ПОДСЧЁТ СТАТИСТИКИ ---
+    view_count = book.view_logs.count()
+    download_count = book.download_logs.filter(status='success').count()
+
     return render(request, 'books/detail.html', {
         'book': book,
         'is_favorited': is_favorited,
+        'view_count': view_count,
+        'download_count': download_count,
     })
 
 # ---------------------------------------

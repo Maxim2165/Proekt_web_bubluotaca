@@ -30,9 +30,9 @@
       {% if show_stats != False %}
         <p class="book-card-stats small text-muted mb-2">
           {% if show_views == True %}
-            Просмотры: {{ book.views_count }} ·
+            Просмотры: {{ book.view_logs.count }} ·
           {% endif %}
-          Загрузки: {{ book.downloads_count }}
+          Загрузки: {{ book.download_logs.count }}
         </p>
       {% endif %}
 

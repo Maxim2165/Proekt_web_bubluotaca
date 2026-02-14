@@ -38,11 +38,11 @@ def favorite_toggle(request, pk):
 def download_book(request, pk, fmt):
     """
     Логика скачивания:
-      - проверяем, что формат доступен для книги
-      - создаём DownloadLog (в транзакции) и увеличиваем downloads_count атомарно
-      - возвращаем FileResponse для скачивания
-    fmt: 'pdf', 'epub', 'fb2'
+      - проверяем формат
+      - создаём DownloadLog
+      - возвращаем FileResponse
     """
+
     book = get_object_or_404(Book, pk=pk, is_active=True)
 
     fmt = fmt.lower()
@@ -64,8 +64,12 @@ def download_book(request, pk, fmt):
                 file_size=file_field.size if hasattr(file_field, 'size') else None,
                 status='success'
             )
-            Book.objects.filter(pk=book.pk).update(downloads_count=F('downloads_count') + 1)
 
-        return FileResponse(file_field.open('rb'), as_attachment=True, filename=file_field.name.split('/')[-1])
+        return FileResponse(
+            file_field.open('rb'),
+            as_attachment=True,
+            filename=file_field.name.split('/')[-1]
+        )
+
     except FileNotFoundError:
         raise Http404("Файл не найден.")

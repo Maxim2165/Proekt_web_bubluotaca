@@ -53,7 +53,7 @@
     {% endfor %}
   </div>
   <div class="book-special-stats">
-    Посмотрели: {{ book_of_week_stats.views }} | Скачали: {{ book_of_week_stats.total_downloads }} | За 7 дней: {{ book_of_week_stats.weekly_downloads }}
+    Посмотрели: {{ book_of_week.weekly_views }} | Скачали: {{ book_of_week.weekly_downloads }} | За 7 дней: {{ book_of_week.weekly_downloads }}
   </div>
   <div class="book-special-button">
     <a href="{% url 'books:detail' book_of_week.pk %}" class="btn-new btn-new-dark">
@@ -84,7 +84,7 @@
   </div>
 
   <div class="book-special-stats">
-    Посмотрели: {{ best_overall_stats.views }} | Скачали: {{ best_overall_stats.total_downloads }} | За 7 дней: {{ best_overall_stats.weekly_downloads }}
+    Посмотрели: {{ best_overall_stats.views }} | Скачали: {{ best_overall_stats.total_downloads }} | За 7 дней: {{ book_of_week.weekly_downloads }}
   </div>
 
   <div class="book-special-button">
@@ -120,9 +120,9 @@
             <tr>
               <td>{{ forloop.counter }}</td>
               <td><a href="{% url 'books:detail' book.pk %}">{{ book.title }}</a></td>
-              <td>{{ book.views_count }}</td>
-              <td>{{ book.downloads_count }}</td>
-              <td>{{ book.weekly_downloads_count }}</td>
+              <td>{{ book.total_views }}</td>
+              <td>{{ book.total_downloads }}</td>
+              <td>{{ book.weekly_downloads }}</td>
               <td>{{ book.complex_score|floatformat:1 }}</td>
             </tr>
           {% endfor %}
@@ -204,12 +204,12 @@
         datasets: [
           {
             label: 'Всего скачиваний',
-            data: [{% for b in top_books %}{{ b.downloads_count }},{% endfor %}],
+            data: [{% for b in top_books %}{{ b.total_downloads }},{% endfor %}],
             backgroundColor: '#36A2EB'
           },
           {
             label: 'За 7 дней',
-            data: [{% for b in top_books %}{{ b.weekly_downloads_count }},{% endfor %}],
+            data: [{% for b in top_books %}{{ b.weekly_downloads }},{% endfor %}],
             backgroundColor: '#FF6384'
           }
         ]
