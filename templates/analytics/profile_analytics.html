@@ -36,8 +36,7 @@
   <div class="profile-analytics-fav-author">
     <div class="label">Ваш любимый автор</div>
     <div class="value">
-      <a href="{% url 'books:author_detail' favorite_author.book__authors__slug %}">
-        {{ favorite_author.book__authors__name }}
+      <a href="{% url 'books:author_detail' favorite_author.book__authors__slug %}">        {{ favorite_author.book__authors__name }}
       </a>
     </div>
   </div>
@@ -83,42 +82,42 @@
   </div>
 
   <!-- 6. Любимые жанры -->
-  {% if favorite_genres %}
-  <div class="top-section">
-    <div class="top-title">Популярные жанры (ТОП-5)</div>
+{% if favorite_genres %}
+<div class="top-section">
+  <div class="top-title">Популярные жанры (ТОП-5)</div>
 
-    <table class="analytics-table">
-      <thead>
-        <tr>
-          <th class="number">#</th>
-          <th>Жанр</th>
-          <th class="count">Скачиваний</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for g in favorite_genres %}
-        <tr>
-          <td class="number">{{ forloop.counter }}</td>
-          <td>
-            <a href="{% url 'books:genre_detail' g.book__genres__slug %}">
-              {{ g.book__genres__name }}
-            </a>
-          </td>
-          <td class="count">{{ g.cnt }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <table class="analytics-table">
+    <thead>
+      <tr>
+        <th class="number">#</th>
+        <th>Жанр</th>
+        <th class="count">Балл</th>  <!-- было "Скачиваний" — лучше "Балл", т.к. это score -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for g in favorite_genres %}
+      <tr>
+        <td class="number">{{ forloop.counter }}</td>
+        <td>
+          <a href="{% url 'books:genre_detail' g.slug %}">
+            {{ g.name }}
+          </a>
+        </td>
+        <td class="count">{{ g.cnt|floatformat:1 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-    <div class="chart-wrapper">
-      <canvas id="genresChart"></canvas>
-    </div>
+  <div class="chart-wrapper">
+    <canvas id="genresChart"></canvas>
   </div>
-  {% else %}
-  <p style="text-align: center; color: #777; font-size: 1.1rem;">
-    Пока нет данных по любимым жанрам.
-  </p>
-  {% endif %}
+</div>
+{% else %}
+<p style="text-align: center; color: #777; font-size: 1.1rem;">
+  Пока нет данных по любимым жанрам. Скачивайте и добавляйте в избранное!
+</p>
+{% endif %}
 
 </div>
 
@@ -166,7 +165,7 @@ if (genresCtx) {
   new Chart(genresCtx, {
     type: 'doughnut',
     data: {
-      labels: [{% for g in favorite_genres %}"{{ g.book__genres__name }}",{% endfor %}],
+      labels: [{% for g in favorite_genres %}"{{ g.name }}",{% endfor %}],
       datasets: [{
         data: [{% for g in favorite_genres %}{{ g.cnt }},{% endfor %}],
         backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1', '#fd7e14'],

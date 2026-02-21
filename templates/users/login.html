@@ -28,9 +28,9 @@
           </div>
         {% endif %}
 
-        <!-- Поле "Имя читателя" -->
+        <!-- Поле "Персональный аутентификатор" -->
         <div class="login-field">
-          <label for="id_username">Имя читателя:</label>
+          <label for="id_username">Персональный аутентификатор:</label>
           {{ form.username }}
           {% if form.username.errors %}
             <div class="login-errors">{{ form.username.errors }}</div>

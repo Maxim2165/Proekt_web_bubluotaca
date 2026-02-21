@@ -53,7 +53,7 @@
     {% endfor %}
   </div>
   <div class="book-special-stats">
-    Посмотрели: {{ book_of_week.weekly_views }} | Скачали: {{ book_of_week.weekly_downloads }} | За 7 дней: {{ book_of_week.weekly_downloads }}
+    Посмотрели: {{ book_of_week.weekly_views }} | Скачали: {{ book_of_week.total_downloads }} | За 7 дней: {{ book_of_week.weekly_downloads }}
   </div>
   <div class="book-special-button">
     <a href="{% url 'books:detail' book_of_week.pk %}" class="btn-new btn-new-dark">
@@ -68,36 +68,36 @@
       </div>
 
       <div class="book-special-card">
-        <div class="book-special-title">Книга признанная читателями</div>
-        {% if best_book_overall %}
-          <div class="book-special-content">
-            <img class="book-special-photo" src="{{ best_book_overall.cover.url }}" alt="{{ best_book_overall.title }}">
-            <div class="book-special-info">
-  <div class="book-special-book-title">{{ best_book_overall.title }}</div>  <!-- ← без ссылки -->
+  <div class="book-special-title">Книга признанная читателями</div>
+  {% if readers_choice %}
+    <div class="book-special-content">
+      <img class="book-special-photo" src="{{ readers_choice.cover.url }}" alt="{{ readers_choice.title }}">
+      <div class="book-special-info">
+        <div class="book-special-book-title">{{ readers_choice.title }}</div>
 
-  <div class="book-special-author">
-    {% for a in best_book_overall.authors.all %}
-      <a href="{% url 'books:author_detail' a.slug %}" class="author-link">
-        {{ a.name }}
-      </a>{% if not forloop.last %}, {% endif %}
-    {% endfor %}
-  </div>
+        <div class="book-special-author">
+          {% for a in readers_choice.authors.all %}
+            <a href="{% url 'books:author_detail' a.slug %}" class="author-link">
+              {{ a.name }}
+            </a>{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </div>
 
-  <div class="book-special-stats">
-    Посмотрели: {{ best_overall_stats.views }} | Скачали: {{ best_overall_stats.total_downloads }} | За 7 дней: {{ book_of_week.weekly_downloads }}
-  </div>
+        <div class="book-special-stats">
+          В избранном: {{ readers_choice.total_favorites }} | Просмотры: {{ readers_choice.total_views }} | Скачали: {{ readers_choice.total_downloads }}
+        </div>
 
-  <div class="book-special-button">
-    <a href="{% url 'books:detail' best_book_overall.pk %}" class="btn-new btn-new-dark">
-      Узнать о книге
-    </a>
-  </div>
-</div>
-          </div>
-        {% else %}
-          <p>Пока нет книги, признанной читателями.</p>
-        {% endif %}
+        <div class="book-special-button">
+          <a href="{% url 'books:detail' readers_choice.pk %}" class="btn-new btn-new-dark">
+            Узнать о книге
+          </a>
+        </div>
       </div>
+    </div>
+  {% else %}
+    <p>Пока нет книги, признанной читателями.</p>
+  {% endif %}
+</div>
     </div>
 
     <!-- ТОП-5 книг -->
@@ -111,7 +111,7 @@
             <th>Книга</th>
             <th>Просмотры</th>
             <th>Скачивания</th>
-            <th>За 7 дней</th>
+            <th>Избранное</th>
             <th>Рейтинг</th>
           </tr>
         </thead>
@@ -122,8 +122,8 @@
               <td><a href="{% url 'books:detail' book.pk %}">{{ book.title }}</a></td>
               <td>{{ book.total_views }}</td>
               <td>{{ book.total_downloads }}</td>
-              <td>{{ book.weekly_downloads }}</td>
-              <td>{{ book.complex_score|floatformat:1 }}</td>
+              <td>{{ book.total_favorites }}</td>
+              <td>{{ book.score|floatformat:1 }}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -146,6 +146,7 @@
             <th>Книг</th>
             <th>Просмотры</th>
             <th>Скачивания</th>
+            <th>Избранное</th>
             <th>Рейтинг</th>
           </tr>
         </thead>
@@ -157,7 +158,8 @@
               <td>{{ genre.books_count }}</td>
               <td>{{ genre.total_views|floatformat:0 }}</td>
               <td>{{ genre.total_downloads }}</td>
-              <td>{{ genre.genre_score|floatformat:1 }}</td>
+              <td>{{ genre.total_favorites }}</td>
+              <td>{{ genre.genre_score|floatformat:2 }}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -179,10 +181,18 @@
       type: 'doughnut',
       data: {
         labels: [{% for g in top_genres %}"{{ g.name }}",{% endfor %}],
-        datasets: [{
-          data: [{% for g in top_genres %}{{ g.total_downloads }},{% endfor %}],
-          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-        }]
+        datasets: [
+  {
+    label: 'Скачивания',
+    data: [{% for g in top_genres %}{{ g.total_downloads }},{% endfor %}],
+    backgroundColor: '#36A2EB'
+  },
+  {
+    label: 'Избранное',
+    data: [{% for g in top_genres %}{{ g.total_favorites }},{% endfor %}],
+    backgroundColor: '#FFCE56'
+  }
+]
       },
       options: {
         responsive: true,
@@ -195,38 +205,38 @@
   }
 
   // График книг
-  const booksCanvas = document.getElementById('booksChart');
-  if (booksCanvas) {
-    new Chart(booksCanvas, {
-      type: 'bar',
-      data: {
-        labels: [{% for b in top_books %}"{{ b.title|truncatewords:3 }}",{% endfor %}],
-        datasets: [
-          {
-            label: 'Всего скачиваний',
-            data: [{% for b in top_books %}{{ b.total_downloads }},{% endfor %}],
-            backgroundColor: '#36A2EB'
-          },
-          {
-            label: 'За 7 дней',
-            data: [{% for b in top_books %}{{ b.weekly_downloads }},{% endfor %}],
-            backgroundColor: '#FF6384'
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: { grid: { display: false } },
-          y: { beginAtZero: true }
+const booksCanvas = document.getElementById('booksChart');
+if (booksCanvas) {
+  new Chart(booksCanvas, {
+    type: 'bar',
+    data: {
+      labels: [{% for b in top_books %}"{{ b.title|truncatewords:3 }}",{% endfor %}],
+      datasets: [
+        {
+          label: 'Всего скачиваний',
+          data: [{% for b in top_books %}{{ b.total_downloads }},{% endfor %}],
+          backgroundColor: '#36A2EB'
         },
-        plugins: {
-          legend: { position: 'bottom' }
+        {
+          label: 'Избранное',
+          data: [{% for b in top_books %}{{ b.total_favorites }},{% endfor %}],
+          backgroundColor: '#FFCE56'
         }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: true }
+      },
+      plugins: {
+        legend: { position: 'bottom' }
       }
-    });
-  }
+    }
+  });
+}
   </script>
 
 {% endblock %}

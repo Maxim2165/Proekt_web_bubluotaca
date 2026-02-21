@@ -5,7 +5,7 @@
 
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
-from django.db.models import Q, F
+from django.db.models import Q, F, Count
 from django.db.models.functions import Lower
 from ..models import Book, Author, Genre, Favorite, BookView
 from django.utils import timezone
@@ -21,7 +21,9 @@ def catalog(request):
     selected_genres = request.GET.getlist('genres')
     selected_authors = request.GET.getlist('authors')
 
-    books = Book.objects.filter(is_active=True).prefetch_related('authors', 'genres')
+    books = Book.objects.filter(is_active=True).prefetch_related('authors', 'genres').annotate(
+        unique_downloads=Count('download_logs__user', distinct=True)
+    )
 
     # ===== ФИЛЬТРАЦИЯ КНИГ =====
     if selected_genres:
@@ -156,7 +158,7 @@ def book_detail(request, pk):
 
     # --- ПОДСЧЁТ СТАТИСТИКИ ---
     view_count = book.view_logs.count()
-    download_count = book.download_logs.filter(status='success').count()
+    download_count = book.download_logs.filter(status='success').values('user').distinct().count()
 
     return render(request, 'books/detail.html', {
         'book': book,
@@ -179,7 +181,9 @@ def genre_detail(request, slug):
     books = Book.objects.filter(
         genres=genre,
         is_active=True
-    ).prefetch_related('authors', 'genres').distinct()
+    ).prefetch_related('authors', 'genres').distinct().annotate(
+        unique_downloads=Count('download_logs__user', distinct=True)
+    )
 
     context = {
         "genre": genre,
@@ -198,7 +202,9 @@ def author_detail(request, slug):
     - список всех его книг
     """
     author = get_object_or_404(Author, slug=slug)
-    books = author.books.filter(is_active=True).prefetch_related('authors', 'genres')
+    books = author.books.filter(is_active=True).prefetch_related('authors', 'genres').annotate(
+        unique_downloads=Count('download_logs__user', distinct=True)
+    )
 
     context = {
         'author': author,
@@ -241,10 +247,13 @@ def search(request):
     if query:
         books = (
             Book.objects
-            .filter(is_active=True)
-            .filter(title_search__icontains=query)
-            .prefetch_related('authors', 'genres')
-            .distinct()
+                .filter(is_active=True)
+                .filter(title_search__icontains=query)
+                .prefetch_related('authors', 'genres')
+                .distinct()
+                .annotate(
+                unique_downloads=Count('download_logs__user', distinct=True)
+            )
         )
 
         authors = (
