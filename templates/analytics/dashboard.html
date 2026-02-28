@@ -25,12 +25,12 @@
       </div>
 
       <div class="kpi-card">
-        <div class="kpi-label">Посмотрели</div>
+        <div class="kpi-label">Просмотрено</div>
         <div class="kpi-value">{{ total_views|floatformat:0 }}</div>
       </div>
 
       <div class="kpi-card">
-        <div class="kpi-label">Скачано трудов</div>
+        <div class="kpi-label">Скачано книг</div>
         <div class="kpi-value">{{ total_downloads }}</div>
       </div>
     </div>
@@ -53,7 +53,7 @@
     {% endfor %}
   </div>
   <div class="book-special-stats">
-    Посмотрели: {{ book_of_week.weekly_views }} | Скачали: {{ book_of_week.total_downloads }} | За 7 дней: {{ book_of_week.weekly_downloads }}
+    За 7 дней - Просмотрели: {{ book_of_week.weekly_views }} | Скачали: {{ book_of_week.weekly_downloads }}
   </div>
   <div class="book-special-button">
     <a href="{% url 'books:detail' book_of_week.pk %}" class="btn-new btn-new-dark">
@@ -84,7 +84,7 @@
         </div>
 
         <div class="book-special-stats">
-          В избранном: {{ readers_choice.total_favorites }} | Просмотры: {{ readers_choice.total_views }} | Скачали: {{ readers_choice.total_downloads }}
+          В избранном: {{ readers_choice.total_favorites }}
         </div>
 
         <div class="book-special-button">
@@ -102,16 +102,16 @@
 
     <!-- ТОП-5 книг -->
     <div class="top-section">
-      <div class="top-title">Популярные книги (ТОП-5)</div>
+      <div class="top-title">Рейтинг популярности книг</div>
 
-      <table class="analytics-table">
+      <table class="site-analytics-table">
         <thead>
           <tr>
             <th>#</th>
             <th>Книга</th>
-            <th>Просмотры</th>
-            <th>Скачивания</th>
-            <th>Избранное</th>
+            <th>Просмотрено</th>
+            <th>Скачано</th>
+            <th>В избранном</th>
             <th>Рейтинг</th>
           </tr>
         </thead>
@@ -123,7 +123,7 @@
               <td>{{ book.total_views }}</td>
               <td>{{ book.total_downloads }}</td>
               <td>{{ book.total_favorites }}</td>
-              <td>{{ book.score|floatformat:1 }}</td>
+              <td>{{ book.score|floatformat:2 }}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -136,17 +136,17 @@
 
     <!-- ТОП-5 жанров -->
     <div class="top-section">
-      <div class="top-title">Популярные жанры (ТОП-5)</div>
+      <div class="top-title">Рейтинг популярности жанров</div>
 
-      <table class="analytics-table">
+      <table class="site-analytics-table">
         <thead>
           <tr>
             <th>#</th>
             <th>Жанр</th>
             <th>Книг</th>
-            <th>Просмотры</th>
-            <th>Скачивания</th>
-            <th>Избранное</th>
+            <th>Просмотрено</th>
+            <th>Скачано</th>
+            <th>В избранном</th>
             <th>Рейтинг</th>
           </tr>
         </thead>
@@ -156,7 +156,7 @@
               <td>{{ forloop.counter }}</td>
               <td><a href="{% url 'books:genre_detail' genre.slug %}">{{ genre.name }}</a></td>
               <td>{{ genre.books_count }}</td>
-              <td>{{ genre.total_views|floatformat:0 }}</td>
+              <td>{{ genre.total_views }}</td>
               <td>{{ genre.total_downloads }}</td>
               <td>{{ genre.total_favorites }}</td>
               <td>{{ genre.genre_score|floatformat:2 }}</td>
@@ -172,39 +172,35 @@
 
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-  // График жанров
-  const genresCanvas = document.getElementById('genresChart');
-  if (genresCanvas) {
-    new Chart(genresCanvas, {
-      type: 'doughnut',
-      data: {
-        labels: [{% for g in top_genres %}"{{ g.name }}",{% endfor %}],
-        datasets: [
-  {
-    label: 'Скачивания',
-    data: [{% for g in top_genres %}{{ g.total_downloads }},{% endfor %}],
-    backgroundColor: '#36A2EB'
-  },
-  {
-    label: 'Избранное',
-    data: [{% for g in top_genres %}{{ g.total_favorites }},{% endfor %}],
-    backgroundColor: '#FFCE56'
-  }
-]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { position: 'bottom' }
-        }
-      }
-    });
-  }
 
-  // График книг
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// График жанров
+const genresCanvas = document.getElementById('genresChart');
+if (genresCanvas) {
+  new Chart(genresCanvas, {
+    type: 'doughnut',
+    data: {
+      labels: [{% for g in top_genres %}"{{ g.name }}",{% endfor %}],
+      datasets: [
+        {
+          label: 'Скачано',
+          data: [{% for g in top_genres %}{{ g.total_downloads }},{% endfor %}],
+          backgroundColor: '#36A2EB'
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+}
+
+// График книг
 const booksCanvas = document.getElementById('booksChart');
 if (booksCanvas) {
   new Chart(booksCanvas, {
@@ -213,15 +209,10 @@ if (booksCanvas) {
       labels: [{% for b in top_books %}"{{ b.title|truncatewords:3 }}",{% endfor %}],
       datasets: [
         {
-          label: 'Всего скачиваний',
+          label: 'Всего скачано',
           data: [{% for b in top_books %}{{ b.total_downloads }},{% endfor %}],
           backgroundColor: '#36A2EB'
         },
-        {
-          label: 'Избранное',
-          data: [{% for b in top_books %}{{ b.total_favorites }},{% endfor %}],
-          backgroundColor: '#FFCE56'
-        }
       ]
     },
     options: {
@@ -237,6 +228,6 @@ if (booksCanvas) {
     }
   });
 }
-  </script>
+</script>
 
 {% endblock %}

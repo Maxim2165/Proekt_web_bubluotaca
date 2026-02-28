@@ -117,20 +117,16 @@ class Favorite(models.Model):
         on_delete=models.CASCADE,
         related_name='favorites'
     )
-
     book = models.ForeignKey(
         Book,
         on_delete=models.CASCADE,
         related_name='favorited_by'
     )
-
     created_at = models.DateTimeField(auto_now_add=True)
-
     class Meta:
         unique_together = ('user', 'book')
         ordering = ['-created_at']
         indexes = [models.Index(fields=['user', 'book'])]
-
     def __str__(self):
         return f'{self.user} → {self.book}'
 
@@ -144,50 +140,41 @@ class DownloadLog(models.Model):
         ('failed', 'Failed'),
         ('partial', 'Partial'),
     ]
-
     FORMAT_CHOICES = [
         ('pdf', 'PDF'),
         ('epub', 'EPUB'),
         ('fb2', 'FB2'),
     ]
-
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='download_logs'
     )
-
     book = models.ForeignKey(
         Book,
         on_delete=models.CASCADE,
         related_name='download_logs'
     )
-
     file_format = models.CharField(
         max_length=8,
         choices=FORMAT_CHOICES
     )
-
     file_size = models.PositiveIntegerField(
         null=True,
         blank=True
     )
-
     status = models.CharField(
         max_length=16,
         choices=STATUS_CHOICES,
         default='success'
     )
-
     created_at = models.DateTimeField(auto_now_add=True)
-
     class Meta:
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['user', 'created_at']),
             models.Index(fields=['book', 'created_at']),
         ]
-
     def __str__(self):
         return f'{self.user} → {self.book} ({self.file_format})'
 
@@ -203,16 +190,13 @@ class BookView(models.Model):
         on_delete=models.SET_NULL,
         related_name='book_views'
     )
-
     book = models.ForeignKey(
         Book,
         on_delete=models.CASCADE,
         related_name='view_logs'
     )
     session_key = models.CharField(max_length=40, null=True, blank=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
-
     class Meta:
         ordering = ['-created_at']
         indexes = [
@@ -220,7 +204,6 @@ class BookView(models.Model):
             models.Index(fields=['user', 'created_at']),
             models.Index(fields=['session_key', 'created_at'])
         ]
-
     def __str__(self):
         if self.user:
             return f'View: {self.user} → {self.book}'

@@ -2,10 +2,11 @@ from django.shortcuts import render
 from django.db.models import Count, Q, F, Max, FloatField, ExpressionWrapper
 from django.utils import timezone
 from datetime import timedelta
-
+from django.db.models.functions import Cast, Log
 from books.models import Book, Author, Genre, DownloadLog, BookView, Favorite
-
-
+import math
+from django.db.models import Value
+from django.db.models.functions import Ln, Sqrt
 def dashboard(request):
     """
     Страница аналитики сайта (Обзор)
@@ -22,8 +23,7 @@ def dashboard(request):
     total_authors = Author.objects.count()
 
     total_views = BookView.objects.count()
-    total_downloads = DownloadLog.objects.filter(status='success').values('user').distinct().count()
-
+    total_downloads = DownloadLog.objects.filter(status='success').values('user', 'book').distinct().count()  # Суммируем уникальные пары (пользователь + книга)
     # =========================
     # БЛОК 2. КНИГА НЕДЕЛИ (ТОЛЬКО ЗА 7 ДНЕЙ)
     # =========================
@@ -56,8 +56,9 @@ def dashboard(request):
                   F('weekly_favorites') * 2 +  # Вес 2 для избранного (новый)
                   F('weekly_downloads') * 4  # Вес 4 для скачиваний
         )
-            .order_by('-score')
+            .order_by('-score', '-weekly_downloads')
     )
+
     best_book = weekly_books.first()
 
     # =========================
@@ -68,9 +69,10 @@ def dashboard(request):
             .filter(is_active=True)
             .annotate(
             total_favorites=Count('favorited_by', distinct=True),
-            total_views=Count('view_logs', distinct=True),  # ← добавили
+            total_views=Count('view_logs', distinct=True),
             total_downloads=Count('download_logs__user', distinct=True),
         )
+        .filter(total_favorites__gte=2)
             .order_by('-total_favorites', '-created_at')
     )
 
@@ -81,54 +83,46 @@ def dashboard(request):
     # БЛОК 3. ОБЩИЙ ТОП-5 КНИГ (С НОРМАЛИЗАЦИЕЙ)
     # =========================
 
-    books_with_counts = (
+    books_all = (
         Book.objects
             .filter(is_active=True)
             .annotate(
             total_downloads=Count('download_logs__user', distinct=True),
             total_views=Count('view_logs', distinct=True),
-            total_favorites=Count('favorited_by', distinct=True),  # Новый: общее избранное
+            total_favorites=Count('favorited_by', distinct=True),
         )
     )
 
-    # Минимальный порог (как в плане: минимум 3 скачивания)
-    books_with_counts = books_with_counts.filter(total_downloads__gte=3)
+    # Сначала считаем max по ВСЕМ книгам
+    max_views = books_all.aggregate(Max('total_views'))['total_views__max'] or 1
+    max_downloads = books_all.aggregate(Max('total_downloads'))['total_downloads__max'] or 1
+    max_favorites = books_all.aggregate(Max('total_favorites'))['total_favorites__max'] or 1
 
-    # Получаем максимумы для нормализации (добавили max_favs)
-    max_views = books_with_counts.aggregate(
-        max_v=Max('total_views')
-    )['max_v'] or 1
+    # Теперь фильтр
+    books_filtered = books_all.filter(total_downloads__gte=3)
 
-    max_downloads = books_with_counts.aggregate(
-        max_d=Max('total_downloads')
-    )['max_d'] or 1
-
-    max_favorites = books_with_counts.aggregate(  # Новый: max для favorites
-        max_f=Max('total_favorites')
-    )['max_f'] or 1
-
-    # Нормализованный score (добавили favs_norm * 2)
+    # Нормализованный score
     top_books = (
-        books_with_counts
+        books_filtered
             .annotate(
             views_norm=ExpressionWrapper(
-                F('total_views') / max_views,
+                Ln(F('total_views') + 1) / Ln(max_views + 1),
                 output_field=FloatField()
             ),
             downloads_norm=ExpressionWrapper(
-                F('total_downloads') / max_downloads,
+                Ln(F('total_downloads') + 1) / Ln(max_downloads + 1),
                 output_field=FloatField()
             ),
-            favorites_norm=ExpressionWrapper(  # Новый: нормализация favorites
-                F('total_favorites') / max_favorites,
+            favorites_norm=ExpressionWrapper(
+                Ln(F('total_favorites') + 1) / Ln(max_favorites + 1),
                 output_field=FloatField()
             ),
         )
             .annotate(
             score=ExpressionWrapper(
-                F('views_norm') * 1 +  # Вес 1
-                F('favorites_norm') * 2 +  # Вес 2 (новый)
-                F('downloads_norm') * 4,  # Вес 4
+                F('views_norm') * 1 +
+                F('favorites_norm') * 2 +
+                F('downloads_norm') * 4,
                 output_field=FloatField()
             )
         )
@@ -140,20 +134,42 @@ def dashboard(request):
     # БЛОК 4. ТОП-5 ЖАНРОВ (СРЕДНИЙ SCORE КНИГ)
     # =========================
 
-    top_genres = (
+    genres_all = (
         Genre.objects
             .annotate(
             total_downloads=Count('books__download_logs__user', distinct=True),
             total_views=Count('books__view_logs', distinct=True),
-            total_favorites=Count('books__favorited_by', distinct=True),  # Новый: избранное по книгам жанра
-            books_count=Count('books', distinct=True)
+            total_favorites=Count('books__favorited_by', distinct=True),
+            books_count=Count('books', distinct=True)  # Возвращаем books_count
+        )
+    )
+
+    max_g_views = genres_all.aggregate(Max('total_views'))['total_views__max'] or 1
+    max_g_downloads = genres_all.aggregate(Max('total_downloads'))['total_downloads__max'] or 1
+    max_g_favorites = genres_all.aggregate(Max('total_favorites'))['total_favorites__max'] or 1
+
+    top_genres = (
+        genres_all
+            .annotate(
+            views_norm=ExpressionWrapper(
+                Ln(F('total_views') + 1) / Ln(max_g_views + 1),
+                output_field=FloatField()
+            ),
+            downloads_norm=ExpressionWrapper(
+                Ln(F('total_downloads') + 1) / Ln(max_g_downloads + 1),
+                output_field=FloatField()
+            ),
+            favorites_norm=ExpressionWrapper(
+                Ln(F('total_favorites') + 1) / Ln(max_g_favorites + 1),
+                output_field=FloatField()
+            ),
         )
             .annotate(
             genre_score=ExpressionWrapper(
-                (F('total_views') * 1 +  # Вес 1
-                 F('total_favorites') * 2 +  # Вес 2 (новый)
-                 F('total_downloads') * 4) /  # Вес 4
-                (F('books_count') + 1),  # +1 чтобы избежать деления на 0; средний по плану
+                (F('views_norm') * 1 +
+                 F('favorites_norm') * 2 +
+                 F('downloads_norm') * 4)
+                / Sqrt(Cast(F('books_count'), FloatField())),
                 output_field=FloatField()
             )
         )

@@ -6,10 +6,15 @@ from . import views
 app_name = 'users'
 
 urlpatterns = [
-    # Встроенный LoginView рендерит наш шаблон и обрабатывает ?next=...
-    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path(
+        'login/',
+        auth_views.LoginView.as_view(
+            template_name='users/login.html',
+            redirect_authenticated_user=True  # ← Добавляем здесь
+        ),
+        name='login'
+    ),
 
-    # Наш кастомный logout (принимает POST и читает hidden 'next')
     path('logout/', views.logout_view, name='logout'),
 
     # Регистрация

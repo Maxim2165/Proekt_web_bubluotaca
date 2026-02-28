@@ -11,6 +11,7 @@ from ..models import Book, Author, Genre, Favorite, BookView
 from django.utils import timezone
 from datetime import timedelta
 
+
 # ---------------------------------------
 # catalog — список книг с поиском
 # ---------------------------------------
@@ -21,9 +22,16 @@ def catalog(request):
     selected_genres = request.GET.getlist('genres')
     selected_authors = request.GET.getlist('authors')
 
-    books = Book.objects.filter(is_active=True).prefetch_related('authors', 'genres').annotate(
-        unique_downloads=Count('download_logs__user', distinct=True)
+    books = Book.objects.filter(is_active=True).prefetch_related(
+        'authors', 'genres'
+    ).annotate(
+        unique_downloads=Count(
+            'download_logs__user',
+            filter=Q(download_logs__status='success'),
+            distinct=True
+        )
     )
+    
 
     # ===== ФИЛЬТРАЦИЯ КНИГ =====
     if selected_genres:
@@ -88,7 +96,7 @@ def genre_list(request):
     """
     Список всех жанров
     """
-    genres = Genre.objects.all()
+    genres = Genre.objects.all().order_by('name')
 
     return render(
         request,
@@ -182,8 +190,12 @@ def genre_detail(request, slug):
         genres=genre,
         is_active=True
     ).prefetch_related('authors', 'genres').distinct().annotate(
-        unique_downloads=Count('download_logs__user', distinct=True)
+    unique_downloads=Count(
+        'download_logs__user',
+        filter=Q(download_logs__status='success'),
+        distinct=True
     )
+)
 
     context = {
         "genre": genre,
@@ -203,8 +215,12 @@ def author_detail(request, slug):
     """
     author = get_object_or_404(Author, slug=slug)
     books = author.books.filter(is_active=True).prefetch_related('authors', 'genres').annotate(
-        unique_downloads=Count('download_logs__user', distinct=True)
+    unique_downloads=Count(
+        'download_logs__user',
+        filter=Q(download_logs__status='success'),
+        distinct=True
     )
+)
 
     context = {
         'author': author,
@@ -252,7 +268,11 @@ def search(request):
                 .prefetch_related('authors', 'genres')
                 .distinct()
                 .annotate(
-                unique_downloads=Count('download_logs__user', distinct=True)
+                unique_downloads=Count(
+                    'download_logs__user',
+                    filter=Q(download_logs__status='success'),
+                    distinct=True
+                )
             )
         )
 

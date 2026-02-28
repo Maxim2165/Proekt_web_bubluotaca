@@ -129,42 +129,51 @@
 }
 
 /* Таблица жанров */
-.analytics-table {
+.user-analytics-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 30px;
 }
 
-.analytics-table th,
-.analytics-table td {
+.user-analytics-table th,
+.user-analytics-table td {
   padding: 14px 18px;
   text-align: left;
+  font-weight: 600;
   border-bottom: 1px solid #eee;
 }
 
-.analytics-table th {
+.user-analytics-table th {
   background: #f8f8f8;
   font-weight: 500;
   color: #333;
 }
 
-.analytics-table td a {
+.user-analytics-table td a {
   color: #252525;
   text-decoration: none;
 }
 
-.analytics-table td a:hover {
+.user-analytics-table td a:hover {
   color: #0d6efd;
   text-decoration: underline;
 }
 
-.analytics-table .number {
+.user-analytics-table .number {
   width: 60px;
   text-align: center;
+
 }
 
-.analytics-table .count {
-  text-align: right;
+.user-analytics-table th:nth-child(3),
+.user-analytics-table th:nth-child(4),
+.user-analytics-table th:nth-child(5),
+.user-analytics-table th:nth-child(6),
+.user-analytics-table td:nth-child(3),
+.user-analytics-table td:nth-child(4),
+.user-analytics-table td:nth-child(5),
+.user-analytics-table td:nth-child(6) {
+  text-align: center;
   font-weight: 600;
 }
 
@@ -172,16 +181,6 @@
 .chart-wrapper {
   margin-top: 20px;
   height: 320px;
-}
-
-/* График динамики чтения */
-.profile-analytics-chart-container {
-  background: #fff;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  padding: 24px;
-  margin-bottom: 50px;
-  height: 380px;
 }
 
 /* Адаптив */

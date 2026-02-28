@@ -33,13 +33,19 @@
 
 {% include "includes/top_bar.html" %}
 
+{% if messages %}
+  <div class="messages-container">
+    {% for message in messages %}
+      <div class="message {{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
 <div class="site-wrapper">
   {% block content %}{% endblock %}
 </div>
-
-<footer class="text-center py-3">
-  © {{ now.year }} Online Library
-</footer>
 
 </body>
 </html>

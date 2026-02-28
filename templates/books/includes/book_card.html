@@ -7,7 +7,7 @@
       {% if book.cover %}
         <img src="{{ book.cover.url }}" alt="{{ book.title }}">
       {% else %}
-        <span class="text-muted small">Нет обложки</span>
+      <img src="{% static 'images/default-book-cover.png' %}" alt="{{ book.title }}">
       {% endif %}
     </div>
 
@@ -30,9 +30,9 @@
       {% if show_stats != False %}
         <p class="book-card-stats small text-muted mb-2">
           {% if show_views == True %}
-            Просмотры: {{ book.view_logs.count|default:"0" }} ·
+            Просмотрено: {{ book.view_logs.count|default:"0" }} ·
           {% endif %}
-          Загрузки: {{ book.unique_downloads|default:"0" }}
+          Скачано: {{ book.unique_downloads|default:"0" }}
         </p>
       {% endif %}
 
@@ -40,7 +40,6 @@
          class="mt-auto btn-new btn-new-dark">
         {{ button_text|default:"Узнать о книге" }}
       </a>
-      
     </div>
   </div>
 </div>

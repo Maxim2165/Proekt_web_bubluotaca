@@ -61,12 +61,6 @@
     </div>
   </div>
 
-  <!-- 4. Динамика чтения -->
-  <div class="profile-analytics-chart-container">
-    <h2 class="profile-analytics-section-title">Моя динамика чтения</h2>
-    <canvas id="readingChart"></canvas>
-  </div>
-
   <!-- 5. Рекомендованные книги -->
   <div class="profile-analytics-recommendations">
     <h2>Книги на основе ваших предпочтений</h2>
@@ -84,14 +78,17 @@
   <!-- 6. Любимые жанры -->
 {% if favorite_genres %}
 <div class="top-section">
-  <div class="top-title">Популярные жанры (ТОП-5)</div>
+  <div class="top-title">Ваши жанровые предпочтения</div>
 
-  <table class="analytics-table">
+  <table class="user-analytics-table">
     <thead>
       <tr>
         <th class="number">#</th>
         <th>Жанр</th>
-        <th class="count">Балл</th>  <!-- было "Скачиваний" — лучше "Балл", т.к. это score -->
+        <th>Просмотрено</th>
+        <th>Скачано</th>
+        <th>В избранном</th>
+        <th>Баллы</th>  <!-- было "Скачиваний" — лучше "Балл", т.к. это score -->
       </tr>
     </thead>
     <tbody>
@@ -99,11 +96,14 @@
       <tr>
         <td class="number">{{ forloop.counter }}</td>
         <td>
-          <a href="{% url 'books:genre_detail' g.slug %}">
+          <a href="{% url 'books:genre_detail' g.slug %}" >
             {{ g.name }}
           </a>
         </td>
-        <td class="count">{{ g.cnt|floatformat:1 }}</td>
+        <td>{{ g.views }}</td>
+        <td>{{ g.downloads }}</td>
+        <td>{{ g.favorites }}</td>
+        <td>{{ g.cnt}}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -124,38 +124,6 @@
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- График динамики чтения -->
-<script>
-const readingCtx = document.getElementById('readingChart');
-if (readingCtx) {
-  const labels = {{ reading_months|safe }};
-  const data = {{ reading_counts|safe }};
-
-  if (labels && labels.length > 0) {
-    new Chart(readingCtx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: data,
-          borderColor: '#0d6efd',
-          backgroundColor: 'rgba(13, 110, 253, 0.18)',
-          fill: true,
-          tension: 0.35,
-          pointRadius: 5,
-          pointHoverRadius: 8,
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true } }
-      }
-    });
-  }
-}
-</script>
 
 <!-- График жанров -->
 <script>
@@ -166,12 +134,30 @@ if (genresCtx) {
     type: 'doughnut',
     data: {
       labels: [{% for g in favorite_genres %}"{{ g.name }}",{% endfor %}],
-      datasets: [{
-        data: [{% for g in favorite_genres %}{{ g.cnt }},{% endfor %}],
-        backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1', '#fd7e14'],
-        borderWidth: 2,
-        hoverOffset: 10
-      }]
+      datasets: [
+  {
+    label: 'Баллы',
+    data: [{% for g in favorite_genres %}{{ g.cnt }},{% endfor %}],
+    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1', '#fd7e14'],
+    borderWidth: 2,
+    hoverOffset: 10
+  },
+  {
+    label: 'Просмотры',
+    data: [{% for g in favorite_genres %}{{ g.views }},{% endfor %}],
+    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1', '#fd7e14']
+  },
+  {
+    label: 'Избранное',
+    data: [{% for g in favorite_genres %}{{ g.favorites }},{% endfor %}],
+    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1', '#fd7e14']
+  },
+  {
+    label: 'Скачивания',
+    data: [{% for g in favorite_genres %}{{ g.downloads }},{% endfor %}],
+    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1', '#fd7e14']
+  }
+]
     },
     options: {
       responsive: true,

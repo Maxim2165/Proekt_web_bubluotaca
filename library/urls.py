@@ -10,7 +10,7 @@ urlpatterns = [
     path('catalog/', include('books.urls')), # каталог/книга
     path('analytics/', include('analytics.urls')),
 
-    path('search/', include('books.search_urls')),
+
 ]
 
 # чтобы отдавать media в режиме разработки

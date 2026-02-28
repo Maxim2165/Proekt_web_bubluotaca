@@ -4,6 +4,7 @@
 """
 
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.http import HttpResponse, Http404, HttpResponseForbidden, FileResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.db import transaction
@@ -13,6 +14,7 @@ from django.utils import timezone
 
 
 
+@require_POST
 @login_required
 def favorite_toggle(request, pk):
     """
@@ -20,9 +22,6 @@ def favorite_toggle(request, pk):
     Принимает только POST-запросы.
     После переключения редиректит на 'next' (если передан) или на detail книги.
     """
-    if request.method != 'POST':
-        return HttpResponseForbidden("Только POST-запросы разрешены.")
-
     book = get_object_or_404(Book, pk=pk, is_active=True)
 
     fav, created = Favorite.objects.get_or_create(user=request.user, book=book)

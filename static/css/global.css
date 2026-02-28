@@ -49,3 +49,42 @@
     align-items: center;
     gap: 44px;
 }
+
+.messages-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 0 15px;
+}
+
+.message {
+padding: 10px 14px;
+  margin-bottom: 6px;
+  border-radius: 8px;
+  font-size: 1rem;
+  line-height: 1.5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* лёгкая тень для объёма */
+  position: relative;
+  animation: fadeIn 0.4s ease-out; /* плавное появление */
+}
+
+.message.success {
+  background-color: #e6ffed;
+  color: #1a7f37;
+}
+
+.message.error {
+    background-color: #ffe6e6;
+  color: #b00020;
+  border-left-color: #b00020;
+}
+
+.message.info {
+  background-color: #e6f3ff;
+  color: #0056b3;
+}
+
+.message.warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+

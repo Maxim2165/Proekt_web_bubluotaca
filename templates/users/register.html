@@ -26,8 +26,8 @@
 
     <!-- Поля -->
     <div class="register-field">
-      <label for="id_username">Имя читателя:</label>
-      {{ form.username }}
+      <label for="id_first_name">Имя читателя:</label>
+      {{ form.first_name }}
       {% if form.username.errors %}
         <div class="register-errors">{{ form.username.errors }}</div>
       {% endif %}

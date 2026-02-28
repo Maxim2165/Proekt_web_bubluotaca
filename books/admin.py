@@ -11,7 +11,7 @@ class GenreAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     list_display = ('name', 'description')
     search_fields = ('name',)
-
+    list_filter = ('name',)
 
 # -----------------------------------------
 # Author
@@ -51,12 +51,15 @@ class BookAdmin(admin.ModelAdmin):
     )
 
     filter_horizontal = ('authors', 'genres')
-
+    list_editable = ('is_active',)
     readonly_fields = ('created_at', 'updated_at')
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.prefetch_related('authors')  # ← Оптимизация
 
     def display_authors(self, obj):
         return ", ".join(a.name for a in obj.authors.all())
-
     display_authors.short_description = 'Authors'
 
 
@@ -67,7 +70,7 @@ class BookAdmin(admin.ModelAdmin):
 class FavoriteAdmin(admin.ModelAdmin):
     list_display = ('user', 'book', 'created_at')
     search_fields = ('user__username', 'book__title')
-
+    list_filter = ('created_at', 'user')
 
 # -----------------------------------------
 # DownloadLog
@@ -93,4 +96,5 @@ class DownloadLogAdmin(admin.ModelAdmin):
 class BookViewAdmin(admin.ModelAdmin):
     list_display = ('user', 'book', 'created_at')
     search_fields = ('user__username', 'book__title')
-    list_filter = ('created_at',)
+    list_filter = ('created_at', 'user')
+
