@@ -4,8 +4,8 @@
 
 /* Заголовок */
 .profile-title {
-  font-size: 80px;
-  margin-bottom: 44px;
+  font-size: 50px;
+  margin-bottom: 30px;
   text-align: left;
 }
 
@@ -36,7 +36,7 @@
 
 /* Заголовок карточки */
 .profile-card-title {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
   text-decoration: underline;
 }
@@ -49,6 +49,10 @@
 }
 
 .profile-label {
+  font-weight: 500;
+}
+
+.profile-label-1 {
   font-weight: 500;
 }
 
@@ -66,7 +70,7 @@
 .profile-actions {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 20px;
   align-items: flex-end;
 }
 
@@ -92,12 +96,14 @@
   justify-content: space-between;
 }
 
-/* Кликабельные книги в избранном */
-.profile-row a.profile-label {
-  color: #0d6efd;
-  text-decoration: underline;
+/* Новый стиль — ТОЛЬКО для ссылок в избранном */
+.profile-row .favorite-book-link {
+  color: #252525;
+  text-decoration: none;
+  transition: color 0.15s ease, text-decoration 0.15s ease;
 }
 
-.profile-row a.profile-label:hover {
-  color: #084298;
+.profile-row .favorite-book-link:hover {
+  color: #0d6efd;
+  text-decoration: underline;
 }

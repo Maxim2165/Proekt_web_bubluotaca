@@ -14,7 +14,7 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotAllowed
 from django.conf import settings
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.views.decorators.http import require_POST
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
@@ -53,11 +53,18 @@ def profile(request):
 
     favorites_qs = (
         Favorite.objects
-        .filter(user=user)
-        .select_related('book')
-        .order_by('-created_at')
+            .filter(user=user)
+            .select_related('book')
+            .annotate(
+            unique_downloads=Count(
+                'book__download_logs__user',
+                filter=Q(book__download_logs__status='success'),
+                distinct=True
+            )
+        )
+            .order_by('-created_at')
     )
-    favorite_books = [f.book for f in favorites_qs]
+    favorite_books = favorites_qs
 
     downloads_qs = (
         DownloadLog.objects
@@ -68,7 +75,7 @@ def profile(request):
 
     context = {
         'user': user,
-        'favorite_books': favorite_books,
+        'favorite_books': favorites_qs,
         'downloads': downloads_qs,
     }
     return render(request, 'users/profile.html', context)

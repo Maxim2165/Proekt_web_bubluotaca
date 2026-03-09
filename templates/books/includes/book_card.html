@@ -12,7 +12,7 @@
     </div>
 
     <div class="book-card-body d-flex flex-column">
-
+      <div class="book-info">
       <h5 class="book-card-title">{{ book.title }}</h5>
 
       {% if show_author != False %}
@@ -26,7 +26,7 @@
           {% endfor %}
         </p>
       {% endif %}
-
+      </div>
       {% if show_stats != False %}
         <p class="book-card-stats small text-muted mb-2">
           {% if show_views == True %}

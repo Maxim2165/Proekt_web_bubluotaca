@@ -54,15 +54,14 @@
 
 /* Описание — обычный текст, не кликабельный */
 .genre-description {
-    font-size: 18px;
-    line-height: 1.6;
+    font-size: 19px;
+    line-height: 1.5;
     color: #252525;
-    opacity: 0.85;
+    opacity: 0.9;
     margin: 0;
     hyphens: auto;               /* ← автоматический перенос слов (очень полезно для русского) */
     word-wrap: break-word;
 }
-
 
 /* ===== ДЛЯ СТРАНИЦЫ КОНКРЕТНОГО ЖАНРА ===== */
 
@@ -74,7 +73,7 @@
 }
 
 .genre-header .genre-title {
-    font-size: clamp(50px, 10vw, 80px);
+    font-size: clamp(50px, 10vw, 60px);
     font-weight: 500;
     line-height: 1.1;
     margin: 0;

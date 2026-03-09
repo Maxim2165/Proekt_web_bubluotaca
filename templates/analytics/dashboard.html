@@ -9,7 +9,7 @@
 
     <!-- Заголовок + подзаголовок -->
     <p class="page-subtitle">
-      Здесь собраны книги и авторы разных эпох и направлений. Представленные цифры отражают живое пространство литературы - количество голосов, историй и произведений, которые формируют библиотеку и продолжают находить своих читателей.
+      Библиотека живёт благодаря своим читателям. На этой странице можно увидеть, какие книги и жанры привлекают наибольшее внимание, какие произведения становятся особенно популярными и как формируется читательский интерес.
     </p>
 
     <!-- KPI -->
@@ -174,7 +174,9 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
+
 // График жанров
 const genresCanvas = document.getElementById('genresChart');
 if (genresCanvas) {
@@ -184,9 +186,15 @@ if (genresCanvas) {
       labels: [{% for g in top_genres %}"{{ g.name }}",{% endfor %}],
       datasets: [
         {
-          label: 'Скачано',
-          data: [{% for g in top_genres %}{{ g.total_downloads }},{% endfor %}],
-          backgroundColor: '#36A2EB'
+          label: 'Рейтинг жанров',
+          data: [{% for g in top_genres %}{{ g.genre_score|stringformat:"f" }},{% endfor %}],
+          backgroundColor: [
+            '#36A2EB',
+            '#4BC0C0',
+            '#FFCE56',
+            '#FF9F40',
+            '#9966FF'
+          ]
         },
       ]
     },
@@ -199,6 +207,7 @@ if (genresCanvas) {
     }
   });
 }
+
 
 // График книг
 const booksCanvas = document.getElementById('booksChart');
@@ -209,9 +218,15 @@ if (booksCanvas) {
       labels: [{% for b in top_books %}"{{ b.title|truncatewords:3 }}",{% endfor %}],
       datasets: [
         {
-          label: 'Всего скачано',
-          data: [{% for b in top_books %}{{ b.total_downloads }},{% endfor %}],
-          backgroundColor: '#36A2EB'
+          label: 'Рейтинг популярности',
+          data: [{% for b in top_books %}{{ b.score|stringformat:"f" }},{% endfor %}],
+          backgroundColor: [
+            '#36A2EB',
+            '#4BC0C0',
+            '#FFCE56',
+            '#FF9F40',
+            '#9966FF'
+          ]
         },
       ]
     },
@@ -220,7 +235,10 @@ if (booksCanvas) {
       maintainAspectRatio: false,
       scales: {
         x: { grid: { display: false } },
-        y: { beginAtZero: true }
+        y: {
+          beginAtZero: true,
+          max: 10
+        }
       },
       plugins: {
         legend: { position: 'bottom' }
@@ -228,6 +246,6 @@ if (booksCanvas) {
     }
   });
 }
-</script>
 
+</script>
 {% endblock %}

@@ -14,7 +14,6 @@ class CustomUserCreationForm(UserCreationForm):
         label=(
             'Я принимаю '
             '<a href="/terms/" target="_blank">Пользовательское соглашение</a> '
-            'и <a href="/privacy/" target="_blank">Политику конфиденциальности</a>'
         )
     )
     class Meta(UserCreationForm.Meta):
@@ -36,17 +35,9 @@ class CustomUserCreationForm(UserCreationForm):
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'email')
-        labels = {'username': 'Логин', 'first_name': 'Имя', 'email': 'Email'}
+        fields = ('first_name', 'email')
+        labels = {'first_name': 'Имя', 'email': 'Email'}
 
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        qs = User.objects.filter(username__iexact=username)
-        if self.instance.pk:
-            qs = qs.exclude(pk=self.instance.pk)
-        if username and qs.exists():
-            raise ValidationError('Данный логин уже занят.')
-        return username
 
     def clean_email(self):
         email = self.cleaned_data.get('email')

@@ -70,23 +70,28 @@
       </div>
     </div>
 
-    <p class="book-description">{{ book.description|linebreaksbr }}</p>
+    <div class="book-description-section">
+  <h2 class="book-description-title">Описание книги</h2>
+  <div class="book-description">
+    {{ book.description|linebreaksbr }}
+  </div>
+</div>
 
     <!-- Скачивание и избранное (общий блок для неавторизованных) -->
 <div class="book-actions">
   {% if user.is_authenticated %}
     <!-- Скачивание -->
     <div class="download-section">
-      <div class="download-title">Доступные форматы для скачивания:</div>
+      <div class="download-title">Доступные форматы для скачивания</div>
       <div class="download-buttons">
         {% if book.file_pdf %}
-          <a href="{% url 'books:download' book.pk 'pdf' %}" class="btn-new btn-new-dark">PDF</a>
+          <a href="{% url 'books:download' book.pk 'pdf' %}" class="btn-new btn-new-dark btn-small">PDF</a>
         {% endif %}
         {% if book.file_epub %}
-          <a href="{% url 'books:download' book.pk 'epub' %}" class="btn-new btn-new-dark">EPUB</a>
+          <a href="{% url 'books:download' book.pk 'epub' %}" class="btn-new btn-new-dark btn-small">EPUB</a>
         {% endif %}
         {% if book.file_fb2 %}
-          <a href="{% url 'books:download' book.pk 'fb2' %}" class="btn-new btn-new-dark">FB2</a>
+          <a href="{% url 'books:download' book.pk 'fb2' %}" class="btn-new btn-new-dark btn-small">FB2</a>
         {% endif %}
       </div>
     </div>

@@ -2,10 +2,9 @@
 import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-m)nh%3q3l@zs*%)526r+49rm4^d$e+t6ffzkj(^pgr4%p3-#%d'
 
 # DEBUG = True — пока разрабатываем, оставляем True.
@@ -15,7 +14,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Добавляем наши приложения сюда (добавил приложения)
+# мои приложения
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -51,7 +50,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',  # важно для request в шаблоне
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -89,7 +88,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Статика — css/js, которые не зависят от пользователя
+# Статика — css/js,
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']   # (от меня: сюда положу Bootstrap/JS во время разработки)
 
@@ -100,7 +99,7 @@ MEDIA_ROOT = BASE_DIR / 'media'  # (от меня: сюда будут сохр�
 
 # Локализация/время
 LANGUAGE_CODE = 'ru-ru'
-TIME_ZONE = 'Europe/Moscow'  # или
+TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True

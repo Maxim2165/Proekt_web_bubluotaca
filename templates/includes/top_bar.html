@@ -15,7 +15,7 @@
       <!-- Добавляем класс active, если текущий URL совпадает -->
     <a href="{% url 'books:catalog' %}"
        class="menu-item {% if request.resolver_match.url_name == 'catalog' %}active{% endif %}">
-      Библиотека
+      Каталог
     </a>
 
     <a href="{% url 'books:genre_list' %}"

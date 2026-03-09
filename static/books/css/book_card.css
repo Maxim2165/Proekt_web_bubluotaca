@@ -8,6 +8,8 @@
   background: #fff;
   transition: box-shadow 0.3s ease;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .book-card-new:hover {
@@ -48,21 +50,43 @@
   flex: 1;
 }
 
+/* Фиксируем высоту блока с названием и автором */
+.book-info {
+  min-height: 70px;  /* ← КЛЮЧЕВОЕ: минимальная высота для названия + автора */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
 .book-card-title {
   font-size: 18px;
   font-weight: 500;
   color: #252525;
   margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;      /* максимум 2 строки */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .book-card-author {
-  font-size: 16px;
+  font-size: 17px;
   color: rgba(37, 37, 37, 0.6);
   margin: 0;
+  word-wrap: break-word;       /* перенос длинных имён */
+  white-space: normal;         /* разрешаем перенос */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;       /* максимум 2 строки для автора */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .book-card-stats {
   font-size: 16px;
   color: rgba(37, 37, 37, 0.6);
   margin: 0;
+}
+
+.book-card-body .btn-new {
+  margin-top: auto;  /* ← КЛЮЧЕВОЕ: прижимает кнопку к низу */
 }

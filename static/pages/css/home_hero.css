@@ -91,7 +91,8 @@
 }
 
 .home-hero-title {
-    font-size: 80px;
+    font-size: 70px;
+    font-family: 'Source Serif 4', serif;
     font-weight: 400;
     line-height: 1.05;
     display: block;
@@ -100,6 +101,7 @@
 
 .home-hero-subtitle {
     font-size: 25px;
+    font-family: 'Source Serif 4', serif;
     font-weight: 400;
     display: block;
     margin-top: 8px;

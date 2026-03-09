@@ -22,7 +22,7 @@
 .profile-edit-card h2 {
   margin: 0 0 0px 0;
   text-align: center;
-  font-size: 2rem;
+  font-size: 26px;
 }
 
 /* Каждое поле формы */
@@ -33,7 +33,7 @@
 }
 
 .form-field label {
-  font-size: 1.1rem;
+  font-size: 18px;
   font-weight: 500;
 }
 

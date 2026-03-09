@@ -45,7 +45,7 @@
 
 .author-card-list:hover {
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.35);
-    transform: translateY(-4px);
+
 }
 
 /* Фото в списке авторов (маленькое) */
@@ -65,6 +65,7 @@
     object-fit: cover;
 }
 
+
 /* Информация справа */
 .author-info {
     flex: 1;
@@ -75,7 +76,7 @@
 
 /* Имя автора — кликабельное, стили как в detail.css */
 .author-name {
-    font-size: 25px;
+    font-size: 26px;
     font-weight: 500;
     color: #252525;
     margin: 0;
@@ -90,7 +91,7 @@
 /* Годы жизни и книги — обычный текст */
 .author-life-dates,
 .author-books-count {
-    font-size: 16px;
+    font-size: 18px;
     color: rgba(37, 37, 37, 0.7);
     margin: 0;
 }
@@ -121,8 +122,8 @@
 
 /* Фото автора — ещё меньше */
 .author-detail-photo {
-    width: 120px;
-    height: 170px;
+    width: 140px;
+    height: 190px;
     border-radius: 10px;
     overflow: hidden;
     background: #f8f8f8;
@@ -143,7 +144,7 @@
 }
 
 .author-details .author-title {
-    font-size: clamp(40px, 8vw, 50px);
+    font-size: clamp(40px, 8vw, 40px);
     font-weight: 500;
     line-height: 1.1;
     margin: 0 0 16px 0;
@@ -151,26 +152,26 @@
 }
 
 .author-details .author-life-dates {
-    font-size: 20px;
+    font-size: 18px;
     color: rgba(37, 37, 37, 0.8);
     margin: 0 0 24px 0;
 }
 
 /* Биография — прямой селектор по классу + !important */
-.author-bio {
+.author-bio text {
     font-size: 20px !important;
     line-height: 1.6 !important;
     color: #252525 !important;
     margin: 0 !important;
 }
 
-/* Заголовок "Книги автора." */
-.books-section-title {
-    font-size: clamp(32px, 6vw, 45px);
-    font-weight: 500;
-    margin: 0 0 20px 0;
-    color: #252525;
+.author-bio-text {
+  font-size: 19px;
+  text-align: justify;
+  margin: 0;
+  line-height: 1.5;          /* для читаемости, можно убрать если не нужно */
 }
+
 
 /* Сетка книг — как на странице жанра */
 .author-books-grid {

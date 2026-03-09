@@ -10,7 +10,7 @@
     <div class="author-page">
 
       <!-- Выделенный контейнер -->
-      <div class="author-info-container">
+      <div class="author-info-container author-detail-photo-large">
         <div class="author-detail-photo">
           {% if author.photo %}
             <img src="{{ author.photo.url }}" alt="{{ author.name }}">
@@ -32,17 +32,18 @@
           </div>
 
           {% if author.bio %}
-            <p class="author-bio">{{ author.bio|linebreaks }}</p>
+           <div class="author-bio-text">{{ author.bio|linebreaks }}</div>
           {% else %}
-            <p class="author-bio" style="color:#777; font-style:italic;">
+            <div class="author-bio-text">
               Биография автора пока отсутствует.
-            </p>
+            </div>
           {% endif %}
         </div>
       </div>
 
+
       <!-- Книги автора -->
-      <h2 class="books-section-title">Книги автора: </h2>
+      <h2 class="books-section-title">Книги автора </h2>
 
       {% if books %}
         <div class="author-books-grid">

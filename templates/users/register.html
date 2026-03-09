@@ -50,7 +50,7 @@
     </div>
 
     <div class="register-field">
-      <label for="id_password1">Персональный ключ:</label>
+      <label for="id_password1">Пароль:</label>
       {{ form.password1 }}
       {% if form.password1.errors %}
         <div class="register-errors">{{ form.password1.errors }}</div>
@@ -58,7 +58,7 @@
     </div>
 
     <div class="register-field">
-      <label for="id_password2">Подтверждение персонального ключа:</label>
+      <label for="id_password2">Подтверждение пароля:</label>
       {{ form.password2 }}
       {% if form.password2.errors %}
         <div class="register-errors">{{ form.password2.errors }}</div>
@@ -69,9 +69,7 @@
     <div class="register-checkbox">
       {{ form.accept_terms }}
       <label for="{{ form.accept_terms.id_for_label }}" class="register-checkbox-label">
-        Я принимаю
-        <a href="{% url 'pages:terms' %}" class="register-link">Пользовательское соглашение</a> и
-        <a href="{% url 'pages:privacy' %}" class="register-link">Политику конфиденциальности</a>
+        Я принимаю <a href="{% url 'pages:terms' %}" class="register-link">Пользовательское соглашение</a>
       </label>
       {% if form.accept_terms.errors %}
         <div class="register-errors">{{ form.accept_terms.errors }}</div>

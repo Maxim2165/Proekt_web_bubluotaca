@@ -9,7 +9,7 @@
 
   <!-- Подзаголовок (без контейнера) -->
   <div class="profile-analytics-subtitle">
-    Здесь собрана вся твоя читательская статистика, любимые авторы, жанры и рекомендации специально для тебя.
+    Со временем у каждого читателя появляются свои литературные предпочтения. Здесь представлены сведения о вашей читательской активности, любимых авторах и жанрах, а также рекомендации на основе ваших предпочтений.
   </div>
 
   <!-- 1. Моя активность (с общим контейнером) -->
@@ -34,7 +34,7 @@
   <!-- 2. Любимый автор -->
   {% if favorite_author %}
   <div class="profile-analytics-fav-author">
-    <div class="label">Ваш любимый автор</div>
+    <h2 class="profile-analytics-section-title">Ваш любимый автор</h2>
     <div class="value">
       <a href="{% url 'books:author_detail' favorite_author.book__authors__slug %}">        {{ favorite_author.book__authors__name }}
       </a>
@@ -88,7 +88,7 @@
         <th>Просмотрено</th>
         <th>Скачано</th>
         <th>В избранном</th>
-        <th>Баллы</th>  <!-- было "Скачиваний" — лучше "Балл", т.к. это score -->
+        <th>Рейтинг</th>  <!-- было "Скачиваний" — лучше "Балл", т.к. это score -->
       </tr>
     </thead>
     <tbody>
@@ -129,42 +129,38 @@
 <script>
 {% if favorite_genres %}
 const genresCtx = document.getElementById('genresChart');
+
 if (genresCtx) {
-  new Chart(genresCtx, {
-    type: 'doughnut',
-    data: {
-      labels: [{% for g in favorite_genres %}"{{ g.name }}",{% endfor %}],
-      datasets: [
-  {
-    label: 'Баллы',
-    data: [{% for g in favorite_genres %}{{ g.cnt }},{% endfor %}],
-    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1', '#fd7e14'],
-    borderWidth: 2,
-    hoverOffset: 10
+
+new Chart(genresCtx, {
+  type: 'bar',
+  data: {
+    labels: [{% for g in favorite_genres %}"{{ g.name }}",{% endfor %}],
+    datasets: [{
+      label: 'Рейтинг жанров',
+      data: [{% for g in favorite_genres %}{{ g.cnt|stringformat:"f" }},{% endfor %}],
+      backgroundColor: [
+        '#0d6efd',
+        '#198754',
+        '#ffc107',
+        '#dc3545',
+        '#6f42c1'
+      ]
+    }]
   },
-  {
-    label: 'Просмотры',
-    data: [{% for g in favorite_genres %}{{ g.views }},{% endfor %}],
-    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1', '#fd7e14']
-  },
-  {
-    label: 'Избранное',
-    data: [{% for g in favorite_genres %}{{ g.favorites }},{% endfor %}],
-    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1', '#fd7e14']
-  },
-  {
-    label: 'Скачивания',
-    data: [{% for g in favorite_genres %}{{ g.downloads }},{% endfor %}],
-    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6f42c1', '#fd7e14']
-  }
-]
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false }
     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { position: 'bottom' } }
+    scales: {
+      x: { beginAtZero: true }
     }
-  });
+  }
+});
+
 }
 {% endif %}
 </script>

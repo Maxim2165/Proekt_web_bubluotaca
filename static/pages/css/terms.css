@@ -1,0 +1,133 @@
+/* terms.css — Пользовательское соглашение, чисто и единообразно */
+
+/* Общий контейнер страницы */
+.terms-page {
+  padding: 10px 20px 10px;
+  margin: 0 auto;
+}
+
+/* Карточка с тенью — как на других страницах */
+.terms-card {
+  background: #fff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 32px 28px;
+}
+
+/* Вводные абзацы в начале страницы — такой же стиль, как у подпунктов */
+.terms-page .intro-text {
+  font-size: 1.18rem;          /* такой же размер, как у .subsection */
+  line-height: 1.7;
+  color: #444;
+  margin: 16px 0 12px 0;       /* те же отступы, что у .subsection */
+  text-align: justify;
+}
+
+/* Главный заголовок */
+.terms-title {
+  font-size: 2.4rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 12px 0;
+  color: #252525;
+}
+
+/* Дата обновления */
+.terms-updated {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #777;
+  margin: 0 0 24px 0;
+}
+
+/* Вводные абзацы после даты */
+.terms-page > p {
+  font-size: 1.18rem;
+  line-height: 1.7;
+  color: #444;
+  margin: 0 0 20px 0;
+  text-align: justify;
+}
+
+/* Разделы (1., 2., 3...) */
+.terms-section {
+  margin-bottom: 32px;
+}
+
+/* Основные заголовки разделов (1. Общие положения и т.д.) */
+.terms-section h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #252525;
+  margin: 0 0 16px 0;
+}
+
+/* Подпункты (1.1, 1.2...) — НЕ заголовки, а жирный текст + обычный */
+.terms-section .subsection {
+  margin: 16px 0 12px 0;
+  font-size: 1.18rem;
+  line-height: 1.7;
+  color: #444;
+}
+
+.terms-section .subsection strong {
+  font-weight: 600;
+  color: #252525;
+}
+
+/* Обычный текст в разделах */
+.terms-section p {
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: #444;
+  margin: 0 0 12px 0;
+}
+
+/* Списки */
+.terms-section ul {
+  list-style: disc;
+  padding-left: 28px;
+  margin: 8px 0 16px 0;
+}
+
+.terms-section ul li {
+  font-size: 1.15rem;          /* такой же размер, как основной текст */
+  line-height: 1.7;
+  margin-bottom: 8px;           /* отступ между пунктами — 8px, как просил */
+  color: #444;
+}
+
+/* Выделенный текст */
+.terms-section strong {
+  color: #252525;
+  font-weight: 600;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+  .terms-page {
+    padding: 32px 16px 64px;
+  }
+
+  .terms-card {
+    padding: 24px 20px;
+  }
+
+  .terms-title {
+    font-size: 2rem;
+  }
+
+  .terms-section h3 {
+    font-size: 1.6rem;
+  }
+
+  .terms-section .subsection,
+  .terms-section p,
+  .terms-section ul li {
+    font-size: 1.05rem;
+  }
+
+  .terms-section ul {
+    padding-left: 24px;
+  }
+}

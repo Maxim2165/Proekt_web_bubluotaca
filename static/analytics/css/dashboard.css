@@ -7,7 +7,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
 }
 
 /* Заголовок + подзаголовок (один текст) */
@@ -42,7 +42,7 @@
 }
 
 .kpi-label {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
 }
 
@@ -77,7 +77,7 @@
 
 
 .book-special-title {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
 }
 
@@ -107,7 +107,7 @@
 }
 
 .book-special-author a{
-    font-size: 16px;
+    font-size: 17px;
     color: rgba(37, 37, 37, 0.6);
     opacity: 0.9;
 }

@@ -14,7 +14,6 @@
     font-size: clamp(20px, 4vw, 25px);
     line-height: 1.45;
     color: #252525;
-    opacity: 0.9;
     text-align: justify;
     margin: 10px 0 10px 0;
 }

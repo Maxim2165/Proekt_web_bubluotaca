@@ -11,6 +11,7 @@
 
   border-radius: 10px;
   font-size: 18px;
+  font-family: 'Source Serif 4', serif;
   cursor: pointer;
   text-decoration: none;
 
@@ -48,6 +49,16 @@
   color: #252525;
   border: 1px solid #252525;
 }
+
+/* Маленькая версия кнопки (для скачивания форматов) */
+.btn-new.btn-small {
+  min-width: 100px;          /* меньше минимум */
+  height: 35px;              /* чуть ниже */
+  padding: 0 20px;
+  font-size: 18px;           /* меньше шрифт */
+  font-weight: 500;
+}
+
 
 /* Адаптив для мобильки */
 @media (max-width: 768px) {

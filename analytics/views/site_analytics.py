@@ -53,8 +53,8 @@ def dashboard(request):
         )
             .annotate(
             score=F('weekly_views') * 1 +  # Вес 1 для просмотров
-                  F('weekly_favorites') * 2 +  # Вес 2 для избранного (новый)
-                  F('weekly_downloads') * 4  # Вес 4 для скачиваний
+                  F('weekly_favorites') * 3 +  # Вес 3 для избранного (новый)
+                  F('weekly_downloads') * 6  # Вес 6 для скачиваний
         )
             .order_by('-score', '-weekly_downloads')
     )
@@ -121,8 +121,8 @@ def dashboard(request):
             .annotate(
             score=ExpressionWrapper(
                 F('views_norm') * 1 +
-                F('favorites_norm') * 2 +
-                F('downloads_norm') * 4,
+                F('favorites_norm') * 3 +
+                F('downloads_norm') * 6,
                 output_field=FloatField()
             )
         )
@@ -167,14 +167,15 @@ def dashboard(request):
             .annotate(
             genre_score=ExpressionWrapper(
                 (F('views_norm') * 1 +
-                 F('favorites_norm') * 2 +
-                 F('downloads_norm') * 4)
+                 F('favorites_norm') * 3 +
+                 F('downloads_norm') * 6)
                 / Sqrt(Cast(F('books_count'), FloatField())),
                 output_field=FloatField()
             )
         )
             .order_by('-genre_score')[:5]
     )
+
 
     context = {
         'total_books': total_books,

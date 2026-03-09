@@ -20,10 +20,17 @@
   color: #252525;
 }
 
+.book-description-title {
+  font-size: 26px;            /* чуть крупнее основного текста, но не как название книги */
+  font-weight: 600;
+  margin: 10px 0 10px 0;
+  line-height: 1.2;
+}
+
 .book-description {
   font-size: 22px;
-  line-height: 1.4;
-  color: #252525;
+  line-height: 1.5;
+  text-align: justify;
   margin: 0;
 }
 
@@ -35,8 +42,8 @@
 }
 
 .book-image {
-  width: 229px;
-  height: auto;
+  width: 200px;
+  height: 305px;
   object-fit: cover;
   border-radius: 10px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
@@ -80,7 +87,7 @@
 
 .author-photo {
   width: 90px;          /* 140 × 0.57 ≈ 80px — примерно 43% от оригинала */
-  height: auto;
+  height: 120px;
   border-radius: 10px;
   object-fit: cover;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
@@ -174,8 +181,8 @@
 }
 
 .download-title {
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 22px;
+  font-weight: 600;
   margin-bottom: 16px;
 }
 

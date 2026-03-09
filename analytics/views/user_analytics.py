@@ -87,7 +87,7 @@ def profile_analytics(request):
         user_favorites=Count('books__favorited_by__book', filter=Q(books__favorited_by__user=user), distinct=True),
         # Для избранного (Favorite уже unique, но distinct на всякий)
     ).annotate(
-        score=F('user_views') * 1 + F('user_favorites') * 2 + F('user_downloads') * 4
+        score=F('user_views') * 1 + F('user_favorites') * 3 + F('user_downloads') * 6
     ).filter(score__gt=0).order_by('-score', '-user_downloads', '-user_favorites', '-user_views')[:5]
 
     favorite_genres = [{'name': g.name, 'slug': g.slug, 'cnt': g.score, 'views': g.user_views, 'downloads': g.user_downloads, 'favorites': g.user_favorites} for g in user_genres]  # Добавили views, downloads, favorites для шаблона
@@ -131,11 +131,12 @@ def profile_analytics(request):
                 Ln(F('total_favorites') + 1) / Ln(max_favorites + 1),
                 output_field=FloatField()
             ),
+            unique_downloads=Count('download_logs__user', filter=Q(download_logs__status='success'), distinct=True),
         ).annotate(
             score=ExpressionWrapper(
                 F('views_norm') * 1 +
-                F('favorites_norm') * 2 +
-                F('downloads_norm') * 4,
+                F('favorites_norm') * 3 +
+                F('downloads_norm') * 6,
                 output_field=FloatField()
             )
         ).order_by('-score')
@@ -156,7 +157,7 @@ def profile_analytics(request):
     # ==================================================
     # РЕЖИМ 2 — МЯГКАЯ ПЕРСОНАЛИЗАЦИЯ
     # ==================================================
-    elif total_actions < 5:
+    elif total_actions < 8:
         top_user_genre = user_genres.first()
 
         personal_books = Book.objects.filter(
