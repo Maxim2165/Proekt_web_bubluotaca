@@ -6,6 +6,4 @@ class BooksConfig(AppConfig):
     name = 'books'
 
     def ready(self):
-        # Импортируем модуль signals, чтобы декораторы @receiver
-        # зарегистрировали обработчики при старте приложения.
-        import books.signals  # noqa: F401
+        import books.signals
