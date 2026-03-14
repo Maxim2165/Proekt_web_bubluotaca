@@ -36,7 +36,7 @@
         </p>
       {% endif %}
 
-      <a href="{% url 'books:detail' book.pk %}"
+      <a href="{% url 'books:detail' book.slug %}"
          class="mt-auto btn-new btn-new-dark">
         {{ button_text|default:"Узнать о книге" }}
       </a>

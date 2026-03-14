@@ -8,14 +8,21 @@ app_name = 'books'
 urlpatterns = [
     # /catalog/  -> список книг
     path('', views.catalog, name='catalog'),
-    # /catalog/<pk>/ -> детальная страница книги
-    path('<int:pk>/', book_detail, name='detail'),
-    path('<int:pk>/download/<str:fmt>/', download_book, name='download'),
-    # Toggle favorite
-    path('<int:pk>/favorite/', favorite_toggle, name='favorite_toggle'),
-    path('authors/', author_list, name='author_list'),
-    path('authors/<slug:slug>/', author_detail, name='author_detail'),
-    path('genres/<slug:slug>/', genre_detail, name='genre_detail'),
-    path('genres/', genre_list, name='genre_list'),
+
+# Поиск — ДО детальной книги!
     path('search/', search, name='search'),
+
+# Списки жанров и авторов — ДО детальной книги!
+    path('genres/', genre_list, name='genre_list'),
+    path('authors/', author_list, name='author_list'),
+
+# Детали жанра и автора — ДО детальной книги!
+    path('genres/<slug:slug>/', genre_detail, name='genre_detail'),
+    path('authors/<slug:slug>/', author_detail, name='author_detail'),
+
+    # /catalog/<pk>/ -> детальная страница книги
+    path('<slug:slug>/', book_detail, name='detail'),
+    # Скачивание и избранное
+    path('<int:pk>/download/<str:fmt>/', download_book, name='download'),
+    path('<int:pk>/favorite/', favorite_toggle, name='favorite_toggle'),
 ]

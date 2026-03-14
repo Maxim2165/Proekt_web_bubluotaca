@@ -10,7 +10,6 @@ User = get_user_model()
 # -----------------------------------------
 class Genre(models.Model):
     name = models.CharField(max_length=120, unique=True)
-    name_search = models.CharField(max_length=120, db_index=True)
 
     slug = models.SlugField(max_length=140, unique=True)
     description = models.TextField(blank=True)
@@ -21,10 +20,6 @@ class Genre(models.Model):
     class Meta:
         ordering = ['name']
 
-    def save(self, *args, **kwargs):
-        self.name_search = self.name.lower()
-        super().save(*args, **kwargs)
-
     def __str__(self):
         return self.name
 
@@ -34,7 +29,6 @@ class Genre(models.Model):
 # -----------------------------------------
 class Author(models.Model):
     name = models.CharField(max_length=255)
-    name_search = models.CharField(max_length=255, db_index=True)
 
     slug = models.SlugField(max_length=255, unique=True)
     bio = models.TextField(blank=True)
@@ -50,10 +44,6 @@ class Author(models.Model):
     class Meta:
         ordering = ['name']
 
-    def save(self, *args, **kwargs):
-        self.name_search = self.name.lower()
-        super().save(*args, **kwargs)
-
     def __str__(self):
         return self.name
 
@@ -64,7 +54,6 @@ class Author(models.Model):
 # -----------------------------------------
 class Book(models.Model):
     title = models.CharField(max_length=255, db_index=True)
-    title_search = models.CharField(max_length=255, db_index=True)
 
     slug = models.SlugField(max_length=255, unique=True)
 
@@ -95,13 +84,6 @@ class Book(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        indexes = [
-            models.Index(fields=['title_search']),
-        ]
-
-    def save(self, *args, **kwargs):
-        self.title_search = self.title.lower()
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

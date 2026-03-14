@@ -54,7 +54,7 @@
       {% if favorite_books %}
   {% for fav in favorite_books %}
     <div class="profile-row profile-row-between">
-      <a href="{% url 'books:detail' fav.book.pk %}" class="profile-label favorite-book-link">
+      <a href="{% url 'books:detail' fav.book.slug %}" class="profile-label favorite-book-link">
         {{ fav.book.title }}
       </a>
       <div class="profile-muted">

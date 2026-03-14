@@ -107,7 +107,7 @@ def genre_list(request):
 # ---------------------------------------
 # book_detail — подробная карточка
 # ---------------------------------------
-def book_detail(request, pk):
+def book_detail(request, slug):
     """
     Отображение карточки книги.
     Создаём запись в BookView.
@@ -116,7 +116,7 @@ def book_detail(request, pk):
 
     book = get_object_or_404(
         Book.objects.prefetch_related('authors', 'genres'),
-        pk=pk,
+        slug=slug,
         is_active=True
     )
 
@@ -254,20 +254,21 @@ def search(request):
     - авторы
     - жанры
     """
-    query = request.GET.get('q', '').strip().lower()
+    query = request.GET.get('q', '').strip()
 
     books = []
     authors = []
     genres = []
 
     if query:
+
         books = (
             Book.objects
-                .filter(is_active=True)
-                .filter(title_search__icontains=query)
-                .prefetch_related('authors', 'genres')
-                .distinct()
-                .annotate(
+            .filter(is_active=True)
+            .filter(title__icontains=query)
+            .prefetch_related('authors', 'genres')
+            .distinct()
+            .annotate(
                 unique_downloads=Count(
                     'download_logs__user',
                     filter=Q(download_logs__status='success'),
@@ -278,13 +279,13 @@ def search(request):
 
         authors = (
             Author.objects
-            .filter(name_search__icontains=query)
+            .filter(name__icontains=query)
             .distinct()
         )
 
         genres = (
             Genre.objects
-            .filter(name_search__icontains=query)
+            .filter(name__icontains=query)
             .distinct()
         )
 

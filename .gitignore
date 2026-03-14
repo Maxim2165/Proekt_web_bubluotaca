@@ -30,3 +30,4 @@ secrets.json
 # Other junk
 .DS_Store  # Для Mac
 Thumbs.db  # Для Windows
+

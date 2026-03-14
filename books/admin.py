@@ -46,7 +46,6 @@ class BookAdmin(admin.ModelAdmin):
 
     search_fields = (
         'title',
-        'title_search',
         'authors__name',
     )
 
